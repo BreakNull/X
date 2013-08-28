@@ -34,6 +34,7 @@ public:
     void *GetRealPage() {return m_pRealPage;}
     string &GetName() {return m_cName;}
     int &GetId() {return m_id;}
+    XWidget *FindById(const string &id, XWidget *parent = NULL);
 
     //设置标题栏上的标题
     void SetTitle(const string &title);
@@ -50,6 +51,7 @@ protected:
     string m_cName;     //页面类型名称
     void *m_pRealPage;  //实际的平台相关的页面
     XPageXml *m_pXml;
+    XWidget *m_pRoot;
 };
 
 #endif // PAGE_H

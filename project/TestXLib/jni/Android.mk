@@ -14,11 +14,18 @@
 #
 LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
+
+LOCAL_X_ROOT := $(LOCAL_PATH)/../../XLib/jni
 LOCAL_CFLAGS += -D_FOR_ANDROID_
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../XLib/jni
+LOCAL_C_INCLUDES += $(LOCAL_X_ROOT)/init $(LOCAL_X_ROOT)/page $(LOCAL_X_ROOT)/platform \
+					$(LOCAL_X_ROOT)/util/datetime $(LOCAL_X_ROOT)/util/http \
+					$(LOCAL_X_ROOT)/util/log $(LOCAL_X_ROOT)/util/schedule $(LOCAL_X_ROOT)/util/sqlite3 \
+					$(LOCAL_X_ROOT)/util/thread $(LOCAL_X_ROOT)/util/timer $(LOCAL_X_ROOT)/util/tinyxml \
+					$(LOCAL_X_ROOT)/util/variant $(LOCAL_X_ROOT)/widgets
+					
 LOCAL_LDFLAGS += -L../XLib/libs/armeabi
 LOCAL_MODULE    := TestX
-LOCAL_SRC_FILES := main.cpp
+LOCAL_SRC_FILES := main.cpp MainPage.cpp
 LOCAL_LDLIBS    := -llog -lX
 
 include $(BUILD_SHARED_LIBRARY)

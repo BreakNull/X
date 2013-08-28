@@ -44,11 +44,11 @@ static JNINativeMethod GetNativeMethod(const char *pName, const char *pSig, void
 
 static void RegisterNativPageMethod(JNIEnv *pEnv)
 {
-    LOGD("Init->RegisterNativPageMethod");
+    //LOGD("Init->RegisterNativPageMethod");
     XJniMgr *pMgr = XJniMgr::Instance();
     jclass pageclazz = (jclass)pMgr->GetClass("x.core.ui.JPage");
     if (!pageclazz) {
-        LOGE("Init->RegisterNativPageeMethod fail, not find core.ui.JPage");
+        LOGE("Init->RegisterNativPageeMethod fail, not find x.core.ui.JPage");
         return;
     }
 
@@ -67,16 +67,16 @@ static void RegisterNativPageMethod(JNIEnv *pEnv)
     methods[i++] = GetNativeMethod("OnOptionsItemSelected", "(II)V", (void*)XJniPage::OnOptionsItemSelected);
     jint num = pEnv->RegisterNatives(pageclazz, methods, i);
 
-    LOGD("Init->RegisterNativPageMethod register natives num=%d", num);
+    //LOGD("Init->RegisterNativPageMethod register natives num=%d", num);
 }
 
 static void RegisterNativUiThreadRunnableMethod(JNIEnv *pEnv)
 {
-    LOGD("Init->RegisterNativUiThreadRunnableMethod");
+    //LOGD("Init->RegisterNativUiThreadRunnableMethod");
     XJniMgr *pMgr = XJniMgr::Instance();
     jclass pageclazz = (jclass)pMgr->GetClass("x.core.ui.UiThreadRunnable");
     if (!pageclazz) {
-        LOGE("Init->RegisterNativUiThreadRunnableMethod fail, not find core.ui.UiThreadRunnable");
+        LOGE("Init->RegisterNativUiThreadRunnableMethod fail, not find x.core.ui.UiThreadRunnable");
         return;
     }
 
@@ -85,12 +85,12 @@ static void RegisterNativUiThreadRunnableMethod(JNIEnv *pEnv)
     methods[i++] = GetNativeMethod("Run", "(JJ)V", (void*)XJniUiThreadRunnable::Run);
     jint num = pEnv->RegisterNatives(pageclazz, methods, i);
 
-    LOGD("Init->RegisterNativUiThreadRunnableMethod register natives num=%d", num);
+    //LOGD("Init->RegisterNativUiThreadRunnableMethod register natives num=%d", num);
 }
 
 bool InitXLib(JavaVM *pJavaVm, void *reserved)
 {
-    LOGD("Init->JniOnLoad");
+    LOGD("Init->JniOnLoad -- begin");
     XJniMgr::Instance()->SetJavaVM(pJavaVm);
     JNIEnv* env = NULL;
 
@@ -102,6 +102,8 @@ bool InitXLib(JavaVM *pJavaVm, void *reserved)
     RegisterNativPageMethod(env);
     RegisterNativUiThreadRunnableMethod(env);
     InitWidgetFactory();
+    LOGD("Init->JniOnLoad -- end");
+
     return true;
 }
 

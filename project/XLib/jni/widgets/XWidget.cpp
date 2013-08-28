@@ -1,4 +1,5 @@
 #include "XWidget.h"
+#include "XLog.h"
 #include "XPlatform.h"
 
 XWidget::XWidget(XPage *p)
@@ -14,7 +15,7 @@ void XWidget::Create()
     //TODO:
 }
 
-void XWidget::SetProperty(const string &name, const XVariant &v)
+void XWidget::SetProperty(XPage *p, const string &name, const XVariant &v)
 {
     //TODO:
     if (name == "x") {
@@ -27,6 +28,10 @@ void XWidget::SetProperty(const string &name, const XVariant &v)
 
     } else if (name == "id") {
         m_cId = v.ToString();
+        XPlatform::Instance()->SetId(this, m_cId);
+    }
+    else if (name == "click") {
+        SetListener(p, name);
     }
 }
 
@@ -49,15 +54,20 @@ XVariant XWidget::GetProperty(const string &name)
     return XVariant();
 }
 
+void XWidget::SetListener(XPage *page, const string &name)
+{
+    XPlatform::Instance()->SetListener(page, this, name);
+}
+
 bool XWidget::IsRoot()
 {
-    XVariant v = GetProperty("isroot");
-    return v.ToBool();
+    //TODO:
+    return false;
 }
 
 void XWidget::SetRoot(bool b)
 {
-    SetProperty("isroot", XVariant(b));
+    //TODO:
 }
 
 bool XWidget::IsContainer()

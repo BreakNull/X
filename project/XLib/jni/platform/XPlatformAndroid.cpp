@@ -280,6 +280,16 @@ void XPlatformAndroid::SetTitle(XPage *p, const string &title)
     pEnv->DeleteLocalRef(js);
 }
 
+void XPlatformAndroid::SetListener(XPage *p, XWidget *w, const string &name)
+{
+    CHECK_PP(p, w);
+    CHECK_B_NO();
+    GET_MID_NO("setListener");
+    jstring js = pEnv->NewStringUTF(name.c_str());
+    CALL_VOID(R(p), W(w), js);
+    pEnv->DeleteLocalRef(js);
+}
+
 void XPlatformAndroid::SetButtonText(XWidget *p, const char *pcTxt)
 {
     CHECK_PS(p, pcTxt);

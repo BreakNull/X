@@ -47,8 +47,9 @@ public:
      */
     virtual void Create();
 
-    virtual void SetProperty(const string &name, const XVariant &v);
+    virtual void SetProperty(XPage *p, const string &name, const XVariant &v);
     virtual XVariant GetProperty(const string &name);
+    virtual void SetListener(XPage *page, const string &name);
 
     bool IsRoot();
     void SetRoot(bool b);

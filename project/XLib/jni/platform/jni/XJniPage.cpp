@@ -11,18 +11,17 @@
 
 void XJniPage::OnNew(JNIEnv *pEnv, jobject jpage, jstring pageName, jint id)
 {
-    LOGD("XJniPage::OnNew jpage=%p, pageName=%p, id=%d", jpage, pageName, id);
-
+    LOGD("jpage=%p, pageName=%p, id=%d", jpage, pageName, id);
     const char *pName = pEnv->GetStringUTFChars(pageName, NULL);
     if (!pName) {
-        LOGE("XJniPage::OnNew fail, pName is NULL");
+        LOGE("Fail, pName is NULL");
         return;
     }
 
     XPage *page = XPageFactory::Instance()->New(jpage, pName, id);
     pEnv->ReleaseStringUTFChars(pageName, pName);
     if (!page) {
-        LOGE("XJniPage::OnNew fail, page is NULL");
+        LOGE("Fail, page is NULL");
         return;
     }
     XPageManager::Instance()->AddPage(id, page);
@@ -33,12 +32,12 @@ jobject XJniPage::OnCreate(JNIEnv *pEnv, jobject jpage, jint id)
     LOGD("XJniPage::OnCreate");
     XPage *page = XPageManager::Instance()->GetPage(id);
     if (!page) {
-        LOGE("XJniPage::OnCreate fail, page is NULL");
+        LOGE("fail, page is NULL");
         return NULL;
     }
     XWidget *pW = page->OnCreate();
     if (!pW) {
-        LOGE("XJniPage::OnCreate fail, pW is NULL");
+        LOGE("fail, pW is NULL");
         return NULL;
     }
     return (jobject)pW->GetRealWidget();
@@ -49,7 +48,7 @@ void XJniPage::OnDestroy(JNIEnv *pEnv, jobject jpage, jint id)
     LOGD("XJniPage::OnDestroy");
     XPage *page = XPageManager::Instance()->GetPage(id);
     if (!page) {
-        LOGE("XJniPage::OnDestroy fail, page is NULL");
+        LOGE("fail, page is NULL");
         return;
     }
     page->OnDestroy();
@@ -60,7 +59,7 @@ void XJniPage::OnStart(JNIEnv *pEnv, jobject jpage, jint id)
     LOGD("XJniPage::OnStart");
     XPage *page = XPageManager::Instance()->GetPage(id);
     if (!page) {
-        LOGE("XJniPage::OnStart fail, page is NULL");
+        LOGE("fail, page is NULL");
         return;
     }
     page->OnStart();
@@ -71,7 +70,7 @@ void XJniPage::OnStop(JNIEnv *pEnv, jobject jpage, jint id)
     LOGD("XJniPage::OnStop");
     XPage *page = XPageManager::Instance()->GetPage(id);
     if (!page) {
-        LOGE("XJniPage::OnStart fail, page is NULL");
+        LOGE("fail, page is NULL");
         return;
     }
     page->OnStop();
@@ -79,16 +78,14 @@ void XJniPage::OnStop(JNIEnv *pEnv, jobject jpage, jint id)
 
 void XJniPage::OnClick(JNIEnv *pEnv, jobject jpage, jint id, jstring widgetId)
 {
-    LOGD("XJniPage::OnClick");
-
     XPage *page = XPageManager::Instance()->GetPage(id);
     if (!page) {
-        LOGE("XJniPage::OnStart fail, page is NULL");
+        LOGE("fail, page is NULL");
         return;
     }
     const char *pId = pEnv->GetStringUTFChars(widgetId, NULL);
     if (!pId) {
-        LOGE("XJniPage::OnStart fail, pId is NULL");
+        LOGE("fail, pId is NULL, widgetId=%p", widgetId);
         return;
     }
     page->OnClick(pId);
@@ -97,8 +94,6 @@ void XJniPage::OnClick(JNIEnv *pEnv, jobject jpage, jint id, jstring widgetId)
 
 void XJniPage::OnTimeChanged(JNIEnv *pEnv, jobject jpage, jint id, jstring widgetId, jint hourOfDay, jint minute)
 {
-    LOGD("XJniPage::OnTimeChanged");
-
     XPage *page = XPageManager::Instance()->GetPage(id);
     if (!page) {
         //Log err
@@ -116,7 +111,6 @@ void XJniPage::OnTimeChanged(JNIEnv *pEnv, jobject jpage, jint id, jstring widge
 void XJniPage::OnDateChanged(JNIEnv *pEnv, jobject jpage, jint id, jstring widgetId, jint y, jint m, jint d)
 {
     LOGD("XJniPage::OnDateChanged");
-
     XPage *page = XPageManager::Instance()->GetPage(id);
     if (!page) {
         //Log err

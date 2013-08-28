@@ -11,13 +11,13 @@ void XLineLayout::Create()
     m_pRealWidget = XPlatform::Instance()->NewLineLayout(m_pPage);
 }
 
-void XLineLayout::SetProperty(const string &name, const XVariant &v)
+void XLineLayout::SetProperty(XPage *p, const string &name, const XVariant &v)
 {
     if (name == "ori") {
         XPlatform::Instance()->SetOrientation(this, v.ToString() == "ver");
     }
     else {
-        XWidget::SetProperty(name, v);
+        XWidget::SetProperty(p, name, v);
     }
 }
 

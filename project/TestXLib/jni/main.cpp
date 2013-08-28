@@ -1,7 +1,9 @@
-#include <jni.h>
-#include "init/Init.h"
-#include "util/tinyxml/tinyxml.h"
-#include "page/XPageXml.h"
+﻿#include <jni.h>
+#include "Init.h"
+#include "tinyxml.h"
+#include "XPageXml.h"
+#include "XPageFactory.h"
+#include "MainPage.h"
 
 #ifdef __cplusplus
 #pragma message "there is c++ compile"
@@ -19,6 +21,6 @@ jint JNI_OnLoad(JavaVM* vm, void* r)
 {
 	SetXPageXml(new XPageXml(NULL));
 	InitXLib(vm, r);
-	
+    XPageFactory::Instance()->RegistNew("MainActivity", MainPage::New);
 	return JNI_VERSION_1_4;
 }

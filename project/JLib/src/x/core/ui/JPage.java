@@ -55,10 +55,10 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	 * 设置事件监听器
 	 * @param name 事件名称 
 	 */
-	public void setListner(Object vd, String name) {
+	public void setListener(Object vd, String name) {
 		View v = (View)vd;
-		if (v == null || name == null || name.isEmpty()) {
-			//TODO: log error
+		if ((v == null) || (name == null)) {
+			Log.e("X", "JPage.setListner widget=" + v + ", name="+name + ", page id="+id);
 			return;
 		}
 		if ("click".equals(name)) {
@@ -73,7 +73,7 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	
 	public static String[] getMethods() {
 		return new String[] {
-			"setListner", "(Ljava/lang/Object;Ljava/lang/String;)V", "N"	
+			"setListener", "(Ljava/lang/Object;Ljava/lang/String;)V", "N"	
 		};
 	}
 	
@@ -119,6 +119,7 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 
 	@Override
 	public void onClick(View v) {
+		//Log.d("X", "JPage.onClick widget id=" + getWidgetId(v));
 		OnClick(id, getWidgetId(v));
 	}
 	

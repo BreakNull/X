@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
@@ -209,6 +210,7 @@ public class Platform {
     }
     
     public static void addChild(Object obj, Object obj2, int idx) {
+    	//Log.d("X", "Platform.addChild idx=" + idx + ", obj=" + obj + ", obj2=" + obj2);
 		if (obj != null && obj2 != null) {
     		ViewGroup vg = (ViewGroup)obj;
     		View v = (View)obj2;
@@ -219,6 +221,13 @@ public class Platform {
     	}
     }
     
+    public static void setListener(Object obj1, Object obj2, String name) {
+    	//Log.d("X", "Platform.setListener obj1=" + obj1 + ", obj2=" + obj2 + ",name=" + name);
+    	JPage p = (JPage)obj1;
+    	if (p != null) {
+    		p.setListener(obj2, name);
+    	}
+    }
     
     public static String[] getFields() {
     	return null;
@@ -253,7 +262,8 @@ public class Platform {
     			"getButtonText", "(Ljava/lang/Object;)Ljava/lang/String;", "S",
     			"setTitle", "(Ljava/lang/Object;Ljava/lang/String;)V", "S",
     			"setOrientation", "(Ljava/lang/Object;Z)V", "S",
-    			"addChild", "(Ljava/lang/Object;Ljava/lang/Object;I)V", "S"
+    			"addChild", "(Ljava/lang/Object;Ljava/lang/Object;I)V", "S",
+    			"setListener", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;)V", "S"
     	};
     }
 }

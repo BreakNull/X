@@ -94,7 +94,7 @@ void XPageXml::ParseAttr(XWidget *pw, TiXmlElement *pElem)
 {
     TiXmlAttribute *pAttr = pElem->FirstAttribute();
     for (; pAttr != NULL; pAttr = pAttr->Next()) {
-        pw->SetProperty(pAttr->Name(), pAttr->Value());
+        pw->SetProperty(m_page ,pAttr->Name(), pAttr->Value());
     }
 }
 
@@ -109,12 +109,12 @@ void XPageXml::ParseContainer(XWidget *pw, TiXmlElement *pElem)
             break;
         }
         pC->Create();
-        pw->AddChild(pC);
         if (pC->IsContainer()) {
             ParseContainer(pC, pE);
         } else {
             ParseWidget(pC, pE);
         }
+        pw->AddChild(pC);
     }
 }
 

@@ -185,6 +185,9 @@ XJniClass *XJniMgr::LoadClass(const char *szClassName)
     m_cJniClassMap.insert(std::pair<string,XJniClass*>(sb, pClass));
     jclass clazz = pEnv->FindClass(s.c_str());
     if (NULL == clazz) {
+        if (pEnv->ExceptionOccurred()) {
+            pEnv->ExceptionClear();
+        }
         LOGE("XJniMgr::LoadClass clazz is NULL");
         return NULL;
     }
@@ -194,7 +197,7 @@ XJniClass *XJniMgr::LoadClass(const char *szClassName)
         return NULL;
     }
 
-    LOGD("XJniMgr::LoadClass class=%p global clazz ref=%p", clazz, newClazz);
+    //LOGD("XJniMgr::LoadClass class=%p global clazz ref=%p", clazz, newClazz);
     pClass->m_pcClass = newClazz;
     LoadFields(pEnv, newClazz, pClass);
     LoadMethods(pEnv, newClazz, pClass);
@@ -204,10 +207,13 @@ XJniClass *XJniMgr::LoadClass(const char *szClassName)
 
 void XJniMgr::LoadFields(JNIEnv *pEnv, jclass clazz, XJniClass *pInfo)
 {
-    LOGD("XJniMgr::LoadFields begin clazz=%p", clazz);
+    //LOGD("XJniMgr::LoadFields begin clazz=%p", clazz);
     jmethodID mid = pEnv->GetStaticMethodID(clazz, "getFields", "()[Ljava/lang/String;");
     if (!mid) {
-        LOGE("XJniMgr::LoadFields mid not find");
+        if (pEnv->ExceptionOccurred()) {
+            pEnv->ExceptionClear();
+        }
+        LOGD("XJniMgr::LoadFields mid not find");
         return;
     }
 
@@ -268,15 +274,18 @@ void XJniMgr::LoadFields(JNIEnv *pEnv, jclass clazz, XJniClass *pInfo)
     }
 
 _err:
-    LOGD("XJniMgr::LoadFields end");
+    ;
 }
 
 void XJniMgr::LoadMethods(JNIEnv *pEnv, jclass clazz, XJniClass *pInfo)
 {
-    LOGD("XJniMgr::LoadMethods begin clazz=%p", clazz);
+    //LOGD("XJniMgr::LoadMethods begin clazz=%p", clazz);
     jmethodID mid = pEnv->GetStaticMethodID(clazz, "getMethods", "()[Ljava/lang/String;");
     if (!mid) {
-        LOGE("XJniMgr::LoadMethods mid not find");
+        if (pEnv->ExceptionOccurred()) {
+            pEnv->ExceptionClear();
+        }
+        LOGD("XJniMgr::LoadMethods mid not find");
         return;
     }
 
@@ -285,7 +294,7 @@ void XJniMgr::LoadMethods(JNIEnv *pEnv, jclass clazz, XJniClass *pInfo)
         LOGD("XJniMgr::LoadMethods call getMethods(), no methods");
         return;
     }
-    LOGD("XJniMgr::LoadMethods obj=%p", obj);
+    //LOGD("XJniMgr::LoadMethods obj=%p", obj);
 
     jobjectArray arr = (jobjectArray)obj;
     jint len = pEnv->GetArrayLength(arr);
@@ -294,7 +303,7 @@ void XJniMgr::LoadMethods(JNIEnv *pEnv, jclass clazz, XJniClass *pInfo)
         return;
     }
 
-    LOGD("XJniMgr::LoadMethods array length=%d", len);
+    //LOGD("XJniMgr::LoadMethods array length=%d", len);
 
     const char *pItems[3] = {0};
     jstring jsItems[3] = {0};
@@ -330,6 +339,10 @@ void XJniMgr::LoadMethods(JNIEnv *pEnv, jclass clazz, XJniClass *pInfo)
             //fid = (jmethodID)pEnv->NewGlobalRef((jobject)fid);
             pInfo->m_cMethods.insert(pair<string,void*>(s, (void*)fid));
         } else {
+            if (pEnv->ExceptionOccurred()) {
+                pEnv->ExceptionClear();
+                continue;
+            }
             LOGE("XJniMgr::LoadMethods fid is NULL. pItems=[%s,%s,%s]", pItems[0], pItems[1], pItems[2]);
             goto _err;
         }
@@ -341,7 +354,7 @@ void XJniMgr::LoadMethods(JNIEnv *pEnv, jclass clazz, XJniClass *pInfo)
     }
 
 _err:
-    LOGD("XJniMgr::LoadMethods end");
+    ;
 }
 
 #endif

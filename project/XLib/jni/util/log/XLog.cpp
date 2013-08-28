@@ -68,7 +68,7 @@ LogError(const char *pTag, const char *pFileName, const char *pFuncName, int lin
     int len = strlen(szLogInfo);
     snprintf(szLogInfo + len, (OUTPUT_BUFF_SIZE - TERMINATE_CODE_SIZE - len), pFmt, argp);
     va_end(argp);
-    LogV(szLogInfo);
+    //LogV(szLogInfo);
 
 	
 #ifdef _FOR_ANDROID_

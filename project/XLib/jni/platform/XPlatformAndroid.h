@@ -50,6 +50,7 @@ public:
     virtual int GetHeight(XWidget *p);
 
     virtual void SetTitle(XPage *p, const string &title);
+    virtual void SetListener(XPage *p, XWidget *w, const string &name);
 
     //---------Button----------
     virtual void SetButtonText(XWidget *p, const char *pcTxt);

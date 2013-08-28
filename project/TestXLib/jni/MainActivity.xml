@@ -1,5 +1,14 @@
 <Page>
 	<MainView>
-		<Btn txt="Hello world Btn" />
+		<LineLay ori="ver">
+			<Btn txt="Hello world Btn" id="b1" click="true"/>
+			<Btn txt="Hello world Btn --2" id="b2"/>
+			<LineLay>
+				<Btn txt="横向Btn1" id="b3" click="true"/>
+				<Btn txt="横向Btn2" id="b4"/>
+				<Btn txt="横向Btn3 xxd" id="b5"/>
+			</LineLay>
+			<Btn txt="Hello world Btn <-->3" id="b6"/>
+		</LineLay>
 	</MainView>
 </Page>
