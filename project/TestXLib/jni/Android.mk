@@ -13,10 +13,10 @@
 # limitations under the License.
 #
 LOCAL_PATH := $(call my-dir)
-
 include $(CLEAR_VARS)
 LOCAL_CFLAGS += -D_FOR_ANDROID_
-LOCAL_LDFLAGS += -L$(LOCAL_PATH) -L.
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../XLib/jni
+LOCAL_LDFLAGS += -L../XLib/libs/armeabi
 LOCAL_MODULE    := TestX
 LOCAL_SRC_FILES := main.cpp
 LOCAL_LDLIBS    := -llog -lX
