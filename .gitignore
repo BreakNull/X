@@ -1,0 +1,9 @@
+*.bak
+*.user
+XLib-build-Desktop-Release
+classes
+*.o
+obj
+.svn
+bin
+TestX

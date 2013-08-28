@@ -1,0 +1,5 @@
+<Page>
+	<MainView>
+		<Btn txt="Hello world Btn" />
+	</MainView>
+</Page>
