@@ -73,7 +73,7 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 		}
 		String[] sl = name.split("\\|");
 		for (int i = 0; sl != null && i < sl.length; ++i) {
-			if (sl[i].equals("click")) {
+			if (sl[i].trim().equals("click")) {
 				v.setOnClickListener(this);
 			}
 		}
@@ -87,7 +87,7 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 		}
 		String[] sl = name.split("\\|");
 		for (int i = 0; sl != null && i < sl.length; ++i) {
-			if (sl[i].equals("click")) {
+			if (sl[i].trim().equals("click")) {
 				v.setOnClickListener(null);
 			}
 		}
