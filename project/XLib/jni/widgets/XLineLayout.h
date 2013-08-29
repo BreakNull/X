@@ -11,7 +11,7 @@ public:
 
     virtual void Create();
 
-    virtual void SetProperty(XPage *p, const string &name, const XVariant &v);
+    virtual void SetProperty(const string &name, const XVariant &v);
     virtual XVariant GetProperty(const string &name);
 
     virtual bool IsContainer();

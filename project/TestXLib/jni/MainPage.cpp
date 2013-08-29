@@ -19,5 +19,5 @@ void MainPage::OnClick(const string &id)
     ++m_idx;
     char buf[50] = {0};
     sprintf(buf, "Click %d times", m_idx);
-    pBtn->SetProperty(this, "txt", buf);
+    pBtn->SetProperty("txt", buf);
 }

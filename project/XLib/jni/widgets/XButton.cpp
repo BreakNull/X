@@ -11,13 +11,13 @@ void XButton::Create()
     m_pRealWidget = XPlatform::Instance()->NewButton(m_pPage);
 }
 
-void XButton::SetProperty(XPage *p, const string &name, const XVariant &v)
+void XButton::SetProperty(const string &name, const XVariant &v)
 {
     if (name == "txt") {
         XPlatform::Instance()->SetButtonText(this, v.ToString().c_str());
     }
     else {
-        XWidget::SetProperty(p, name, v);
+        XWidget::SetProperty(name, v);
     }
 }
 

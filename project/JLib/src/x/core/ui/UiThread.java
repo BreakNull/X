@@ -30,10 +30,7 @@ public class UiThread {
     }
     
     public static String[] getMethods() {
-    	return new String[] {
-    			"post", "(JJ)Z", "S",
-    			"post2", "(JJI)Z", "S"
-    	};
+    	return null;
     }
 	
 	private static class UiHandler extends Handler {

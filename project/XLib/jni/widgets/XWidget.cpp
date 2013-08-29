@@ -15,7 +15,7 @@ void XWidget::Create()
     //TODO:
 }
 
-void XWidget::SetProperty(XPage *p, const string &name, const XVariant &v)
+void XWidget::SetProperty(const string &name, const XVariant &v)
 {
     //TODO:
     if (name == "x") {
@@ -29,9 +29,6 @@ void XWidget::SetProperty(XPage *p, const string &name, const XVariant &v)
     } else if (name == "id") {
         m_cId = v.ToString();
         XPlatform::Instance()->SetId(this, m_cId);
-    }
-    else if (name == "click") {
-        SetListener(p, name);
     }
 }
 
@@ -52,11 +49,6 @@ XVariant XWidget::GetProperty(const string &name)
 
     //not find this property
     return XVariant();
-}
-
-void XWidget::SetListener(XPage *page, const string &name)
-{
-    XPlatform::Instance()->SetListener(page, this, name);
 }
 
 bool XWidget::IsRoot()

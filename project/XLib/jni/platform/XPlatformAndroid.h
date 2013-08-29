@@ -51,6 +51,7 @@ public:
 
     virtual void SetTitle(XPage *p, const string &title);
     virtual void SetListener(XPage *p, XWidget *w, const string &name);
+    virtual void ClearListener(XPage *p, XWidget *w, const string &name);
 
     //---------Button----------
     virtual void SetButtonText(XWidget *p, const char *pcTxt);
@@ -71,8 +72,6 @@ public:
 private:
     char m_pClassName[40];
     void *m_pClass;
-    char m_pUiClassName[40];
-    void *m_pUiClass;
 };
 
 #endif // XPLATFORMANDROID_H

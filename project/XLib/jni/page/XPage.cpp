@@ -103,6 +103,16 @@ void XPage::SetProperty(const string &name, const XVariant &val)
     }
 }
 
+void XPage::SetListener(XWidget *pw, const string &name)
+{
+    XPlatform::Instance()->SetListener(this, pw, name);
+}
+
+void XPage::ClearListener(XWidget *pw, const string &name)
+{
+    XPlatform::Instance()->ClearListener(this, pw, name);
+}
+
 
 
 

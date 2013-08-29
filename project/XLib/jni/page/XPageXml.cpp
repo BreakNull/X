@@ -97,7 +97,11 @@ void XPageXml::ParseAttr(XWidget *pw, TiXmlElement *pElem)
 {
     TiXmlAttribute *pAttr = pElem->FirstAttribute();
     for (; pAttr != NULL; pAttr = pAttr->Next()) {
-        pw->SetProperty(m_page ,pAttr->Name(), pAttr->Value());
+        if (strcmp(pAttr->Name(), "listen") == 0) {
+            m_page->SetListener(pw, pAttr->Value());
+        } else {
+            pw->SetProperty(pAttr->Name(), pAttr->Value());
+        }
     }
 }
 

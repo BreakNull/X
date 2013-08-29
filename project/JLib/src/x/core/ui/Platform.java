@@ -236,6 +236,22 @@ public class Platform {
     	}
     }
     
+    public static void clearListener(Object obj1, Object obj2, String name) {
+    	//Log.d("X", "Platform.setListener obj1=" + obj1 + ", obj2=" + obj2 + ",name=" + name);
+    	JPage p = (JPage)obj1;
+    	if (p != null) {
+    		p.clearListener(obj2, name);
+    	}
+    }
+    
+    public static boolean post(long addr, long r2) {
+		return UiThread.post(addr, r2);
+	}
+	
+	public static boolean post2(long addr, long r2, int delayMs) {
+		return UiThread.post2(addr, r2, delayMs);
+	}
+    
     public static String[] getFields() {
     	return null;
     }
@@ -271,7 +287,10 @@ public class Platform {
     			"setTitle", "(Ljava/lang/Object;Ljava/lang/String;)V", "S",
     			"setOrientation", "(Ljava/lang/Object;Z)V", "S",
     			"addChild", "(Ljava/lang/Object;Ljava/lang/Object;I)V", "S",
-    			"setListener", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;)V", "S"
+    			"setListener", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;)V", "S",
+    			"clearListener", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;)V", "S",
+    			"post", "(JJ)Z", "S",
+    			"post2", "(JJI)Z", "S"
     	};
     }
 }

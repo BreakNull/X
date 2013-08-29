@@ -71,10 +71,26 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 			Log.e("X", "JPage.setListner widget=" + v + ", name="+name + ", page id="+id);
 			return;
 		}
-		if ("click".equals(name)) {
-			v.setOnClickListener(this);
+		String[] sl = name.split("\\|");
+		for (int i = 0; sl != null && i < sl.length; ++i) {
+			if (sl[i].equals("click")) {
+				v.setOnClickListener(this);
+			}
 		}
-		//TODO:
+	}
+	
+	public void clearListener(Object vd, String name) {
+		View v = (View)vd;
+		if ((v == null) || (name == null)) {
+			Log.e("X", "JPage.clearListener widget=" + v + ", name="+name + ", page id="+id);
+			return;
+		}
+		String[] sl = name.split("\\|");
+		for (int i = 0; sl != null && i < sl.length; ++i) {
+			if (sl[i].equals("click")) {
+				v.setOnClickListener(null);
+			}
+		}
 	}
 	
 	public static String[] getFields() {
@@ -82,9 +98,7 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	}
 	
 	public static String[] getMethods() {
-		return new String[] {
-			"setListener", "(Ljava/lang/Object;Ljava/lang/String;)V", "N"	
-		};
+		return null;
 	}
 	
 

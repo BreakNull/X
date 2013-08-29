@@ -15,14 +15,6 @@
         return ret; \
     }
 
-#define GET_UI_MID(name, ret)  \
-    jmethodID mid = (jmethodID)XJniMgr::Instance()->GetMethod(m_pUiClassName, name);  \
-    JNIEnv *pEnv = (JNIEnv *)XJniMgr::Instance()->GetJniEnv(); \
-    if (!mid || !pEnv || !m_pClass) { \
-        LOGE("Error, pEnv=%p, mid=%p, m_pUiClass=%p, method=%s", pEnv, mid, m_pUiClass, name);  \
-        return ret; \
-    }
-
 #define GET_MID_NO(name)  \
     jmethodID mid = (jmethodID)XJniMgr::Instance()->GetMethod(m_pClassName, name);  \
     JNIEnv *pEnv = (JNIEnv *)XJniMgr::Instance()->GetJniEnv(); \
@@ -68,9 +60,6 @@ XPlatformAndroid::XPlatformAndroid()
 {
     strcpy(m_pClassName,"x.core.ui.Platform");
     m_pClass = XJniMgr::Instance()->GetClass(m_pClassName);
-
-    strcpy(m_pUiClassName, "x.core.ui.UiThread");
-    m_pUiClass = XJniMgr::Instance()->GetClass(m_pUiClassName);
 }
 
 void *XPlatformAndroid::NewButton(XPage *p)
@@ -290,6 +279,16 @@ void XPlatformAndroid::SetListener(XPage *p, XWidget *w, const string &name)
     pEnv->DeleteLocalRef(js);
 }
 
+void XPlatformAndroid::ClearListener(XPage *p, XWidget *w, const string &name)
+{
+    CHECK_PP(p, w);
+    CHECK_B_NO();
+    GET_MID_NO("clearListener");
+    jstring js = pEnv->NewStringUTF(name.c_str());
+    CALL_VOID(R(p), W(w), js);
+    pEnv->DeleteLocalRef(js);
+}
+
 void XPlatformAndroid::SetButtonText(XWidget *p, const char *pcTxt)
 {
     CHECK_PS(p, pcTxt);
@@ -340,14 +339,14 @@ bool XPlatformAndroid::PostRunnable(XUiThread::Runnable r)
 {
     CHECK_P(r);
     CHECK_B(false);
-    GET_UI_MID("post", false);
-    return pEnv->CallStaticBooleanMethod((jclass)m_pUiClass, mid, (jlong)r);
+    GET_MID("post", false);
+    CALL_BOOL_R((jlong)r);
 }
 
 bool XPlatformAndroid::PostRunnable(XUiThread::Runnable r, int delayMs)
 {
     CHECK_P(r);
     CHECK_B(false);
-    GET_UI_MID("post2", false);
-    return pEnv->CallStaticBooleanMethod((jclass)m_pUiClass, mid, (jlong)r, delayMs);
+    GET_MID("post2", false);
+    CALL_BOOL_R((jlong)r, delayMs);
 }

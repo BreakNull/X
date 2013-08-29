@@ -11,13 +11,13 @@ void XLabel::Create()
     m_pRealWidget = XPlatform::Instance()->NewLabel(m_pPage);
 }
 
-void XLabel::SetProperty(XPage *p, const string &name, const XVariant &v)
+void XLabel::SetProperty(const string &name, const XVariant &v)
 {
     if (name == "txt") {
         XPlatform::Instance()->SetLabelText(this, v.ToString().c_str());
     }
     else {
-        XWidget::SetProperty(p, name, v);
+        XWidget::SetProperty(name, v);
     }
 }
 
