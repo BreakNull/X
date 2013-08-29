@@ -56,6 +56,9 @@ public:
     virtual void SetButtonText(XWidget *p, const char *pcTxt);
     virtual string GetButtonText(XWidget *p);
 
+    //--------Label-----------
+    virtual void SetLabelText(XWidget *p, const char *pcTxt);
+
     //-------LineLayout--------
     virtual void SetOrientation(XWidget *p, bool vertical);
 

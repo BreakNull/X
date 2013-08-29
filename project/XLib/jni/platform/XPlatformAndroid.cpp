@@ -309,6 +309,16 @@ string XPlatformAndroid::GetButtonText(XWidget *p)
     return Js2N((jstring)_obj, pEnv);
 }
 
+void XPlatformAndroid::SetLabelText(XWidget *p, const char *pcTxt)
+{
+    CHECK_P(p);
+    CHECK_B_NO();
+    GET_MID_NO("setLabelText");
+    jstring js = pEnv->NewStringUTF(pcTxt);
+    CALL_VOID(W(p), js);
+    pEnv->DeleteLocalRef(js);
+}
+
 void XPlatformAndroid::SetOrientation(XWidget *p, bool vertical)
 {
     CHECK_P(p);

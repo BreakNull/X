@@ -195,6 +195,13 @@ public class Platform {
     	return null;
     }
     
+    public static void setLabelText(Object obj, String txt) {
+		TextView b = (TextView)obj;
+    	if (b != null) {
+    		b.setText(txt);
+    	}
+    }
+    
     public static void setTitle(Object obj, String txt) {
     	Activity a = (Activity)obj;
 		if (a != null) {
@@ -260,6 +267,7 @@ public class Platform {
     			"getHeight", "(Ljava/lang/Object;)I", "S",
     			"setButtonText", "(Ljava/lang/Object;Ljava/lang/String;)V", "S",
     			"getButtonText", "(Ljava/lang/Object;)Ljava/lang/String;", "S",
+    			"setLabelText", "(Ljava/lang/Object;Ljava/lang/String;)V", "S",
     			"setTitle", "(Ljava/lang/Object;Ljava/lang/String;)V", "S",
     			"setOrientation", "(Ljava/lang/Object;Z)V", "S",
     			"addChild", "(Ljava/lang/Object;Ljava/lang/Object;I)V", "S",

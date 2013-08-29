@@ -15,6 +15,11 @@ public:
     XLabel(XPage *p);
 
     WIDGET_NEW(XLabel)
+
+    virtual void Create();
+
+    virtual void SetProperty(XPage *p, const string &name, const XVariant &v);
+    virtual XVariant GetProperty(const string &name);
 };
 
 #endif // LABEL_H

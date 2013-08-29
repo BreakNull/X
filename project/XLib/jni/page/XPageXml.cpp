@@ -71,7 +71,7 @@ void XPageXml::Parse()
 
 void XPageXml::ParseMainView(TiXmlElement *pElem)
 {
-    LOGD("XPageXml::ParseMainView begin");
+    //LOGD("XPageXml::ParseMainView begin");
     TiXmlElement *p = pElem->FirstChildElement();
     if (!p) {
         LOGE("XPageXml::ParseMainView note <MainView> has no child");
@@ -90,7 +90,7 @@ void XPageXml::ParseMainView(TiXmlElement *pElem)
     } else {
         ParseWidget(m_pMainView, p);
     }
-    LOGD("XPageXml::ParseMainView end");
+    //LOGD("XPageXml::ParseMainView end");
 }
 
 void XPageXml::ParseAttr(XWidget *pw, TiXmlElement *pElem)
