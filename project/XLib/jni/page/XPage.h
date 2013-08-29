@@ -5,6 +5,7 @@
 class XWidget;
 class XMenu;
 class XPageXml;
+class XVariant;
 
 using namespace std;
 
@@ -16,6 +17,11 @@ using namespace std;
 class XPage
 {
 public:
+    enum STYLE {
+        S_NO_TITLE = (1 << 0),
+        S_FULL_SCREEN = (1 << 1)
+    };
+
     XPage(void *pRealPage, const string &name, int id);
 
     //每个Page的子类都需要有一个static的New函数
@@ -38,6 +44,8 @@ public:
 
     //设置标题栏上的标题
     void SetTitle(const string &title);
+    virtual void SetProperty(const string &name, const XVariant &val);
+    int GetStyle() {return m_iStyle;}
 
     virtual void OnClick(const std::string &widgetId) {}
     // 返回true时，显示此菜单， 否则不显示。此函数只会被调用一次的
@@ -52,6 +60,7 @@ protected:
     void *m_pRealPage;  //实际的平台相关的页面
     XPageXml *m_pXml;
     XWidget *m_pRoot;
+    int m_iStyle;       //样式
 };
 
 #endif // PAGE_H

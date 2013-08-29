@@ -5,6 +5,7 @@
 MainPage::MainPage(void *pRealPage, const string &name, int id)
 :XPage(pRealPage, name, id)
 {
+    m_idx = 0;
 }
 
 void MainPage::OnClick(const string &id)
@@ -15,5 +16,8 @@ void MainPage::OnClick(const string &id)
 		LOGE("not find widget, id=%s", id.c_str());
 		return;
 	}
-	pBtn->SetProperty(this, "txt", "You clicked me");
+    ++m_idx;
+    char buf[50] = {0};
+    sprintf(buf, "Click %d times", m_idx);
+    pBtn->SetProperty(this, "txt", buf);
 }

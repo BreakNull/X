@@ -10,6 +10,7 @@
 class XJniPage
 {
 public:
+    static jint GetStyle(JNIEnv *pEnv, jobject jpage, jint id);
     static void OnNew(JNIEnv *pEnv, jobject jpage, jstring pageName, jint id);
     static jobject OnCreate(JNIEnv *pEnv, jobject jpage, jint id);
     static void OnDestroy(JNIEnv *pEnv, jobject jpage, jint id);

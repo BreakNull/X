@@ -54,6 +54,7 @@ static void RegisterNativPageMethod(JNIEnv *pEnv)
 
     int i = 0;
     JNINativeMethod methods[30];
+    methods[i++] = GetNativeMethod("GetStyle", "(I)I", (void*)XJniPage::GetStyle);
     methods[i++] = GetNativeMethod("OnNew", "(Ljava/lang/String;I)V", (void*)XJniPage::OnNew);
     methods[i++] = GetNativeMethod("OnCreate", "(I)Ljava/lang/Object;", (void*)XJniPage::OnCreate);
     methods[i++] = GetNativeMethod("OnDestroy", "(I)V", (void*)XJniPage::OnDestroy);

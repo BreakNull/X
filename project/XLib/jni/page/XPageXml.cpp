@@ -55,17 +55,18 @@ XWidget *XPageXml::GetMainView()
 
 void XPageXml::Parse()
 {
-    LOGD("XPageXml::Parse");
+    LOGD("XPageXml::Parse begin ===>");
     if (!m_pDoc) {
         LOGE("XPageXml::LoadFile m_pDoc is NULL");
         return;
     }
     TiXmlElement *pRoot = m_pDoc->RootElement();
-
-    TiXmlNode *pMainViewNode = pRoot->FirstChild("MainView");
-    if (pMainViewNode) {
-        ParseMainView(static_cast<TiXmlElement*>(pMainViewNode));
+    TiXmlElement *pE = pRoot->FirstChildElement();
+    for (; NULL != pE; pE = pE->NextSiblingElement()) {
+        if (strcmp(pE->Value(),"MainView") == 0)
+            ParseMainView(pE);
     }
+    LOGD("XPageXml::Parse end <===");
 }
 
 void XPageXml::ParseMainView(TiXmlElement *pElem)
@@ -82,6 +83,8 @@ void XPageXml::ParseMainView(TiXmlElement *pElem)
         return;
     }
     m_pMainView->Create();
+    //parse MainView attr
+    ParseAttr(m_page, pElem);
     if (m_pMainView->IsContainer()) {
         ParseContainer(m_pMainView, p);
     } else {
@@ -95,6 +98,14 @@ void XPageXml::ParseAttr(XWidget *pw, TiXmlElement *pElem)
     TiXmlAttribute *pAttr = pElem->FirstAttribute();
     for (; pAttr != NULL; pAttr = pAttr->Next()) {
         pw->SetProperty(m_page ,pAttr->Name(), pAttr->Value());
+    }
+}
+
+void XPageXml::ParseAttr(XPage *pw, TiXmlElement *pElem)
+{
+    TiXmlAttribute *pAttr = pElem->FirstAttribute();
+    for (; pAttr != NULL; pAttr = pAttr->Next()) {
+        pw->SetProperty(pAttr->Name(), pAttr->Value());
     }
 }
 

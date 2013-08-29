@@ -11,6 +11,7 @@ XPage::XPage(void *pRealXPage, const string &name, int id)
     ,m_id(id)
     ,m_pXml(NULL)
     ,m_pRoot(NULL)
+    ,m_iStyle(0)
 {
 }
 
@@ -87,6 +88,19 @@ bool XPage::OnCreateOptionsMenu(XMenu *pMenu)
 void XPage::SetTitle(const string &title)
 {
     XPlatform::Instance()->SetTitle(this, title);
+}
+
+void XPage::SetProperty(const string &name, const XVariant &val)
+{
+    if (name == "title") {
+        SetTitle(val.ToString());
+    } else if (name == "notitle") {
+        if (val.ToString() == "true")
+            m_iStyle |= S_NO_TITLE;
+    } else if (name == "fullscreen") {
+        if (val.ToString() == "true")
+            m_iStyle |= S_FULL_SCREEN;
+    }
 }
 
 

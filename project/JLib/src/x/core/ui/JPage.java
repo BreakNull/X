@@ -13,8 +13,11 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	protected int id;
 	protected String name;
 	private static int curId = 0;
-	private static boolean hasInit;
 	
+	private static final int S_NO_TITLE = (1 << 0);
+	private static final int S_FULL_SCREEN = (1 << 1);
+	
+	private native int GetStyle(int id);
 	private native void OnNew(String pageName, int id);
 	private native Object OnCreate(int id);
 	private native void OnDestroy(int id);
@@ -29,10 +32,6 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	private native void OnOptionsItemSelected(int id, int menuId);
 	
 	public JPage() {
-		if (!hasInit) {
-			hasInit = true;
-			UiThread.init();
-		}
 		Intent it = this.getIntent();
 		name = it.getStringExtra("pagename");
 		id = ++curId;
@@ -41,14 +40,25 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	}
 	
 	public JPage(String pageName) {
-		if (!hasInit) {
-			hasInit = true;
-			UiThread.init();
-		}
 		name = pageName;
 		id = ++curId;
 		Log.d("X", "JPage() name="+name + ", id="+id);
 		OnNew(name, id);
+	}
+	
+	private void applyStyle() {
+		int style = GetStyle(id);
+		if ((style & S_NO_TITLE) != 0) {
+			this.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+		}
+		if ((style & S_FULL_SCREEN) != 0) {
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN); 
+		} else {
+			WindowManager.LayoutParams attrs = getWindow().getAttributes(); 
+			attrs.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN); 
+			getWindow().setAttributes(attrs); 
+			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS); 
+		}
 	}
 	
 	/**
@@ -81,6 +91,7 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		View v = (View)OnCreate(id);
+		applyStyle();
 		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		this.setContentView(v, params);
 	}

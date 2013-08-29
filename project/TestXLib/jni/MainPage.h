@@ -9,6 +9,9 @@ public:
     PAGE_NEW(MainPage)
 	
 	virtual void OnClick(const string &id);
+
+private:
+    int m_idx;
 };
 
 #endif

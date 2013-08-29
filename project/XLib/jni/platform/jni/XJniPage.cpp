@@ -9,6 +9,16 @@
 
 #ifdef _FOR_ANDROID_
 
+jint XJniPage::GetStyle(JNIEnv *pEnv, jobject jpage, jint id)
+{
+    XPage *page = XPageManager::Instance()->GetPage(id);
+    if (!page) {
+        LOGE("fail, page is NULL");
+        return NULL;
+    }
+    return page->GetStyle();
+}
+
 void XJniPage::OnNew(JNIEnv *pEnv, jobject jpage, jstring pageName, jint id)
 {
     LOGD("jpage=%p, pageName=%p, id=%d", jpage, pageName, id);
@@ -37,7 +47,7 @@ jobject XJniPage::OnCreate(JNIEnv *pEnv, jobject jpage, jint id)
     }
     XWidget *pW = page->OnCreate();
     if (!pW) {
-        LOGE("fail, pW is NULL");
+        LOGE("fail, pW is NULL. Can't create content widget.");
         return NULL;
     }
     return (jobject)pW->GetRealWidget();

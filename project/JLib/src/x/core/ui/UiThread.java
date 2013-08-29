@@ -1,21 +1,13 @@
 package x.core.ui;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 
 public class UiThread {
 	private static long uiThreadId;
-	private static UiHandler handler;
-	
-	public static void init() {
-		handler = new UiHandler();
-		uiThreadId = Thread.currentThread().getId();
-	}
-	
-	public static boolean isUiThread() {
-		long id = Thread.currentThread().getId();
-		return id == uiThreadId;
-	}
+	private static UiHandler handler = new UiHandler();
 	
 	public static boolean post(long addr, long r2) {
 		if (addr == 0) {
@@ -45,6 +37,10 @@ public class UiThread {
     }
 	
 	private static class UiHandler extends Handler {
+		public UiHandler() {
+			super(Looper.getMainLooper());
+		}
+		
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			}

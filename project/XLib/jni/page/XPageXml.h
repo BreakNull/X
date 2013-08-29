@@ -21,6 +21,7 @@ public:
 protected:
     void ParseMainView(TiXmlElement *pElem);
     void ParseAttr(XWidget *pw, TiXmlElement *pElem);
+    void ParseAttr(XPage *pw, TiXmlElement *pElem);
     virtual void ParseContainer(XWidget *pw, TiXmlElement *pElem);
     virtual void ParseWidget(XWidget *pw, TiXmlElement *pElem);
     void ParseButton(XWidget *pw, TiXmlElement *pElem);
