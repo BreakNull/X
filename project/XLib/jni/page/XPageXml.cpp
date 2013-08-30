@@ -11,6 +11,7 @@ XPageXml::XPageXml(XPage *p)
     :m_pDoc(NULL)
     ,m_pMainView(NULL)
     ,m_page(p)
+    ,m_pStyle(NULL)
 {
 }
 
@@ -65,6 +66,8 @@ void XPageXml::Parse()
     for (; NULL != pE; pE = pE->NextSiblingElement()) {
         if (strcmp(pE->Value(),"MainView") == 0)
             ParseMainView(pE);
+        else if (strcmp(pE->Value(),"Style") == 0)
+            ParseStyle(pE);
     }
     LOGD("XPageXml::Parse end <===");
 }
@@ -93,23 +96,77 @@ void XPageXml::ParseMainView(TiXmlElement *pElem)
     //LOGD("XPageXml::ParseMainView end");
 }
 
-void XPageXml::ParseAttr(XWidget *pw, TiXmlElement *pElem)
+void XPageXml::ParseStyle(TiXmlElement *pElem)
 {
     TiXmlAttribute *pAttr = pElem->FirstAttribute();
-    for (; pAttr != NULL; pAttr = pAttr->Next()) {
-        if (strcmp(pAttr->Name(), "listen") == 0) {
-            m_page->SetListener(pw, pAttr->Value());
-        } else {
-            pw->SetProperty(pAttr->Name(), pAttr->Value());
+    if (NULL != pAttr) {
+        if (strcmp(pAttr->Name(), "src") != 0) {
+            LOGE("Invalid Style attribute '%s'", pAttr->Name());
+            return;
         }
+        m_pStyle = new XStyle(m_pStyle, pAttr->Value());
+        m_pStyle->LoadFile(pAttr->Value());
+    } else {
+        const char *pTxt = pElem->GetText();
+        LOGD("style txt=%s", pTxt);
+        m_pStyle = new XStyle(m_pStyle, "<TAIL>");
+        m_pStyle->LoadData((char*)pTxt);
+    }
+}
+
+void XPageXml::ParseAttr(XWidget *pw, TiXmlElement *pElem)
+{
+    const char *pLis = pElem->Attribute("listen");
+    if (pLis != NULL) {
+        m_page->SetListener(pw, pLis);
+    }
+
+    vector<XStyleAttr> vec;
+    MergeAttr(pElem, vec);
+    for (int i = 0; i < vec.size(); ++i) {
+        XStyleAttr &a = vec.at(i);
+        pw->SetProperty(a.m_pName, a.m_pValue);
     }
 }
 
 void XPageXml::ParseAttr(XPage *pw, TiXmlElement *pElem)
 {
-    TiXmlAttribute *pAttr = pElem->FirstAttribute();
+    vector<XStyleAttr> vec;
+    MergeAttr(pElem, vec);
+    for (int i = 0; i < vec.size(); ++i) {
+        XStyleAttr &a = vec.at(i);
+        pw->SetProperty(a.m_pName, a.m_pValue);
+    }
+}
+
+void XPageXml::MergeAttr(TiXmlElement *pE, vector<XStyleAttr> &vec)
+{
+    const char *pClass = NULL, *pId = NULL;
+    XStyleSpec *pss = NULL;
+
+    pClass = pE->Attribute("class");
+    pId = pE->Attribute("id");
+
+    if (m_pStyle) {
+        pss = m_pStyle->Search(pE->Value(), pClass, pId);
+        vec = pss->GetAttrs();
+    }
+
+    TiXmlAttribute *pAttr = pE->FirstAttribute();
     for (; pAttr != NULL; pAttr = pAttr->Next()) {
-        pw->SetProperty(pAttr->Name(), pAttr->Value());
+        int idx = -1;
+        if (pss != NULL) {
+            idx = pss->IndexOf(pAttr->Name());
+        }
+        if (idx >= 0) {
+            XStyleAttr &a = vec.at(idx);
+            a.m_pValue = pAttr->Value();
+        } else {
+            XStyleAttr a;
+            a.m_pName = pAttr->Name();
+            a.m_pValue = pAttr->Value();
+            vec.push_back(a);
+        }
     }
 }
 

@@ -11,7 +11,7 @@
 
 
 #define MAXLOGSIZE 2000
-#define OUTPUT_BUFF_SIZE 256
+#define BUF_SIZE 256
 const int TERMINATE_CODE_SIZE		= 0;
 
 #define ARRSIZE(x) (sizeof(x)/sizeof(x[0]))
@@ -36,52 +36,48 @@ static const char *GetSimpleFileName(const char *pFileName)
     return pFileName;
 }
 
-void
-LogDebug(const char *pTag, const char *pFileName, const char *pFuncName, int line, const char *pFmt, ...)
+static void XLog(const char *pTag, int level, const char *pFileName, const char *pFuncName, int line, const char *pFmt, va_list vl)
 {
-    char szLogInfo[OUTPUT_BUFF_SIZE + 1] = {0};
+    char szLogInfo[BUF_SIZE + 1] = {0};
     sprintf(szLogInfo, "[%s:%d %s] ", GetSimpleFileName(pFileName), line, pFuncName);
     int len = strlen(szLogInfo);
 	
-	va_list list;
-    va_start(list, pFmt);
-    vsnprintf(szLogInfo + len, (OUTPUT_BUFF_SIZE - TERMINATE_CODE_SIZE - len), pFmt, list);
-	va_end(list);
+    vsnprintf(szLogInfo + len, (BUF_SIZE - len), pFmt, vl);
 
-	#ifdef _FOR_ANDROID_
-        __android_log_print(ANDROID_LOG_DEBUG, pTag, "%s", szLogInfo);
-	#else
-		printf("%s", szLogInfo);
-	#endif
+#ifdef _FOR_ANDROID_
+    __android_log_write(level, pTag, szLogInfo);
+#else
+    printf("%s", szLogInfo);
+#endif
 }
 
-void 
-LogError(const char *pTag, const char *pFileName, const char *pFuncName, int line, const char *pFmt,...)
+void XLogDebug(const char *pTag, const char *pFileName, const char *pFuncName, int line, const char *pFmt, ...)
 {
-	va_list argp;
-
-	pthread_mutex_lock(&cs_log);
-	
-    va_start(argp, pFmt);
-    char szLogInfo[OUTPUT_BUFF_SIZE + 1] = {0};
-    sprintf(szLogInfo, "[%s:%d %s] ", GetSimpleFileName(pFileName), line, pFuncName);
-    int len = strlen(szLogInfo);
-    snprintf(szLogInfo + len, (OUTPUT_BUFF_SIZE - TERMINATE_CODE_SIZE - len), pFmt, argp);
-    va_end(argp);
-    //LogV(szLogInfo);
-
-	
+    va_list al;
+    va_start(al, pFmt);
 #ifdef _FOR_ANDROID_
-        __android_log_print(ANDROID_LOG_ERROR, pTag, "%s", szLogInfo);
+    XLog(pTag, (int)ANDROID_LOG_DEBUG, pFileName, pFuncName, line, pFmt, al);
 #else
-		printf("%s", szLogInfo);
+    XLog(pTag, 0, pFileName, pFuncName, line, pFmt, al);
 #endif
+    va_end(al);
+}
 
+void XLogError(const char *pTag, const char *pFileName, const char *pFuncName, int line, const char *pFmt,...)
+{
+	pthread_mutex_lock(&cs_log);
+    va_list al;
+    va_start(al, pFmt);
+#ifdef _FOR_ANDROID_
+    XLog(pTag, (int)ANDROID_LOG_ERROR, pFileName, pFuncName, line, pFmt, al);
+#else
+    XLog(pTag, 0, pFileName, pFuncName, line, pFmt, al);
+#endif
+    va_end(al);
 	pthread_mutex_unlock(&cs_log);
 }
 
-static void
-LogV(const char *logstr)
+static void LogV(const char *logstr)
 {
 	struct tm *now;
     struct timeb tb;

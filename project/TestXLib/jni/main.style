@@ -1,0 +1,24 @@
+@cache
+
+Btn {
+	w: 100px
+	h: 30px
+	color: aabbcc
+	bgcolor: ff00ff
+}
+
+Lab {
+	color: f0f0ee
+	txt: Hello world. This is a style text for Lab!
+}
+
+.title {
+	color: fc00fc
+	bgcolor: 000000
+	w: fill
+}
+
+#ok {
+	txt: OK Ha ha
+	w : 110px
+}

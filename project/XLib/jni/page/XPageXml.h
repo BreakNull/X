@@ -5,6 +5,8 @@ class TiXmlDocument;
 class TiXmlElement;
 class XWidget;
 class XPage;
+class TiXmlAttribute;
+#include "XStyle.h"
 
 class XPageXml
 {
@@ -20,8 +22,11 @@ public:
 
 protected:
     void ParseMainView(TiXmlElement *pElem);
+    void ParseStyle(TiXmlElement *pElem);
+
     void ParseAttr(XWidget *pw, TiXmlElement *pElem);
     void ParseAttr(XPage *pw, TiXmlElement *pElem);
+    void MergeAttr(TiXmlElement *pE, vector<XStyleAttr> &vec);
     virtual void ParseContainer(XWidget *pw, TiXmlElement *pElem);
     virtual void ParseWidget(XWidget *pw, TiXmlElement *pElem);
     void ParseButton(XWidget *pw, TiXmlElement *pElem);
@@ -30,6 +35,7 @@ protected:
     TiXmlDocument *m_pDoc;
     XPage *m_page;
     XWidget *m_pMainView;
+    XStyle *m_pStyle;
 };
 
 #endif // XMLPARSER_H
