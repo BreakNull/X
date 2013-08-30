@@ -88,7 +88,8 @@ SOURCES += \
     util/schedule/XBroadcaster.cpp \
     platform/XUiThread.cpp \
     util/schedule/XTaskSchedule.cpp \
-    platform/jni/XJniUiThreadRunnable.cpp
+    platform/jni/XJniUiThreadRunnable.cpp \
+    util/style/XStyle.cpp
 
 HEADERS +=\
     page/XPage.h \
@@ -164,7 +165,8 @@ HEADERS +=\
     util/schedule/XBroadcaster.h \
     platform/XUiThread.h \
     util/schedule/XTaskSchedule.h \
-    platform/jni/XJniUiThreadRunnable.h
+    platform/jni/XJniUiThreadRunnable.h \
+    util/style/XStyle.h
 
 unix:!symbian {
     maemo5 {
