@@ -108,7 +108,6 @@ void XPageXml::ParseStyle(TiXmlElement *pElem)
         m_pStyle->LoadFile(pAttr->Value());
     } else {
         const char *pTxt = pElem->GetText();
-        LOGD("style txt=%s", pTxt);
         m_pStyle = new XStyle(m_pStyle, "<TAIL>");
         m_pStyle->LoadData((char*)pTxt);
     }

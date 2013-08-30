@@ -82,6 +82,7 @@ void XStyle::LoadData(char *pData)
 
 void XStyle::LoadFile(const char *pFileName)
 {
+    LOGD("Load style file '%s'", pFileName);
     m_bFree = true;
     if (NULL == pFileName) {
         return;
@@ -256,7 +257,7 @@ bool XStyle::ParseQu(char *pName, char *pS, char *pE)
         }
         TrimRight(ps);
         pm = SkipSpace(pm);
-        TrimRight(pm);
+        //TrimRight(pm);
         pSpec->Add(ps, pm);
         if (pe == NULL)
             break;

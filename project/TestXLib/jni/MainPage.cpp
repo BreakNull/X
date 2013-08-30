@@ -16,6 +16,7 @@ void MainPage::OnClick(const string &id)
 		LOGE("not find widget, id=%s", id.c_str());
 		return;
 	}
+	LOGD("find widget=%p", pBtn);
     ++m_idx;
     char buf[50] = {0};
     sprintf(buf, "Click %d times", m_idx);
