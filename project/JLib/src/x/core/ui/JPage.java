@@ -114,8 +114,8 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	}
 	
 	protected void onStart() {
-		OnStart(id);
 		super.onStart();
+		OnStart(id);
 	}
 	
 	protected void onStop() {

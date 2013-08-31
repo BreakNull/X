@@ -22,6 +22,7 @@
 #include "XTab.h"
 #include "XTimePicker.h"
 #include "XToast.h"
+#include "XPageXml.h"
 
 static void InitWidgetFactory();
 
@@ -89,7 +90,7 @@ static void RegisterNativUiThreadRunnableMethod(JNIEnv *pEnv)
     //LOGD("Init->RegisterNativUiThreadRunnableMethod register natives num=%d", num);
 }
 
-bool InitXLib(JavaVM *pJavaVm, void *reserved)
+jint JNI_OnLoad(JavaVM *pJavaVm, void *reserved)
 {
     LOGD("Init->JniOnLoad -- begin");
     XJniMgr::Instance()->SetJavaVM(pJavaVm);
@@ -103,15 +104,18 @@ bool InitXLib(JavaVM *pJavaVm, void *reserved)
     RegisterNativPageMethod(env);
     RegisterNativUiThreadRunnableMethod(env);
     InitWidgetFactory();
+
+    SetXPageXml(new XPageXml(NULL));
     LOGD("Init->JniOnLoad -- end");
 
-    return true;
+    return JNI_VERSION_1_4;
 }
 
 #else // for iphone
 
 bool InitXLib()
 {
+    SetXPageXml(new XPageXml(NULL));
     InitWidgetFactory();
 }
 

@@ -19,8 +19,6 @@
 
 jint JNI_OnLoad(JavaVM* vm, void* r)
 {
-	SetXPageXml(new XPageXml(NULL));
-	InitXLib(vm, r);
     XPageFactory::Instance()->RegistNew("MainPage", MainPage::New);
 	return JNI_VERSION_1_4;
 }
