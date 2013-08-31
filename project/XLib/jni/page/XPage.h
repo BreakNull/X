@@ -23,6 +23,7 @@ public:
     };
 
     XPage(void *pRealPage, const string &name, int id);
+    virtual ~XPage();
 
     //每个Page的子类都需要有一个static的New函数
     PAGE_NEW(XPage)

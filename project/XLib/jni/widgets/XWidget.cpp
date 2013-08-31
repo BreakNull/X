@@ -10,9 +10,30 @@ XWidget::XWidget(XPage *p)
 {
 }
 
+XWidget::~XWidget()
+{
+    if (NULL != m_pChildren) {
+        for (int i = 0; i < m_pChildren->size(); ++i) {
+            delete m_pChildren->at(i);
+        }
+        delete m_pChildren;
+    }
+}
+
 void XWidget::Create()
 {
     //TODO:
+}
+
+static int HexToInt(const string &s)
+{
+    char *pStr = new char[s.length() + 10];
+    memset(pStr, 0, s.length() + 10);
+    strcpy(pStr, "0x");
+    strcat(pStr, s.c_str());
+    int d = 0;
+    sscanf(pStr, "%d", &d);
+    return d;
 }
 
 void XWidget::SetProperty(const string &name, const XVariant &v)
@@ -29,6 +50,10 @@ void XWidget::SetProperty(const string &name, const XVariant &v)
     } else if (name == "id") {
         m_cId = v.ToString();
         XPlatform::Instance()->SetId(this, m_cId);
+    } else if (name == "bgcolor") {
+        string s = v.ToString();
+        int d = HexToInt(s);
+        XPlatform::Instance()->SetBgColor(this, d);
     }
 }
 

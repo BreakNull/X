@@ -4,6 +4,9 @@ XLib-build-Desktop-Release
 classes
 *.o
 obj
+gen
 .svn
 bin
+classes
 TestX
+Password.txt

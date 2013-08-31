@@ -35,14 +35,12 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 		Intent it = this.getIntent();
 		name = it.getStringExtra("pagename");
 		id = ++curId;
-		Log.d("X", "JPage() name="+name + ", id="+id);
 		OnNew(name, id);
 	}
 	
 	public JPage(String pageName) {
 		name = pageName;
 		id = ++curId;
-		Log.d("X", "JPage() name="+name + ", id="+id);
 		OnNew(name, id);
 	}
 	

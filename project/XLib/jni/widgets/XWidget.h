@@ -37,6 +37,7 @@ class XWidget
 {
 public:
     XWidget(XPage *p);
+    virtual ~XWidget();
 
     //每个Widget的子类都需要有一个static的New函数
     WIDGET_NEW(XWidget)

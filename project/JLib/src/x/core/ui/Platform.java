@@ -180,6 +180,7 @@ public class Platform {
     	return 0;
     }
     
+    //--------------------------------------------------------------------
     public static void setButtonText(Object obj, String txt) {
 		Button b = (Button)obj;
     	if (b != null) {

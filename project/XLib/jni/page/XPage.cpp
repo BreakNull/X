@@ -15,6 +15,12 @@ XPage::XPage(void *pRealXPage, const string &name, int id)
 {
 }
 
+XPage::~XPage()
+{
+    delete m_pXml;
+    delete m_pRoot;
+}
+
 XWidget *XPage::OnCreate()
 {
     LOGD("XPage::OnCreate page name is '%s'", m_cName.c_str());
