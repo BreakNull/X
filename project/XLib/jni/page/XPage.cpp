@@ -98,6 +98,7 @@ void XPage::SetTitle(const string &title)
 
 void XPage::SetProperty(const string &name, const XVariant &val)
 {
+    //LOGD("attr [%s]=[%s]", name.c_str(), val.ToString().c_str());
     if (name == "title") {
         SetTitle(val.ToString());
     } else if (name == "notitle") {

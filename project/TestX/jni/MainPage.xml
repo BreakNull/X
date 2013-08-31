@@ -2,7 +2,7 @@
 	<Style  src="/sdcard/main.style"/>
 	
 	<MainView title="Hello">
-		<LineLay ori="ver">
+		<LineLay ori="ver" id="content">
 			<Btn txt="Hello world Btn" id="click_btn1" listen="click"/>
 			<Btn txt="Hello world Btn --2" id="b2"/>
 			<LineLay>

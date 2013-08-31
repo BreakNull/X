@@ -299,21 +299,29 @@ char *XStyle::Mh(char *p)
 
 char *XStyle::SkipComment(char *p)
 {
-    if (*p != '/') {
-        return p;
-    }
-    if (p[1] == '*') {
-        char *px = strstr(p + 1, "*/");
-        if (px == NULL) {
-            LOGE("The style [%s] has no matched '*/'", p);
+    while (true) {
+        p = SkipSpace(p);
+        if (*p != '/') {
+            return p;
+        }
+        if (p[1] == '*') {
+            char *px = strstr(p + 1, "*/");
+            if (px == NULL) {
+                LOGE("The style [%s] has no matched '*/'", p);
+                return NULL;
+            }
+            p = px + 2;
+        } else if (p[1] == '/') {
+            char *px = strchr(p + 1, '\n');
+            if (px == NULL) {
+                return NULL;
+            }
+            p = px + 1;
+        } else {
+            LOGE("The style [%s] has error, invalid '/'", p);
             return NULL;
         }
-        return px + 2;
-    } else if (p[1] == '/') {
-        char *px = strchr(p + 1, '\n');
-        return px == NULL ? NULL : px + 1;
     }
-
     return p;
 }
 

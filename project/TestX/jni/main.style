@@ -1,14 +1,20 @@
+//This is a 'main.style' file's style
+//muti comment test
+
 @cache
 
-/*
-	This is main view test
-*/
 MainView {
 	notitle: false
 	fullscreen: true
 }
 
-//This is btn test
+/*
+	All widget's id equals 'content' will use this style
+*/
+#content {
+	bgcolor:a0c0d0
+}
+
 Btn {
 	w: 100px
 	h: 30px
@@ -16,14 +22,13 @@ Btn {
 
 Lab {
 	color: f0f0ee
-	txt: Hello world. This is a style text for Lab!
-	bgcolor: ff0000
+	bgcolor: 00aa00
+	txt: Hello world a test label  
 }
 
-.title {
+.simple_lab {
 	color: fc00fc
 	bgcolor: 000000
-	w: fill
 }
 
 #ok {
