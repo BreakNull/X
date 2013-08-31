@@ -1,6 +1,7 @@
 #include "XWidget.h"
 #include "XLog.h"
 #include "XPlatform.h"
+#include<ctype.h>
 
 XWidget::XWidget(XPage *p)
     :m_pRealWidget(NULL)
@@ -25,15 +26,32 @@ void XWidget::Create()
     //TODO:
 }
 
-static int HexToInt(const string &s)
+static bool GetColor(const string &s, int *val)
 {
-    char *pStr = new char[s.length() + 10];
-    memset(pStr, 0, s.length() + 10);
-    strcpy(pStr, "0x");
-    strcat(pStr, s.c_str());
     int d = 0;
-    sscanf(pStr, "%d", &d);
-    return d;
+    const char *p = s.c_str();
+    int len = strlen(p);
+    if (len != 6 && len != 8) {
+        return false;
+    }
+    for (int i = 0; *p && i < len; ++i,++p) {
+        int cur = 0;
+        if (*p >= '0' && *p <= '9') {
+            cur = *p - '0';
+        } else if (*p >= 'a' && *p <= 'z') {
+            cur = *p - 'a' + 10;
+        } else if (*p >= 'A' && *p <= 'Z') {
+            cur = *p - 'A' + 10;
+        } else {
+            return false;
+        }
+        d = d*16 + cur;
+    }
+    if (len == 6) {
+        d |= 0xff000000;
+    }
+    *val = d;
+    return true;
 }
 
 void XWidget::SetProperty(const string &name, const XVariant &v)
@@ -52,7 +70,11 @@ void XWidget::SetProperty(const string &name, const XVariant &v)
         XPlatform::Instance()->SetId(this, m_cId);
     } else if (name == "bgcolor") {
         string s = v.ToString();
-        int d = HexToInt(s);
+        int d = 0;
+        if (!GetColor(s, &d)) {
+            LOGE("The color '%s' is invalid", s.c_str());
+            return;
+        }
         XPlatform::Instance()->SetBgColor(this, d);
     }
 }

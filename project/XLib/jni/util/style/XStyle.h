@@ -62,6 +62,7 @@ protected:
     void ParseAt(char *ps);
     void TrimRight(char *p);
     char *Mh(char *p);
+    char *SkipComment(char *p);
     XStyleSpec *FindByTag(const char *p);
     XStyleSpec *FindByClass(const char *p);
     XStyleSpec *FindById(const char *p);

@@ -1,13 +1,7 @@
 <Page>
 	<Style  src="/sdcard/main.style"/>
-	<Style>
-		Lab {
-			bgcolor: 0c0c0c
-			h:wrap
-		}
-	</Style>
 	
-	<MainView notitle="false" fullscreen="true" title="Hello">
+	<MainView title="Hello">
 		<LineLay ori="ver">
 			<Btn txt="Hello world Btn" id="click_btn1" listen="click"/>
 			<Btn txt="Hello world Btn --2" id="b2"/>
@@ -17,7 +11,7 @@
 				<Btn txt="横向Btn3 xxd" id="b5"/>
 			</LineLay>
 			<Btn txt="Hello world Btn <-->3" id="b6"/>
-			<Lab txt="This is a label!Return the baseline for the specified line (0...getLineCount() - 1) If bounds is not null, return the top, left, right, bottom extents of the specified line in it." />
+			<Lab />
 			<Btn id="ok"/>
 		</LineLay>
 	</MainView>

@@ -123,6 +123,10 @@ void XStyle::Parse()
             break;
         }
         ps = SkipSpace(ps);
+        ps = SkipComment(ps);
+        if (NULL == ps) {
+            return;
+        }
         if (*ps != '@') {
             break;
         }
@@ -137,7 +141,10 @@ void XStyle::Parse()
     //parse style spec
     while (true) {
         ps = SkipSpace(ps);
-
+        ps = SkipComment(ps);
+        if (NULL == ps) {
+            return;
+        }
         if (IsEnd(ps)) {
             break;
         } else {
@@ -257,7 +264,7 @@ bool XStyle::ParseQu(char *pName, char *pS, char *pE)
         }
         TrimRight(ps);
         pm = SkipSpace(pm);
-        //TrimRight(pm);
+        TrimRight(pm);
         pSpec->Add(ps, pm);
         if (pe == NULL)
             break;
@@ -273,9 +280,11 @@ _err:
 
 void XStyle::TrimRight(char *p)
 {
-    while (*p && !IsSpace(*p))
-        ++p;
-    *p = '\0';
+    char *pe = p + strlen(p) - 1;
+    while (pe >= p && IsSpace(*pe)) {
+        *pe = 0;
+        --pe;
+    }
 }
 
 char *XStyle::Mh(char *p)
@@ -288,8 +297,27 @@ char *XStyle::Mh(char *p)
     return px;
 }
 
-static XStyleSpec s_cur(NULL);
+char *XStyle::SkipComment(char *p)
+{
+    if (*p != '/') {
+        return p;
+    }
+    if (p[1] == '*') {
+        char *px = strstr(p + 1, "*/");
+        if (px == NULL) {
+            LOGE("The style [%s] has no matched '*/'", p);
+            return NULL;
+        }
+        return px + 2;
+    } else if (p[1] == '/') {
+        char *px = strchr(p + 1, '\n');
+        return px == NULL ? NULL : px + 1;
+    }
 
+    return p;
+}
+
+static XStyleSpec s_cur(NULL);
 
 XStyleSpec *XStyle::FindByTag(const char *p)
 {

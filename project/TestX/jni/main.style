@@ -1,15 +1,23 @@
 @cache
 
+/*
+	This is main view test
+*/
+MainView {
+	notitle: false
+	fullscreen: true
+}
+
+//This is btn test
 Btn {
 	w: 100px
 	h: 30px
-	color: aabbcc
-	bgcolor: ff00ff
 }
 
 Lab {
 	color: f0f0ee
 	txt: Hello world. This is a style text for Lab!
+	bgcolor: ff0000
 }
 
 .title {
@@ -21,4 +29,5 @@ Lab {
 #ok {
 	txt: OK Ha ha
 	w : 110px
+	bgcolor:005a8a
 }
