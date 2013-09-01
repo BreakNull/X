@@ -20,12 +20,13 @@ public:
     virtual void *NewButton(XPage *p) = 0;
     virtual void *NewLabel(XPage *p) = 0;
     virtual void *NewLineLayout(XPage *p) = 0;
+    virtual void *NewImageButton(XPage *p) = 0;
 
     virtual string GetId(XWidget *p) = 0;
     virtual void SetId(XWidget *p, const string &id) = 0;
 
     //virtual XResource *GetBgImg(XWidget *p) = 0;
-    virtual void SetBgImg(XWidget *p, XResource *r) = 0;
+    virtual void SetBgImg(XWidget *p, const string &rid) = 0;
 
     //virtual int GetBgColor(XWidget *p) = 0;
     virtual void SetBgColor(XWidget *p, int color) = 0;
@@ -77,6 +78,9 @@ public:
     //------ui thread---------
     virtual bool PostRunnable(XUiThread::Runnable r) = 0;
     virtual bool PostRunnable(XUiThread::Runnable r, int delayMs) = 0;
+
+    //-----ImageButton--------------
+    virtual void SetImgButtonSrc(XWidget *p, const char *pSrc) = 0;
 
 protected:
     XPlatform();

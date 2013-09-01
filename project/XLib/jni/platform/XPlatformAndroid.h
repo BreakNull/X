@@ -11,12 +11,13 @@ public:
     virtual void *NewButton(XPage *p);
     virtual void *NewLabel(XPage *p);
     virtual void *NewLineLayout(XPage *p);
+    virtual void *NewImageButton(XPage *p);
 
     virtual string GetId(XWidget *p);
     virtual void SetId(XWidget *p, const string &id);
 
     //virtual XResource *GetBgImg(XWidget *p);
-    virtual void SetBgImg(XWidget *p, XResource *r);
+    virtual void SetBgImg(XWidget *p, const string &rid);
 
     //virtual int GetBgColor(XWidget *p);
     virtual void SetBgColor(XWidget *p, int color);
@@ -68,6 +69,9 @@ public:
     //------ui thread---------
     virtual bool PostRunnable(XUiThread::Runnable r);
     virtual bool PostRunnable(XUiThread::Runnable r, int delayMs);
+
+    //-----ImageButton--------------
+    virtual void SetImgButtonSrc(XWidget *p, const char *pSrc);
 
 private:
     char m_pClassName[40];

@@ -1,13 +1,13 @@
 package com.testx;
 
 import x.core.ui.JPage;
-import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
+import x.core.ui.Platform;
 
 public class MainPage extends JPage {
 
 	static {
+		Platform.init(com.testx.R.class);
+		
 		System.loadLibrary("X");
 		System.loadLibrary("TestX");
 	}

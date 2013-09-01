@@ -86,6 +86,14 @@ void *XPlatformAndroid::NewLineLayout(XPage *p)
     CALL_OBJ_R(R(p));
 }
 
+void *XPlatformAndroid::NewImageButton(XPage *p)
+{
+    CHECK_P(p);
+    CHECK_B(NULL);
+    GET_MID("newImageButton", NULL);
+    CALL_OBJ_R(R(p));
+}
+
 static string Js2N(jstring jstr, JNIEnv *pEnv)
 {
     if (!pEnv || !jstr) {
@@ -117,12 +125,13 @@ void XPlatformAndroid::SetId(XWidget *p, const string &id)
 }
 
 //XResource *GetBgImg(XWidget *p){}
-void XPlatformAndroid::SetBgImg(XWidget *p, XResource *r)
+void XPlatformAndroid::SetBgImg(XWidget *p, const string &rid)
 {
-    CHECK_PP(p, r);
+    CHECK_P(p);
+    _b = !rid.empty();
     CHECK_B_NO();
     GET_MID_NO("setBgImg");
-    jstring jsname = pEnv->NewStringUTF(r->GetName().c_str());
+    jstring jsname = pEnv->NewStringUTF(rid.c_str());
     CALL_VOID(W(p), jsname);
     pEnv->DeleteLocalRef(jsname);
 }
@@ -349,4 +358,14 @@ bool XPlatformAndroid::PostRunnable(XUiThread::Runnable r, int delayMs)
     CHECK_B(false);
     GET_MID("post2", false);
     CALL_BOOL_R((jlong)r, delayMs);
+}
+
+void XPlatformAndroid::SetImgButtonSrc(XWidget *p, const char *pSrc)
+{
+    CHECK_PP(p, pSrc);
+    CHECK_B_NO();
+    GET_MID_NO("setImgButtonSrc");
+    jstring js = pEnv->NewStringUTF(pSrc);
+    CALL_VOID(W(p), js);
+    pEnv->DeleteLocalRef(js);
 }

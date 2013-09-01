@@ -76,7 +76,10 @@ void XWidget::SetProperty(const string &name, const XVariant &v)
             return;
         }
         XPlatform::Instance()->SetBgColor(this, d);
+    } else if (name == "bgimg") {
+        XPlatform::Instance()->SetBgImg(this, v.ToString());
     }
+
 }
 
 XVariant XWidget::GetProperty(const string &name)

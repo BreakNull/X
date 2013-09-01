@@ -1,6 +1,8 @@
 package x.core.ui;
 
 import java.lang.reflect.Field;
+
+import x.core.widget.ImgButton;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
@@ -12,6 +14,32 @@ import android.widget.*;
 import android.app.*;
 
 public class Platform {
+	private static Class s_R;
+	private static Class s_drawable = null;
+	
+	/**
+	 * init the R class
+	 */
+	public static void init(Class r) {
+		s_R = r;
+	}
+	
+	private static int getRid(String rid) {
+		try {
+    		if (s_drawable == null) {
+    			String d = s_R.getName() + "$drawable";
+    			s_drawable = Class.forName(d);
+    		}
+    		
+			Field f = s_drawable.getField(rid);
+			int val = f.getInt(null);
+			return val;
+		} catch (Exception e) {
+			Log.e("X", "Platform.setBgImg there is no image named '" + rid + "'");
+		}
+		return -1;
+	}
+	
 	//----------------------New widgets-----------------------------
 	
 	public static Object newButton(Context c) {
@@ -24,6 +52,10 @@ public class Platform {
 	
 	public static Object newLineLayout(Context c) {
 		return new LinearLayout(c);
+	}
+	
+	public static Object newImageButton(Context c) {
+		return new ImageButton(c);
 	}
 	
 	//---------------------------------------------------------
@@ -44,19 +76,14 @@ public class Platform {
 	}
     
     public static void setBgImg(Object obj, String r) {
-    	/*
     	View v = (View)obj;
-    	if (v == null || r == null)
+    	if (v == null || r == null) {
     		return;
-    	Class<drawable> c = R.drawable.class;
-    	try {
-			Field f = c.getField(r);
-			int val = f.getInt(null);
-			v.setBackgroundResource(val);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		*/
+    	}
+    	int rid = getRid(r);
+    	if (rid != -1) {
+    		v.setBackgroundResource(rid);
+    	}
     }
     
     public static void setBgColor(Object obj, int color) {
@@ -253,7 +280,17 @@ public class Platform {
 	public static boolean post2(long addr, long r2, int delayMs) {
 		return UiThread.post2(addr, r2, delayMs);
 	}
-    
+	
+	public static void setImgButtonSrc(Object obj, String rid) {
+		ImageButton b = (ImageButton)obj;
+    	if (b != null) {
+    		int r = getRid(rid);
+        	if (r != -1) {
+        		b.setImageResource(r);
+        	}
+    	}
+	}
+	
     public static String[] getFields() {
     	return null;
     }
@@ -263,6 +300,7 @@ public class Platform {
     			"newButton", "(Landroid/content/Context;)Ljava/lang/Object;", "S",
     			"newLabel", "(Landroid/content/Context;)Ljava/lang/Object;", "S",
     			"newLineLayout", "(Landroid/content/Context;)Ljava/lang/Object;", "S",
+    			"newImageButton", "(Landroid/content/Context;)Ljava/lang/Object;", "S",
     			
     			"getId", "(Ljava/lang/Object;)Ljava/lang/String;", "S",
     			"setId", "(Ljava/lang/Object;Ljava/lang/String;)V", "S",
@@ -292,7 +330,8 @@ public class Platform {
     			"setListener", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;)V", "S",
     			"clearListener", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;)V", "S",
     			"post", "(JJ)Z", "S",
-    			"post2", "(JJI)Z", "S"
+    			"post2", "(JJI)Z", "S",
+    			"setImgButtonSrc", "(Ljava/lang/Object;Ljava/lang/String;)V", "S"
     	};
     }
 }

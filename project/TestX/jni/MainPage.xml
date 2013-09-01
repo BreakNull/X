@@ -13,6 +13,9 @@
 			<Btn txt="Hello world Btn <-->3" id="b6"/>
 			<Lab />
 			<Btn id="ok"/>
+			
+			<ImgBtn src="test_icon"/>
+			
 		</LineLay>
 	</MainView>
 </Page>

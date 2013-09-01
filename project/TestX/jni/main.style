@@ -12,18 +12,20 @@ MainView {
 	All widget's id equals 'content' will use this style
 */
 #content {
-	bgcolor:a0c0d0
+	bgcolor:aaa0c0d0
 }
 
 Btn {
 	w: 100px
 	h: 30px
+	bgimg: test_bg
 }
 
 Lab {
 	color: f0f0ee
 	bgcolor: 00aa00
 	txt: Hello world a test label  
+	
 }
 
 .simple_lab {

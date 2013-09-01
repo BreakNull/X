@@ -9,6 +9,9 @@ public:
     XImageButton(XPage *p);
 
     WIDGET_NEW(XImageButton)
+
+    virtual void Create();
+    virtual void SetProperty(const string &name, const XVariant &v);
 };
 
 #endif // IMAGEBUTTON_H
