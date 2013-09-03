@@ -27,6 +27,7 @@ public class JAnimHelper {
 	public static int SLIDE_OUT_TOP = 8;
 	
 	public static void init(Class r) {
+		Log.d("X", "JAnimHelper.init r="+r);
 		s_R = r;
 		try {
 			anims.put(0, 0);
@@ -37,20 +38,38 @@ public class JAnimHelper {
 			}
 		} catch (ClassNotFoundException e) {
 			Log.e("X", "AnimHelper.init not find class anim in "+s_R.getName());
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 	
 	public static void installAnim(JPageMgr mgr, ViewFlipper flip, int inAnim, int outAnim) {
-		Integer in = anims.get(inAnim);
-		Integer out = anims.get(outAnim);
-		if (in == null || out == null) {
-			Log.e("X", "AnimHelper.installAnim not find in/out amin. in=" + in + ", out="+out);
+		Integer in = null, out = null;
+		try {
+			in = anims.get(inAnim);
+			out = anims.get(outAnim);
+			if (in == null || out == null) {
+				Log.d("X", "AnimHelper.installAnim not find in/out amin. in=" + in + ", out="+out);
+			}
+			int i = 0; //anims.get(SLIDE_IN_LEFT);
+			int o = 0; //anims.get(SLIDE_OUT_LEFT);
+			if (in != null && in.intValue() != 0) {
+				i = in.intValue();
+			}
+			if (out != null && out.intValue() != 0) {
+				o = out.intValue();
+			}
+			if (i != 0) {
+				Animation a = AnimationUtils.loadAnimation(mgr, i);
+				flip.setInAnimation(a);
+			}
+			if (o != 0) {
+				Animation a = AnimationUtils.loadAnimation(mgr, o);
+				flip.setOutAnimation(a);
+			}
+		} catch (Exception ex) {
+			Log.e("X", "JAnimHelper.installAnim fail! in=" + in + ",out=" + in);
+			//ex.printStackTrace();
 		}
-		Animation a = AnimationUtils.loadAnimation(mgr, in != null ? in.intValue() : 0);
-		flip.setInAnimation(a);
-		a = AnimationUtils.loadAnimation(mgr, out != null ? out.intValue() : 0);
-		flip.setOutAnimation(a);
 	}
 	
 	//get the reverse anim's id

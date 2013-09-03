@@ -61,6 +61,7 @@ static void RegisterNativPageMethod(JNIEnv *pEnv)
     methods[i++] = GetNativeMethod("OnDestroy", "(I)V", (void*)XJniPage::OnDestroy);
     methods[i++] = GetNativeMethod("OnStart", "(I)V", (void*)XJniPage::OnStart);
     methods[i++] = GetNativeMethod("OnStop", "(I)V", (void*)XJniPage::OnStop);
+    methods[i++] = GetNativeMethod("OnBackPressed", "(I)V", (void*)XJniPage::OnBackPressed);
     methods[i++] = GetNativeMethod("OnClick", "(ILjava/lang/String;)V", (void*)XJniPage::OnClick);
     methods[i++] = GetNativeMethod("OnTimeChanged", "(ILjava/lang/String;II)V", (void*)XJniPage::OnTimeChanged);
     methods[i++] = GetNativeMethod("OnDateChanged", "(ILjava/lang/String;III)V", (void*)XJniPage::OnDateChanged);

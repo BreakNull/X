@@ -12,8 +12,9 @@ import android.util.Log;
 import android.view.*;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.*;
+import android.view.animation.*;
 
-public class JPageMgr extends ActivityGroup {
+public class JPageMgr extends ActivityGroup implements Animation.AnimationListener {
 	private static JPageMgr ins;
 	private ViewFlipper fliper;
 	private List<JPage> pages;
@@ -21,15 +22,12 @@ public class JPageMgr extends ActivityGroup {
 	private int touchDisable;
 	private int screenDisable;
 	
-	private JPageMgr() {
-		fliper = new ViewFlipper(this);
+	public JPageMgr() {
 		pages = new ArrayList<JPage>();
+		ins = this;
 	}
 	
 	public static JPageMgr instance() {
-		if (null == ins) {
-			ins = new JPageMgr();
-		}
 		return ins;
 	}
 	
@@ -73,10 +71,18 @@ public class JPageMgr extends ActivityGroup {
 	}
 
 	public void onCreate(Bundle savedInstanceState) {
+		lockScreen(true);
+		super.onCreate(savedInstanceState);
+		fliper = new ViewFlipper(this);
+		fliper.setLayoutAnimationListener(this);
 		setContentView(fliper);
+		JApplication app = (JApplication) this.getApplication();
+		String name = app.getFirstPageName();
+		loadNewPage(name, 0, 0);
+		lockScreen(false);
 	}
 	
-	public boolean dispatchKeyEvent(KeyEvent ev){
+	public boolean dispatchKeyEvent(KeyEvent ev) {
 		//TODO: if key locked return true
 		if ((ev.getKeyCode() == KeyEvent.KEYCODE_BACK) && 
 				((ev.getFlags() & KeyEvent.FLAG_LONG_PRESS) != 0)) {
@@ -85,7 +91,9 @@ public class JPageMgr extends ActivityGroup {
 		
 		Activity cur = getCurPage();
 		if(null != cur) {
-			cur.dispatchKeyEvent(ev);
+			if (cur.dispatchKeyEvent(ev)) {
+				return true;
+			}
 		}
 		return super.dispatchKeyEvent(ev);
 	}
@@ -130,8 +138,8 @@ public class JPageMgr extends ActivityGroup {
 		}
 		lockScreen(true);
 		Intent it  = new Intent(this, JPage.class);
-		it.putExtra("pagename", pageName);
-		
+		//it.putExtra("pagename", pageName);
+		JPage.setCurPageName(pageName);
 		int id = JPage.getNextId();
 		Window win = getLocalActivityManager().startActivity(String.valueOf(id), it);
 		if (win == null) {
@@ -182,6 +190,7 @@ public class JPageMgr extends ActivityGroup {
 		JPage p = pages.get(i);
 		Intent it  = new Intent(this, JPage.class);
 		it.putExtra("pagename", p.getName());
+		JPage.setCurPageName(p.getName());
 		Window win = getLocalActivityManager().startActivity(String.valueOf(p.getId()), it);
 		if (win == null) {
 			lockScreen(false);
@@ -189,7 +198,8 @@ public class JPageMgr extends ActivityGroup {
 			return;
 		}
 		installWindow(win, inAnim, outAnim);
-		for (; i < pages.size(); ++i) {
+		
+		for (++i; i < pages.size(); ++i) {
 			JPage px = pages.remove(i);
 			getLocalActivityManager().destroyActivity(String.valueOf(px.getId()), true);
 		}
@@ -257,5 +267,23 @@ public class JPageMgr extends ActivityGroup {
 	
 	public void onConfigurationChanged(Configuration newConfig) {
     	super.onConfigurationChanged(newConfig);
+	}
+
+	@Override
+	public void onAnimationEnd(Animation animation) {
+		// TODO Auto-generated method stub
+		lockScreen(false);
+	}
+
+	@Override
+	public void onAnimationRepeat(Animation animation) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onAnimationStart(Animation animation) {
+		// TODO Auto-generated method stub
+		
 	}
 }

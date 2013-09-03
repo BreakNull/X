@@ -86,6 +86,17 @@ void XJniPage::OnStop(JNIEnv *pEnv, jobject jpage, jint id)
     page->OnStop();
 }
 
+void XJniPage::OnBackPressed(JNIEnv *pEnv, jobject jpage, jint id)
+{
+    LOGD("XJniPage::OnBackPressed");
+    XPage *page = XPageMgr::Instance()->GetPage(id);
+    if (!page) {
+        LOGE("fail, page is NULL");
+        return;
+    }
+    page->OnBackPressed();
+}
+
 void XJniPage::OnClick(JNIEnv *pEnv, jobject jpage, jint id, jstring widgetId)
 {
     XPage *page = XPageMgr::Instance()->GetPage(id);

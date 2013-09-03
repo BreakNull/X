@@ -62,14 +62,19 @@ void XPage::OnStop()
     //TODO:
 }
 
-XWidget *XPage::FindById(const string &id, XWidget *parent)
+void XPage::OnBackPressed()
+{
+    XPlatform::Instance()->GoBack();
+}
+
+void *XPage::FindById(const string &id, XWidget *parent)
 {
     XWidget *p = (NULL == parent ? m_pRoot : parent);
     if (NULL == p) {
         LOGE("There has not any widgets in this page");
         return NULL;
     }
-
+    return XPlatform::Instance()->FindById(id.c_str(), p);
 }
 
 bool XPage::OnCreateOptionsMenu(XMenu *pMenu)

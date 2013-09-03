@@ -58,7 +58,7 @@
 
 XPlatformAndroid::XPlatformAndroid()
 {
-    strcpy(m_pClassName,"x.core.ui.Platform");
+    strcpy(m_pClassName,"x.core.ui.JPlatform");
     m_pClass = XJniMgr::Instance()->GetClass(m_pClassName);
 }
 

@@ -3,7 +3,8 @@
 #include "tinyxml.h"
 #include "XPageXml.h"
 #include "XPageFactory.h"
-#include "MainPage.h"
+#include "HelloPage.h"
+#include "XLog.h"
 
 #ifdef __cplusplus
 #pragma message "there is c++ compile"
@@ -19,6 +20,8 @@
 
 jint JNI_OnLoad(JavaVM* vm, void* r)
 {
-    XPageFactory::Instance()->RegistNew("MainPage", MainPage::New);
+	LOGD("TestXLib init begin>>>>>>");
+    XPageFactory::Instance()->RegistNew("HelloPage", HelloPage::New);
+	LOGD("TestXLib init end<<<<<<<<<");
 	return JNI_VERSION_1_4;
 }

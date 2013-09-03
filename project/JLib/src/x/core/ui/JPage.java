@@ -13,6 +13,7 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	protected int id;
 	protected String name;
 	private static int curId = 0;
+	private static String curName;
 	
 	private static final int S_NO_TITLE = (1 << 0);
 	private static final int S_FULL_SCREEN = (1 << 1);
@@ -23,6 +24,7 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	private native void OnDestroy(int id);
 	private native void OnStart(int id);
 	private native void OnStop(int id);
+	private native void OnBackPressed(int id);
 	
 	private native void OnClick(int id, String widgetId);
 	private native void OnTimeChanged(int id, String widgetId, int hourOfDay, int minute);
@@ -33,7 +35,11 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	
 	public JPage() {
 		Intent it = this.getIntent();
-		name = it.getStringExtra("pagename");
+		if (it != null) {
+			name = it.getStringExtra("pagename");
+		} else {
+			name = curName;
+		}
 		id = ++curId;
 		OnNew(name, id);
 	}
@@ -42,6 +48,10 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 		name = pageName;
 		id = ++curId;
 		OnNew(name, id);
+	}
+	
+	public static void setCurPageName(String name) {
+		curName = name;
 	}
 	
 	public int getId() {
@@ -162,11 +172,22 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 		}
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if (event.getRepeatCount() == 0) {
-				JPageMgr.instance().goBack();
+				OnBackPressed(id);
 			}
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+	
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		if (JPageMgr.instance().isKeyLocked() || JPageMgr.instance().isScreenLocked()) {
+			return true;
+		}
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			//OnBackPressed(id);
+			return true;
+		}
+		return super.onKeyUp(keyCode, event);
 	}
 	
 	public boolean onTouchEvent(MotionEvent event) {

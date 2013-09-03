@@ -34,6 +34,7 @@ public:
 
     virtual void OnStart();
     virtual void OnStop();
+    virtual void OnBackPressed();
 
 //    virtual void OnResume() {}
 //    virtual void OnPause() {}
@@ -41,7 +42,7 @@ public:
     void *GetRealPage() {return m_pRealPage;}
     string &GetName() {return m_cName;}
     int &GetId() {return m_id;}
-    XWidget *FindById(const string &id, XWidget *parent = NULL);
+    void *FindById(const string &id, XWidget *parent = NULL);
 
     //设置标题栏上的标题
     void SetTitle(const string &title);

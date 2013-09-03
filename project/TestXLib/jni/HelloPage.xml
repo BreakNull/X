@@ -6,15 +6,13 @@
 			<Btn txt="Hello world Btn" id="click_btn1" listen="click"/>
 			<Btn txt="Hello world Btn --2" id="b2"/>
 			<LineLay>
-				<Btn txt="横向Btn1" id="click_btn3" listen="click"/>
+				<Btn txt="横向Btn1" id="click_btn3" />
 				<Btn txt="横向Btn2" id="b4"/>
 				<Btn txt="横向Btn3 xxd" id="b5"/>
 			</LineLay>
-			<Btn txt="Go to world page" id="go_world"/>
+			<Btn txt="Go to world page" id="go_world" listen="click"/>
 			<Lab />
 			<Btn id="ok"/>
-			
-			
 		</LineLay>
 	</MainView>
 </Page>

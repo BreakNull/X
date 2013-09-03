@@ -1,18 +1,20 @@
-﻿#include "MainPage.h"
+﻿#include "HelloPage.h"
 #include "XLog.h"
 #include "XWidget.h"
 #include "XPageMgr.h"
+#include "XButton.h"
 
-MainPage::MainPage(void *pRealPage, const string &name, int id)
+HelloPage::HelloPage(void *pRealPage, const string &name, int id)
 :XPage(pRealPage, name, id)
 {
     m_idx = 0;
 }
 
-void MainPage::OnClick(const string &id)
+void HelloPage::OnClick(const string &id)
 {
 	LOGD("widget id=%s", id.c_str());
-	XWidget *pBtn = FindById(id);
+	void *pBtn = FindById(id, NULL);
+	LOGD("widget id=%s, find=%p", id.c_str(), pBtn);
 	if (pBtn == NULL) {
 		LOGE("not find widget, id=%s", id.c_str());
 		return;
@@ -25,5 +27,7 @@ void MainPage::OnClick(const string &id)
     ++m_idx;
     char buf[50] = {0};
     sprintf(buf, "Click %d times", m_idx);
-    pBtn->SetProperty("txt", buf);
+	XButton btn(this);
+	btn.SetRealWidget(pBtn);
+    btn.SetProperty("txt", buf);
 }

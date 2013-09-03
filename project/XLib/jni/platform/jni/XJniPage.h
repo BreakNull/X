@@ -16,6 +16,7 @@ public:
     static void OnDestroy(JNIEnv *pEnv, jobject jpage, jint id);
     static void OnStart(JNIEnv *pEnv, jobject jpage, jint id);
     static void OnStop(JNIEnv *pEnv, jobject jpage, jint id);
+    static void OnBackPressed(JNIEnv *pEnv, jobject jpage, jint id);
 
     static void OnClick(JNIEnv *pEnv, jobject jpage, jint id, jstring widgetId);
     static void OnTimeChanged(JNIEnv *pEnv, jobject jpage, jint id, jstring widgetId, jint hourOfDay, jint minute);

@@ -31,9 +31,10 @@ public class JPlatform {
 			int val = f.getInt(null);
 			return val;
 		} catch (Exception e) {
-			Log.e("X", "Platform.setBgImg there is no image named '" + rid + "'");
+			Log.e("X", "Platform.getRid there is no image named '" + rid + "'");
+			e.printStackTrace();
 		}
-		return -1;
+		return 0;
 	}
 	
 	//----------------------New widgets-----------------------------
@@ -72,20 +73,29 @@ public class JPlatform {
 	}
     
     public static void setBgImg(Object obj, String r) {
-    	View v = (View)obj;
-    	if (v == null || r == null) {
-    		return;
-    	}
-    	int rid = getRid(r);
-    	if (rid != -1) {
-    		v.setBackgroundResource(rid);
+    	try {
+	    	View v = (View)obj;
+	    	if (v == null || r == null) {
+	    		return;
+	    	}
+	    	int rid = getRid(r);
+	    	if (rid != 0) {
+	    		v.setBackgroundResource(rid);
+	    	}
+    	} catch (Exception ex) {
+    		Log.e("X", "JPlatform.setBgImg r=" + r);
     	}
     }
     
     public static void setBgColor(Object obj, int color) {
-    	View v = (View)obj;
-    	if (v != null) {
-    		v.setBackgroundColor(color);
+    	try {
+	    	View v = (View)obj;
+	    	if (v != null) {
+	    		v.setBackgroundColor(color);
+	    	}
+    	} catch (Exception ex) {
+    		Log.e("X", "JPlatform.setBgColor error");
+    		ex.printStackTrace();
     	}
     }
     
@@ -252,11 +262,14 @@ public class JPlatform {
     		return null;
     	}
     	sid = id.trim();
-    	ViewGroup v = (ViewGroup)obj;
-    	if (sid.equals(getId(v))) {
-    		return v;
+    	if (sid.equals(getId(obj))) {
+    		return obj;
     	}
-    	return findByIdHelp(sid, v);
+    	if (obj instanceof ViewGroup) {
+    		ViewGroup v = (ViewGroup)obj;
+    		return findByIdHelp(sid, v);
+    	}
+    	return null;
     }
     
     //--------------------------------------------------------------------
@@ -333,14 +346,18 @@ public class JPlatform {
 		return UiThread.post2(addr, r2, delayMs);
 	}
 	
-	public static void setImgButtonSrc(Object obj, String rid) {
-		ImageButton b = (ImageButton)obj;
-    	if (b != null) {
-    		int r = getRid(rid);
-        	if (r != -1) {
-        		b.setImageResource(r);
-        	}
-    	}
+	public static void setImgButtonSrc(Object obj, String rname) {
+		try {
+			ImageButton b = (ImageButton)obj;
+	    	if (b != null) {
+	    		int rid = getRid(rname);
+	        	if (rid != 0) {
+	        		b.setImageResource(rid);
+	        	}
+	    	}
+		} catch (Exception ex) {
+			Log.e("X", "JPlatform.setImgButtonSrc src=" + rname);
+		}
 	}
 	
 	public static void loadNewPage(String pageName, int inAnim, int outAnim) {
