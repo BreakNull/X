@@ -383,14 +383,15 @@ void XPlatformAndroid::SetOrientation(XWidget *p, bool vertical)
     CALL_VOID(W(p), b);
 }
 
-void XPlatformAndroid::AddChild(XWidget *p, XWidget *c, int idx)
+bool XPlatformAndroid::AddChild(XWidget *p, XWidget *c, int idx)
 {
     CHECK_PP(p, c);
-    CHECK_B_NO();
+    CHECK_B(false);
     if (p->IsContainer()) {
-        GET_MID_NO("addChild");
-        CALL_VOID(W(p), W(c), idx);
+        GET_MID("addChild", false);
+        CALL_BOOL_R(W(p), W(c), idx);
     }
+    return false;
 }
 
 bool XPlatformAndroid::PostRunnable(XUiThread::Runnable r)

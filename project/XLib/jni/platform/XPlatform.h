@@ -78,7 +78,7 @@ public:
     //-------LineLayout--------
     virtual void SetOrientation(XWidget *p, bool vertical) = 0;
 
-    virtual void AddChild(XWidget *p, XWidget *c, int idx) = 0;
+    virtual bool AddChild(XWidget *p, XWidget *c, int idx) = 0;
 
     //------ui thread---------
     virtual bool PostRunnable(XUiThread::Runnable r) = 0;

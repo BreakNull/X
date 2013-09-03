@@ -7,6 +7,7 @@ XWidget::XWidget(XPage *p)
     :m_pRealWidget(NULL)
     ,m_pParent(NULL)
     ,m_pPage(p)
+    ,m_bRoot(false)
 {
 }
 
@@ -96,13 +97,12 @@ XVariant XWidget::GetProperty(const string &name)
 
 bool XWidget::IsRoot()
 {
-    //TODO:
-    return false;
+    return m_bRoot;
 }
 
 void XWidget::SetRoot(bool b)
 {
-    //TODO:
+    m_bRoot = b;
 }
 
 bool XWidget::IsContainer()
@@ -160,7 +160,10 @@ void *XWidget::GetChildAt(int idx)
 
 void XWidget::AddChild(XWidget *pChild, int idx)
 {
-    XPlatform::Instance()->AddChild(this, pChild, idx);
+    bool b = XPlatform::Instance()->AddChild(this, pChild, idx);
+    if (b) {
+        pChild->SetParent(this);
+    }
 }
 
 

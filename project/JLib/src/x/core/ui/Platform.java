@@ -2,11 +2,7 @@ package x.core.ui;
 
 import java.lang.reflect.Field;
 
-import x.core.widget.ImgButton;
 import android.content.Context;
-import android.graphics.Color;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -300,8 +296,7 @@ public class Platform {
     	}
     }
     
-    public static void addChild(Object obj, Object obj2, int idx) {
-    	//Log.d("X", "Platform.addChild idx=" + idx + ", obj=" + obj + ", obj2=" + obj2);
+    public static boolean addChild(Object obj, Object obj2, int idx) {
 		if (obj != null && obj2 != null) {
     		ViewGroup vg = (ViewGroup)obj;
     		View v = (View)obj2;
@@ -309,7 +304,9 @@ public class Platform {
     			vg.addView(v);
     		else
     			vg.addView(v, idx);
+    		return true;
     	}
+		return false;
     }
     
     public static void setListener(Object obj1, Object obj2, String name) {
@@ -386,7 +383,7 @@ public class Platform {
     			"setLabelText", "(Ljava/lang/Object;Ljava/lang/String;)V", "S",
     			"setTitle", "(Ljava/lang/Object;Ljava/lang/String;)V", "S",
     			"setOrientation", "(Ljava/lang/Object;Z)V", "S",
-    			"addChild", "(Ljava/lang/Object;Ljava/lang/Object;I)V", "S",
+    			"addChild", "(Ljava/lang/Object;Ljava/lang/Object;I)Z", "S",
     			"setListener", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;)V", "S",
     			"clearListener", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;)V", "S",
     			"post", "(JJ)Z", "S",

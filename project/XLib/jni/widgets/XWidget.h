@@ -87,6 +87,7 @@ protected:
     string m_cId;           //Widget的ID
     XWidget *m_pParent;
     XPage *m_pPage;
+    bool m_bRoot;
 };
 
 #endif // WIDGET_H
