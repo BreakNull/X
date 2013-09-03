@@ -343,6 +343,22 @@ public class JPlatform {
     	}
 	}
 	
+	public static void loadNewPage(String pageName, int inAnim, int outAnim) {
+		JPageMgr.instance().loadNewPage(pageName, inAnim, outAnim);
+	}
+	
+	public static void loadExistPage(String pageName, int inAnim, int outAnim) {
+		JPageMgr.instance().loadExistPage(pageName, inAnim, outAnim);
+	}
+	
+	public static void loadExistPage2(int pageId, int inAnim, int outAnim) {
+		JPageMgr.instance().loadExistPage(pageId, inAnim, outAnim);
+	}
+	
+	public static void goBack() {
+		JPageMgr.instance().goBack();
+	}
+	
     public static String[] getFields() {
     	return null;
     }
@@ -388,7 +404,11 @@ public class JPlatform {
     			"clearListener", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;)V", "S",
     			"post", "(JJ)Z", "S",
     			"post2", "(JJI)Z", "S",
-    			"setImgButtonSrc", "(Ljava/lang/Object;Ljava/lang/String;)V", "S"
+    			"setImgButtonSrc", "(Ljava/lang/Object;Ljava/lang/String;)V", "S",
+    			"loadNewPage", "(Ljava/lang/String;II)V", "S",
+    			"loadExistPage", "(Ljava/lang/String;II)V", "S",
+    			"loadExistPage2", "(III)V", "S",
+    			"goBack", "()V", "S"
     	};
     }
 }

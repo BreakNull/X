@@ -4,6 +4,7 @@
 #include "XLog.h"
 #include "XPlatform.h"
 #include "XWidget.h"
+#include "XPageMgr.h"
 
 XPage::XPage(void *pRealXPage, const string &name, int id)
     :m_pRealPage(pRealXPage)
@@ -45,7 +46,8 @@ void XPage::OnDestroy()
     LOGD("XPage::OnDestroy page name is '%s'", m_cName.c_str());
     delete m_pXml;
     m_pXml = NULL;
-    //TODO:
+    XPageMgr::Instance()->RemovePage(m_id);
+    delete this;
 }
 
 void XPage::OnStart()

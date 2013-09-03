@@ -2,7 +2,7 @@
 #include "XJniMgr.h"
 #include "XPage.h"
 #include "XPageFactory.h"
-#include "XPageManager.h"
+#include "XPageMgr.h"
 #include "XWidget.h"
 #include "XMenu.h"
 #include "XLog.h"
@@ -11,7 +11,7 @@
 
 jint XJniPage::GetStyle(JNIEnv *pEnv, jobject jpage, jint id)
 {
-    XPage *page = XPageManager::Instance()->GetPage(id);
+    XPage *page = XPageMgr::Instance()->GetPage(id);
     if (!page) {
         LOGE("fail, page is NULL");
         return NULL;
@@ -34,13 +34,13 @@ void XJniPage::OnNew(JNIEnv *pEnv, jobject jpage, jstring pageName, jint id)
         LOGE("Fail, page is NULL");
         return;
     }
-    XPageManager::Instance()->AddPage(id, page);
+    XPageMgr::Instance()->AddPage(id, page);
 }
 
 jobject XJniPage::OnCreate(JNIEnv *pEnv, jobject jpage, jint id)
 {
     LOGD("XJniPage::OnCreate");
-    XPage *page = XPageManager::Instance()->GetPage(id);
+    XPage *page = XPageMgr::Instance()->GetPage(id);
     if (!page) {
         LOGE("fail, page is NULL");
         return NULL;
@@ -56,7 +56,7 @@ jobject XJniPage::OnCreate(JNIEnv *pEnv, jobject jpage, jint id)
 void XJniPage::OnDestroy(JNIEnv *pEnv, jobject jpage, jint id)
 {
     LOGD("XJniPage::OnDestroy");
-    XPage *page = XPageManager::Instance()->GetPage(id);
+    XPage *page = XPageMgr::Instance()->GetPage(id);
     if (!page) {
         LOGE("fail, page is NULL");
         return;
@@ -67,7 +67,7 @@ void XJniPage::OnDestroy(JNIEnv *pEnv, jobject jpage, jint id)
 void XJniPage::OnStart(JNIEnv *pEnv, jobject jpage, jint id)
 {
     LOGD("XJniPage::OnStart");
-    XPage *page = XPageManager::Instance()->GetPage(id);
+    XPage *page = XPageMgr::Instance()->GetPage(id);
     if (!page) {
         LOGE("fail, page is NULL");
         return;
@@ -78,7 +78,7 @@ void XJniPage::OnStart(JNIEnv *pEnv, jobject jpage, jint id)
 void XJniPage::OnStop(JNIEnv *pEnv, jobject jpage, jint id)
 {
     LOGD("XJniPage::OnStop");
-    XPage *page = XPageManager::Instance()->GetPage(id);
+    XPage *page = XPageMgr::Instance()->GetPage(id);
     if (!page) {
         LOGE("fail, page is NULL");
         return;
@@ -88,7 +88,7 @@ void XJniPage::OnStop(JNIEnv *pEnv, jobject jpage, jint id)
 
 void XJniPage::OnClick(JNIEnv *pEnv, jobject jpage, jint id, jstring widgetId)
 {
-    XPage *page = XPageManager::Instance()->GetPage(id);
+    XPage *page = XPageMgr::Instance()->GetPage(id);
     if (!page) {
         LOGE("fail, page is NULL");
         return;
@@ -104,7 +104,7 @@ void XJniPage::OnClick(JNIEnv *pEnv, jobject jpage, jint id, jstring widgetId)
 
 void XJniPage::OnTimeChanged(JNIEnv *pEnv, jobject jpage, jint id, jstring widgetId, jint hourOfDay, jint minute)
 {
-    XPage *page = XPageManager::Instance()->GetPage(id);
+    XPage *page = XPageMgr::Instance()->GetPage(id);
     if (!page) {
         //Log err
         return;
@@ -121,7 +121,7 @@ void XJniPage::OnTimeChanged(JNIEnv *pEnv, jobject jpage, jint id, jstring widge
 void XJniPage::OnDateChanged(JNIEnv *pEnv, jobject jpage, jint id, jstring widgetId, jint y, jint m, jint d)
 {
     LOGD("XJniPage::OnDateChanged");
-    XPage *page = XPageManager::Instance()->GetPage(id);
+    XPage *page = XPageMgr::Instance()->GetPage(id);
     if (!page) {
         //Log err
         return;
@@ -137,7 +137,7 @@ void XJniPage::OnDateChanged(JNIEnv *pEnv, jobject jpage, jint id, jstring widge
 
 jboolean XJniPage::OnCreateOptionsMenu(JNIEnv *pEnv, jobject jpage, jint id, jobject menu)
 {
-    XPage *page = XPageManager::Instance()->GetPage(id);
+    XPage *page = XPageMgr::Instance()->GetPage(id);
     if (!page) {
         //Log err
         return false;
@@ -149,7 +149,7 @@ jboolean XJniPage::OnCreateOptionsMenu(JNIEnv *pEnv, jobject jpage, jint id, job
 
 void XJniPage::OnOptionsItemSelected(JNIEnv *pEnv, jobject jpage, jint id, jint menuId)
 {
-    XPage *page = XPageManager::Instance()->GetPage(id);
+    XPage *page = XPageMgr::Instance()->GetPage(id);
     if (!page) {
         //Log err
         return;

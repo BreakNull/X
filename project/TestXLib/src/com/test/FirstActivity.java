@@ -10,7 +10,7 @@ import android.util.Log;
 public class FirstActivity extends JPage {
 	
 	public FirstActivity() {
-		super("MainPage");
+		super("HelloPage");
 	}
 
 	static {

@@ -9,18 +9,23 @@ using namespace std;
  * 页面管理器
  * 管理页面的历史，删除历史页面，跳转到新或旧页面等
  */
-class XPageManager
+class XPageMgr
 {
 public:
-    static XPageManager *Instance();
+    static XPageMgr *Instance();
+
+    void LoadNewPage(const char *pName, int inAnim, int outAnim);
+    void LoadExistPage(const char *pName, int inAnim, int outAnim);
+    void LoadExistPage(int pageId, int inAnim, int outAnim);
+    void GoBack();
 
     void AddPage(int id, XPage *p);
     XPage *RemovePage(int id);
     XPage *GetPage(int id);
 
 private:
-    XPageManager();
-    static XPageManager *s_ins;
+    XPageMgr();
+    static XPageMgr *s_ins;
     std::map<int, XPage*> m_cPages;
 };
 

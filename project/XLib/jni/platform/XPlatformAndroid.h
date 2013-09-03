@@ -78,6 +78,12 @@ public:
     //-----ImageButton--------------
     virtual void SetImgButtonSrc(XWidget *p, const char *pSrc);
 
+    //-----page mgr-----------------
+    virtual void LoadNewPage(const char *pName, int inAnim, int outAnim);
+    virtual void LoadExistPage(const char *pName, int inAnim, int outAnim);
+    virtual void LoadExistPage(int pageId, int inAnim, int outAnim);
+    virtual void GoBack();
+
 private:
     char m_pClassName[40];
     void *m_pClass;

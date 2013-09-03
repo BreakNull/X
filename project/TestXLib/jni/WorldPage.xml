@@ -1,0 +1,9 @@
+<Page>
+	<Style  src="/sdcard/main.style"/>
+	
+	<MainView title="Hello">
+		<LineLay ori="ver" id="content">
+			<Lab txt="This is World page!" />
+		</LineLay>
+	</MainView>
+</Page>

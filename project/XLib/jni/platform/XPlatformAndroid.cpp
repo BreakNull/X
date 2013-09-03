@@ -419,3 +419,38 @@ void XPlatformAndroid::SetImgButtonSrc(XWidget *p, const char *pSrc)
     CALL_VOID(W(p), js);
     pEnv->DeleteLocalRef(js);
 }
+
+void XPlatformAndroid::LoadNewPage(const char *pName, int inAnim, int outAnim)
+{
+    CHECK_P(pName);
+    CHECK_B_NO();
+    GET_MID_NO("loadNewPage");
+    jstring js = pEnv->NewStringUTF(pName);
+    CALL_VOID(js, inAnim, outAnim);
+    pEnv->DeleteLocalRef(js);
+}
+
+void XPlatformAndroid::LoadExistPage(const char *pName, int inAnim, int outAnim)
+{
+    CHECK_P(pName);
+    CHECK_B_NO();
+    GET_MID_NO("loadExistPage");
+    jstring js = pEnv->NewStringUTF(pName);
+    CALL_VOID(js, inAnim, outAnim);
+    pEnv->DeleteLocalRef(js);
+}
+
+void XPlatformAndroid::LoadExistPage(int pageId, int inAnim, int outAnim)
+{
+    GET_MID_NO("loadExistPage2");
+    CALL_VOID(pageId, inAnim, outAnim);
+}
+
+void XPlatformAndroid::GoBack()
+{
+    GET_MID_NO("goBack");
+    CALL_VOID();
+}
+
+
+

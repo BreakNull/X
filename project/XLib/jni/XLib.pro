@@ -19,7 +19,6 @@ DEFINES += _FOR_ANDROID_
 SOURCES += \
     page/XPage.cpp \
     page/XPageFactory.cpp \
-    page/XPageManager.cpp \
     platform/XResource.cpp \
     platform/XPlatform.cpp \
     platform/XIntent.cpp \
@@ -89,12 +88,12 @@ SOURCES += \
     platform/XUiThread.cpp \
     util/schedule/XTaskSchedule.cpp \
     platform/jni/XJniUiThreadRunnable.cpp \
-    util/style/XStyle.cpp
+    util/style/XStyle.cpp \
+    page/XPageMgr.cpp
 
 HEADERS +=\
     page/XPage.h \
     page/XPageFactory.h \
-    page/XPageManager.h \
     platform/XResource.h \
     platform/XPlatform.h \
     platform/XIntent.h \
@@ -166,7 +165,8 @@ HEADERS +=\
     platform/XUiThread.h \
     util/schedule/XTaskSchedule.h \
     platform/jni/XJniUiThreadRunnable.h \
-    util/style/XStyle.h
+    util/style/XStyle.h \
+    page/XPageMgr.h
 
 unix:!symbian {
     maemo5 {
