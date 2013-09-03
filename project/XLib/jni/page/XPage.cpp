@@ -67,22 +67,7 @@ XWidget *XPage::FindById(const string &id, XWidget *parent)
         LOGE("There has not any widgets in this page");
         return NULL;
     }
-    if (p->GetId() == id) {
-        return p;
-    }
-    for (int i = 0; i < p->GetChildren()->size(); ++i) {
-        XWidget *pChild = p->GetChildren()->at(i);
-        if (NULL == pChild) {
-            LOGE("There has NULL widget in this page");
-            continue;
-        }
-        if (pChild->GetId() == id) {
-            return pChild;
-        } else if (pChild->IsContainer()) {
-            return FindById(id, pChild);
-        }
-    }
-    return NULL;
+
 }
 
 bool XPage::OnCreateOptionsMenu(XMenu *pMenu)

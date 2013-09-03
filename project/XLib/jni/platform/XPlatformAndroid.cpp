@@ -268,6 +268,42 @@ int XPlatformAndroid::GetHeight(XWidget *p)
     CALL_INT_R(W(p));
 }
 
+int XPlatformAndroid::GetChildCount(XWidget *p)
+{
+    CHECK_P(p);
+    CHECK_B(0);
+    if (!p->IsContainer()) {
+        return 0;
+    }
+    GET_MID("getChildCount", 0);
+    CALL_INT_R(W(p));
+}
+
+void *XPlatformAndroid::GetChildAt(XWidget *p, int idx)
+{
+    CHECK_P(p);
+    CHECK_B(NULL);
+    if (!p->IsContainer()) {
+        return NULL;
+    }
+    GET_MID("getChildAt", NULL);
+    CALL_OBJ_R(W(p), idx);
+}
+
+void *XPlatformAndroid::GetChild(XWidget *p, const char *pId)
+{
+    CHECK_PP(p, pId);
+    CHECK_B(NULL);
+    if (!p->IsContainer()) {
+        return NULL;
+    }
+    GET_MID("getChild", NULL);
+    jstring js = pEnv->NewStringUTF(pId);
+    CALL_OBJ(W(p), js);
+    pEnv->DeleteLocalRef(js);
+    return _obj;
+}
+
 void XPlatformAndroid::SetTitle(XPage *p, const string &title)
 {
     CHECK_P(p);
@@ -296,6 +332,17 @@ void XPlatformAndroid::ClearListener(XPage *p, XWidget *w, const string &name)
     jstring js = pEnv->NewStringUTF(name.c_str());
     CALL_VOID(R(p), W(w), js);
     pEnv->DeleteLocalRef(js);
+}
+
+void *XPlatformAndroid::FindById(const char *pId, XWidget *p)
+{
+    CHECK_PP(p, pId);
+    CHECK_B(NULL);
+    GET_MID("findById", NULL);
+    jstring js = pEnv->NewStringUTF(pId);
+    CALL_OBJ(W(p), js);
+    pEnv->DeleteLocalRef(js);
+    return reinterpret_cast<void*>(_obj);
 }
 
 void XPlatformAndroid::SetButtonText(XWidget *p, const char *pcTxt)
@@ -340,8 +387,10 @@ void XPlatformAndroid::AddChild(XWidget *p, XWidget *c, int idx)
 {
     CHECK_PP(p, c);
     CHECK_B_NO();
-    GET_MID_NO("addChild");
-    CALL_VOID(W(p), W(c), idx);
+    if (p->IsContainer()) {
+        GET_MID_NO("addChild");
+        CALL_VOID(W(p), W(c), idx);
+    }
 }
 
 bool XPlatformAndroid::PostRunnable(XUiThread::Runnable r)

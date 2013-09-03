@@ -208,6 +208,61 @@ public class Platform {
     	return 0;
     }
     
+    public static int getChildCount(Object obj) {
+    	ViewGroup v = (ViewGroup)obj;
+    	if (v != null) {
+    		return v.getChildCount();
+    	}
+    	return 0;
+    }
+    
+    public static Object getChildAt(Object obj, int idx) {
+    	ViewGroup v = (ViewGroup)obj;
+    	if (v != null && idx >= 0 && idx < v.getChildCount()) {
+    		return v.getChildAt(idx);
+    	}
+    	return null;
+    }
+    
+    public static Object getChild(Object obj, String id) {
+    	ViewGroup v = (ViewGroup)obj;
+    	if (v == null || id == null) {
+    		return null;
+    	}
+    	for (int i = 0; i < v.getChildCount(); ++i) {
+			View vv = v.getChildAt(i);
+			if (id.trim().equals(getId(vv))) {
+				return vv;
+			}
+		}
+    	return null;
+    }
+    
+    private static Object findByIdHelp(String id, ViewGroup v) {
+    	for (int i = 0; i < v.getChildCount(); ++i) {
+			View vv = v.getChildAt(i);
+			if (id.equals(getId(vv))) {
+				return vv;
+			} else if (vv instanceof ViewGroup) {
+				return findById(id, (ViewGroup)vv);
+			}
+		}
+    	return null;
+    }
+    
+    public static Object findById(String id, Object obj) {
+    	String sid = id;
+    	if (id == null || id.trim().equals("") || obj == null) {
+    		return null;
+    	}
+    	sid = id.trim();
+    	ViewGroup v = (ViewGroup)obj;
+    	if (sid.equals(getId(v))) {
+    		return v;
+    	}
+    	return findByIdHelp(sid, v);
+    }
+    
     //--------------------------------------------------------------------
     public static void setButtonText(Object obj, String txt) {
 		Button b = (Button)obj;
@@ -321,6 +376,11 @@ public class Platform {
     			"setMinHeight", "(Ljava/lang/Object;I)V", "S",
     			"getWidth", "(Ljava/lang/Object;)I", "S",
     			"getHeight", "(Ljava/lang/Object;)I", "S",
+    			"getChildCount", "(Ljava/lang/Object;)I", "S",
+    			"getChildAt", "(Ljava/lang/Object;I)Ljava/lang/Object;", "S",
+    			"getChild", "(Ljava/lang/Object;Ljava/lang/String;)Ljava/lang/Object;", "S",
+    			"findById", "(Ljava/lang/String;Ljava/lang/Object;)Ljava/lang/Object;", "S",
+    			
     			"setButtonText", "(Ljava/lang/Object;Ljava/lang/String;)V", "S",
     			"getButtonText", "(Ljava/lang/Object;)Ljava/lang/String;", "S",
     			"setLabelText", "(Ljava/lang/Object;Ljava/lang/String;)V", "S",

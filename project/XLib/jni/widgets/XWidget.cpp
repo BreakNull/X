@@ -7,18 +7,11 @@ XWidget::XWidget(XPage *p)
     :m_pRealWidget(NULL)
     ,m_pParent(NULL)
     ,m_pPage(p)
-    ,m_pChildren(NULL)
 {
 }
 
 XWidget::~XWidget()
 {
-    if (NULL != m_pChildren) {
-        for (int i = 0; i < m_pChildren->size(); ++i) {
-            delete m_pChildren->at(i);
-        }
-        delete m_pChildren;
-    }
 }
 
 void XWidget::Create()
@@ -147,42 +140,26 @@ XWidget *XWidget::GetParent()
 
 void XWidget::SetParent(XWidget *parent)
 {
-    //TODO:
+    m_pParent = parent;
 }
 
-XWidget *XWidget::GetChild(const string &id)
+void *XWidget::GetChild(const string &id)
 {
-    if (NULL == m_pChildren) {
-        return NULL;
-    }
-
-    for (int i = 0; i < (int)m_pChildren->size(); ++i) {
-        XWidget *p = m_pChildren->at(i);
-        if (id == p->GetId()) {
-            return p;
-        }
-    }
-    return NULL;
+    return XPlatform::Instance()->GetChild(this, id.c_str());
 }
 
-vector<XWidget*> *XWidget::GetChildren()
+int XWidget::GetChildCount()
 {
-    return m_pChildren;
+    return XPlatform::Instance()->GetChildCount(this);
+}
+
+void *XWidget::GetChildAt(int idx)
+{
+    return XPlatform::Instance()->GetChildAt(this, idx);
 }
 
 void XWidget::AddChild(XWidget *pChild, int idx)
 {
-    if ((pChild == NULL) || (!IsContainer())) {
-        return;
-    }
-    if (NULL == m_pChildren) {
-        m_pChildren = new vector<XWidget*>();
-    }
-    if (idx < 0) {
-        m_pChildren->push_back(pChild);
-    } else {
-        m_pChildren->insert(m_pChildren->begin() + idx, pChild);
-    }
     XPlatform::Instance()->AddChild(this, pChild, idx);
 }
 

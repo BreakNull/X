@@ -65,9 +65,12 @@ public:
     XWidget *GetParent();
     void SetParent(XWidget *parent);
 
-    XWidget *GetChild(const string &id);
-    vector<XWidget*> *GetChildren();
+    void *GetChild(const string &id);
+    int GetChildCount();
+    void *GetChildAt(int idx);
+
     void *GetRealWidget() {return m_pRealWidget;}
+    void SetRealWidget(void *p) {m_pRealWidget = p;}
 
     /*
      * 如果idx小于0， 则表示将pChild添加到容器的未尾
@@ -82,7 +85,6 @@ private:
 protected:
     void *m_pRealWidget;    //实际的Widget
     string m_cId;           //Widget的ID
-    vector<XWidget*> *m_pChildren;  //子Widget
     XWidget *m_pParent;
     XPage *m_pPage;
 };

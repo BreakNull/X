@@ -59,9 +59,14 @@ public:
     virtual int GetWidth(XWidget *p) = 0;
     virtual int GetHeight(XWidget *p) = 0;
 
+    virtual int GetChildCount(XWidget *p) = 0;
+    virtual void *GetChildAt(XWidget *p, int idx) = 0;
+    virtual void *GetChild(XWidget *p, const char *pId) = 0;
+
     virtual void SetTitle(XPage *p, const string &title) = 0;
     virtual void SetListener(XPage *p, XWidget *w, const string &name) = 0;
     virtual void ClearListener(XPage *p, XWidget *w, const string &name) = 0;
+    virtual void *FindById(const char *pId, XWidget *p) = 0;
 
     //---------Button----------
     virtual void SetButtonText(XWidget *p, const char *pcTxt) = 0;
