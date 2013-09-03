@@ -44,6 +44,18 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 		OnNew(name, id);
 	}
 	
+	public int getId() {
+		return id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public static int getNextId() {
+		return curId + 1;
+	}
+	
 	private void applyStyle() {
 		int style = GetStyle(id);
 		if ((style & S_NO_TITLE) != 0) {
@@ -122,6 +134,48 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 		OnStop(id);
 		super.onStop();
 	}
+	
+	public boolean dispatchKeyEvent(KeyEvent ev){
+		if (JPageMgr.instance().isKeyLocked() || JPageMgr.instance().isScreenLocked()) {
+			return true;
+		}
+		return super.dispatchKeyEvent(ev);
+	}
+	
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		if (JPageMgr.instance().isTouchLocked() || JPageMgr.instance().isScreenLocked()) {
+			return true;
+		}
+		return super.dispatchTouchEvent(ev);	
+	}
+	
+	public boolean dispatchTrackballEvent(MotionEvent ev) {
+		if (JPageMgr.instance().isScreenLocked()) {
+			return true;
+		}
+		return super.dispatchTrackballEvent(ev);
+	}
+	
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (JPageMgr.instance().isKeyLocked() || JPageMgr.instance().isScreenLocked()) {
+			return true;
+		}
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if (event.getRepeatCount() == 0) {
+				JPageMgr.instance().goBack();
+			}
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+	
+	public boolean onTouchEvent(MotionEvent event) {
+		if (JPageMgr.instance().isTouchLocked() || JPageMgr.instance().isScreenLocked()) {
+			return true;
+		}
+		return super.onTouchEvent(event);
+	}
+	
 	
 	protected String getWidgetId(View v) {
 		if (v.getTag() == null) {

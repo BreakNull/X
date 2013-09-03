@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import android.app.*;
 
-public class Platform {
+public class JPlatform {
 	private static Class s_R;
 	private static Class s_drawable = null;
 	
