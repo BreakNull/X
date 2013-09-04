@@ -12,7 +12,6 @@ public class TApplication extends JApplication {
 	public void onCreate() {
 		super.onCreate();
 		JPlatform.init(R.class);
-		JAnimHelper.init(R.class);
 		System.loadLibrary("TestX");
 	}
 	
