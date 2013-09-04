@@ -12,6 +12,8 @@ public class JPage extends Activity implements View.OnClickListener,
 DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	protected int id;
 	protected String name;
+	protected String title;
+	protected boolean hasTitle;
 	private static int curId = 0;
 	private static String curName;
 	private int status = STATUS_NONE;
@@ -69,6 +71,13 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public void setTitle(CharSequence t) {
+		super.setTitle(t);
+		JPageMgr.instance().setTitle(t);
+		this.title = t.toString();
+		hasTitle = true;
 	}
 	
 	public static int getNextId() {
@@ -135,7 +144,7 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	}
 
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.w("X", "onCreate pageName=" + name);
+		//Log.w("X", "onCreate pageName=" + name);
 		super.onCreate(savedInstanceState);
 		View v = (View)OnCreate(id);
 		applyStyle();
@@ -144,7 +153,7 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	}
 	
 	protected void onDestroy() {
-		Log.w("X", "onDestroy pageName=" + name);
+		//Log.w("X", "onDestroy pageName=" + name);
 		status = STATUS_CREATE;
 		OnDestroy(id);
 		super.onDestroy();
@@ -152,27 +161,30 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	}
 	
 	protected void onStart() {
-		Log.w("X", "onStart pageName=" + name);
+		//Log.w("X", "onStart pageName=" + name);
 		status = STATUS_START;
 		super.onStart();
 		OnStart(id);
 	}
 	
 	protected void onStop() {
-		Log.w("X", "onStop pageName=" + name);
+		//Log.w("X", "onStop pageName=" + name);
 		status = STATUS_STOP;
 		OnStop(id);
 		super.onStop();
 	}
 	
 	protected void onResume() {
-		Log.w("X", "onResume pageName=" + name);
+		//Log.w("X", "onResume pageName=" + name);
 		status = STATUS_RESUME;
+		if (hasTitle) {
+			JPlatform.setTitle(this, title);
+		}
 		super.onResume();
 	}
 	
 	protected void onPause() {
-		Log.w("X", "onPause pageName=" + name);
+		//Log.w("X", "onPause pageName=" + name);
 		status = STATUS_PAUSE;
 		super.onPause();
 	}
