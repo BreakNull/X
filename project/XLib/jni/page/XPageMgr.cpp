@@ -17,19 +17,19 @@ XPageMgr *XPageMgr::Instance()
     return s_ins;
 }
 
-void XPageMgr::LoadNewPage(const char *pName, int inAnim, int outAnim)
+void XPageMgr::LoadNewPage(const char *pName, int anim)
 {
-    XPlatform::Instance()->LoadNewPage(pName, inAnim, outAnim);
+    XPlatform::Instance()->LoadNewPage(pName, anim);
 }
 
-void XPageMgr::LoadExistPage(const char *pName, int inAnim, int outAnim)
+void XPageMgr::LoadExistPage(const char *pName, int anim)
 {
-    XPlatform::Instance()->LoadExistPage(pName, inAnim, outAnim);
+    XPlatform::Instance()->LoadExistPage(pName, anim);
 }
 
-void XPageMgr::LoadExistPage(int pageId, int inAnim, int outAnim)
+void XPageMgr::LoadExistPage(int pageId, int anim)
 {
-    XPlatform::Instance()->LoadExistPage(pageId, inAnim, outAnim);
+    XPlatform::Instance()->LoadExistPage(pageId, anim);
 }
 
 void XPageMgr::GoBack()

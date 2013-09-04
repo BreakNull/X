@@ -14,9 +14,9 @@ class XPageMgr
 public:
     static XPageMgr *Instance();
 
-    void LoadNewPage(const char *pName, int inAnim, int outAnim);
-    void LoadExistPage(const char *pName, int inAnim, int outAnim);
-    void LoadExistPage(int pageId, int inAnim, int outAnim);
+    void LoadNewPage(const char *pName, int anim);
+    void LoadExistPage(const char *pName, int anim);
+    void LoadExistPage(int pageId, int anim);
     void GoBack();
 
     void AddPage(int id, XPage *p);

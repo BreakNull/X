@@ -14,6 +14,15 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	protected String name;
 	private static int curId = 0;
 	private static String curName;
+	private int status = STATUS_NONE;
+	
+	public static final int STATUS_NONE = 0;
+	public static final int STATUS_CREATE = 1;
+	public static final int STATUS_START = 2;
+	public static final int STATUS_RESUME = 3;
+	public static final int STATUS_PAUSE = 4;
+	public static final int STATUS_STOP = 5;
+	public static final int STATUS_DESTROY = 6;
 	
 	private static final int S_NO_TITLE = (1 << 0);
 	private static final int S_FULL_SCREEN = (1 << 1);
@@ -121,6 +130,9 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 		return null;
 	}
 	
+	public boolean canDestroy() {
+		return status == STATUS_NONE;
+	}
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -131,22 +143,39 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	}
 	
 	protected void onDestroy() {
+		status = STATUS_CREATE;
 		OnDestroy(id);
 		super.onDestroy();
+		status = STATUS_NONE;
 	}
 	
 	protected void onStart() {
+		status = STATUS_START;
 		super.onStart();
 		OnStart(id);
 	}
 	
 	protected void onStop() {
+		status = STATUS_STOP;
 		OnStop(id);
 		super.onStop();
 	}
 	
+	protected void onResume() {
+		status = STATUS_RESUME;
+		super.onResume();
+	}
+	
+	protected void onPause() {
+		status = STATUS_PAUSE;
+		super.onPause();
+	}
+	
 	public boolean dispatchKeyEvent(KeyEvent ev){
 		if (JPageMgr.instance().isKeyLocked() || JPageMgr.instance().isScreenLocked()) {
+			return true;
+		}
+		if (status >= STATUS_PAUSE) {
 			return true;
 		}
 		return super.dispatchKeyEvent(ev);
@@ -156,6 +185,9 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 		if (JPageMgr.instance().isTouchLocked() || JPageMgr.instance().isScreenLocked()) {
 			return true;
 		}
+		if (status >= STATUS_PAUSE) {
+			return true;
+		}
 		return super.dispatchTouchEvent(ev);	
 	}
 	
@@ -163,11 +195,17 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 		if (JPageMgr.instance().isScreenLocked()) {
 			return true;
 		}
+		if (status >= STATUS_PAUSE) {
+			return true;
+		}
 		return super.dispatchTrackballEvent(ev);
 	}
 	
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (JPageMgr.instance().isKeyLocked() || JPageMgr.instance().isScreenLocked()) {
+			return true;
+		}
+		if (status >= STATUS_PAUSE) {
 			return true;
 		}
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -183,6 +221,9 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 		if (JPageMgr.instance().isKeyLocked() || JPageMgr.instance().isScreenLocked()) {
 			return true;
 		}
+		if (status >= STATUS_PAUSE) {
+			return true;
+		}
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			//OnBackPressed(id);
 			return true;
@@ -192,6 +233,9 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	
 	public boolean onTouchEvent(MotionEvent event) {
 		if (JPageMgr.instance().isTouchLocked() || JPageMgr.instance().isScreenLocked()) {
+			return true;
+		}
+		if (status >= STATUS_PAUSE) {
 			return true;
 		}
 		return super.onTouchEvent(event);

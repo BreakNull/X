@@ -19,8 +19,8 @@ void HelloPage::OnClick(const string &id)
 		LOGE("not find widget, id=%s", id.c_str());
 		return;
 	}
-	if (id == "go_world") {
-		XPageMgr::Instance()->LoadNewPage("WorldPage", 1, 2);
+	if (id == "go_ni") {
+        XPageMgr::Instance()->LoadNewPage("NiPage", 2);
 		return;
 	}
 	LOGD("find widget=%p", pBtn);

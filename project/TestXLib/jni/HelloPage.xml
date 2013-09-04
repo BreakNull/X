@@ -10,7 +10,7 @@
 				<Btn txt="横向Btn2" id="b4"/>
 				<Btn txt="横向Btn3 xxd" id="b5"/>
 			</LineLay>
-			<Btn txt="Go to world page" id="go_world" listen="click"/>
+			<Btn txt="Go to ni page" id="go_ni" listen="click"/>
 			<Lab />
 			<Btn id="ok"/>
 		</LineLay>

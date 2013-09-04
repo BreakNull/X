@@ -1,0 +1,21 @@
+<Page>
+	<Style  src="/sdcard/main.style"/>
+	
+	<MainView title="Hello">
+		<LineLay ori="ver" id="content">
+			<LineLay>
+				<Btn txt="Btn1" id="click_btn3" />
+				<Btn txt="Btn2" id="b4"/>
+				<Btn txt="Btn3 xxd" id="b5"/>
+			</LineLay>
+			<Btn txt="Go to world page" id="go_world" listen="click"/>
+			<Lab />
+			<Btn id="ok"/>
+			<Btn txt="Ni Page  Btn" id="click_btn1" listen="click"/>
+			<Btn txt="Ni Page  Btn --2" id="b2"/>
+			<Lab />
+			<Lab />
+			<Lab />
+		</LineLay>
+	</MainView>
+</Page>

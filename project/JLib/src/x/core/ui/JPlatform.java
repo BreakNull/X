@@ -250,7 +250,10 @@ public class JPlatform {
 			if (id.equals(getId(vv))) {
 				return vv;
 			} else if (vv instanceof ViewGroup) {
-				return findById(id, (ViewGroup)vv);
+				Object ret = findByIdHelp(id, (ViewGroup)vv);
+				if (null != ret) {
+					return ret;
+				}
 			}
 		}
     	return null;
@@ -265,11 +268,12 @@ public class JPlatform {
     	if (sid.equals(getId(obj))) {
     		return obj;
     	}
+    	Object ret = null;
     	if (obj instanceof ViewGroup) {
     		ViewGroup v = (ViewGroup)obj;
-    		return findByIdHelp(sid, v);
+    		ret = findByIdHelp(sid, v);
     	}
-    	return null;
+    	return ret;
     }
     
     //--------------------------------------------------------------------
@@ -360,16 +364,16 @@ public class JPlatform {
 		}
 	}
 	
-	public static void loadNewPage(String pageName, int inAnim, int outAnim) {
-		JPageMgr.instance().loadNewPage(pageName, inAnim, outAnim);
+	public static void loadNewPage(String pageName, int anim) {
+		JPageMgr.instance().loadNewPage(pageName, anim);
 	}
 	
-	public static void loadExistPage(String pageName, int inAnim, int outAnim) {
-		JPageMgr.instance().loadExistPage(pageName, inAnim, outAnim);
+	public static void loadExistPage(String pageName, int anim) {
+		JPageMgr.instance().loadExistPage(pageName, anim);
 	}
 	
-	public static void loadExistPage2(int pageId, int inAnim, int outAnim) {
-		JPageMgr.instance().loadExistPage(pageId, inAnim, outAnim);
+	public static void loadExistPage2(int pageId, int anim) {
+		JPageMgr.instance().loadExistPage(pageId, anim);
 	}
 	
 	public static void goBack() {
@@ -422,9 +426,9 @@ public class JPlatform {
     			"post", "(JJ)Z", "S",
     			"post2", "(JJI)Z", "S",
     			"setImgButtonSrc", "(Ljava/lang/Object;Ljava/lang/String;)V", "S",
-    			"loadNewPage", "(Ljava/lang/String;II)V", "S",
-    			"loadExistPage", "(Ljava/lang/String;II)V", "S",
-    			"loadExistPage2", "(III)V", "S",
+    			"loadNewPage", "(Ljava/lang/String;I)V", "S",
+    			"loadExistPage", "(Ljava/lang/String;I)V", "S",
+    			"loadExistPage2", "(II)V", "S",
     			"goBack", "()V", "S"
     	};
     }

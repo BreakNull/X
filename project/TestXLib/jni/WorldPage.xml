@@ -4,6 +4,14 @@
 	<MainView title="Hello">
 		<LineLay ori="ver" id="content">
 			<Lab txt="This is World page!" />
+			<Lab txt="Hello world label" id="click_btn1"/>
+			<Lab txt="Hello world label --2" id="b2"/>
+			<LineLay>
+				<Lab txt="label --->1" />
+				<Lab txt="label --->2" id="b4"/>
+				<Lab txt="label --->3 xxd" id="b5"/>
+			</LineLay>
+			<Lab />
 		</LineLay>
 	</MainView>
 </Page>

@@ -340,7 +340,7 @@ void *XPlatformAndroid::FindById(const char *pId, XWidget *p)
     CHECK_B(NULL);
     GET_MID("findById", NULL);
     jstring js = pEnv->NewStringUTF(pId);
-    CALL_OBJ(W(p), js);
+    CALL_OBJ(js, W(p));
     pEnv->DeleteLocalRef(js);
     return reinterpret_cast<void*>(_obj);
 }
@@ -420,30 +420,30 @@ void XPlatformAndroid::SetImgButtonSrc(XWidget *p, const char *pSrc)
     pEnv->DeleteLocalRef(js);
 }
 
-void XPlatformAndroid::LoadNewPage(const char *pName, int inAnim, int outAnim)
+void XPlatformAndroid::LoadNewPage(const char *pName, int anim)
 {
     CHECK_P(pName);
     CHECK_B_NO();
     GET_MID_NO("loadNewPage");
     jstring js = pEnv->NewStringUTF(pName);
-    CALL_VOID(js, inAnim, outAnim);
+    CALL_VOID(js, anim);
     pEnv->DeleteLocalRef(js);
 }
 
-void XPlatformAndroid::LoadExistPage(const char *pName, int inAnim, int outAnim)
+void XPlatformAndroid::LoadExistPage(const char *pName, int anim)
 {
     CHECK_P(pName);
     CHECK_B_NO();
     GET_MID_NO("loadExistPage");
     jstring js = pEnv->NewStringUTF(pName);
-    CALL_VOID(js, inAnim, outAnim);
+    CALL_VOID(js, anim);
     pEnv->DeleteLocalRef(js);
 }
 
-void XPlatformAndroid::LoadExistPage(int pageId, int inAnim, int outAnim)
+void XPlatformAndroid::LoadExistPage(int pageId, int anim)
 {
     GET_MID_NO("loadExistPage2");
-    CALL_VOID(pageId, inAnim, outAnim);
+    CALL_VOID(pageId, anim);
 }
 
 void XPlatformAndroid::GoBack()

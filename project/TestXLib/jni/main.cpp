@@ -4,6 +4,7 @@
 #include "XPageXml.h"
 #include "XPageFactory.h"
 #include "HelloPage.h"
+#include "NiPage.h"
 #include "XLog.h"
 
 #ifdef __cplusplus
@@ -20,8 +21,7 @@
 
 jint JNI_OnLoad(JavaVM* vm, void* r)
 {
-	LOGD("TestXLib init begin>>>>>>");
     XPageFactory::Instance()->RegistNew("HelloPage", HelloPage::New);
-	LOGD("TestXLib init end<<<<<<<<<");
+	XPageFactory::Instance()->RegistNew("NiPage", NiPage::New);
 	return JNI_VERSION_1_4;
 }

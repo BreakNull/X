@@ -14,16 +14,19 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.*;
 import android.view.animation.*;
 
-public class JPageMgr extends ActivityGroup implements Animation.AnimationListener {
+//Animation.AnimationListener
+public class JPageMgr extends ActivityGroup {
 	private static JPageMgr ins;
 	private ViewFlipper fliper;
-	private List<JPage> pages;
+	private List<JPageInfo> pages;
+	private List<JPageInfo> noUsedPages;
 	private int keyDisable;
 	private int touchDisable;
 	private int screenDisable;
 	
 	public JPageMgr() {
-		pages = new ArrayList<JPage>();
+		pages = new ArrayList<JPageInfo>();
+		noUsedPages = new ArrayList<JPageInfo>();
 		ins = this;
 	}
 	
@@ -74,11 +77,10 @@ public class JPageMgr extends ActivityGroup implements Animation.AnimationListen
 		lockScreen(true);
 		super.onCreate(savedInstanceState);
 		fliper = new ViewFlipper(this);
-		fliper.setLayoutAnimationListener(this);
 		setContentView(fliper);
 		JApplication app = (JApplication) this.getApplication();
 		String name = app.getFirstPageName();
-		loadNewPage(name, 0, 0);
+		loadNewPage(name, JAnimHelper.AnimType.S_NONE);
 		lockScreen(false);
 	}
 	
@@ -116,7 +118,7 @@ public class JPageMgr extends ActivityGroup implements Animation.AnimationListen
 		return (JPage)getLocalActivityManager().getActivity(String.valueOf(id));
 	}
 	
-	private void installWindow(Window win, int inAnim, int outAnim) {
+	private void installWindow(Window win, int animType) {
 		ViewGroup vg = (ViewGroup)win.getDecorView().getParent();
 		if (vg != null) {
 			vg.removeView(win.getDecorView());
@@ -128,11 +130,11 @@ public class JPageMgr extends ActivityGroup implements Animation.AnimationListen
 		}
 		LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 		fliper.addView(win.getDecorView(), params);
-		JAnimHelper.installAnim(this, fliper, inAnim, outAnim);
+		JAnimHelper.installAnim(this, fliper, animType);
 		fliper.showNext();
 	}
 	
-	public void loadNewPage(String pageName, int inAnim, int outAnim) {
+	public void loadNewPage(String pageName, int animType) {
 		if (pageName == null || pageName.length() == 0) {
 			return;
 		}
@@ -148,17 +150,18 @@ public class JPageMgr extends ActivityGroup implements Animation.AnimationListen
 			return;
 		}
 		JPage cur = getPageById(id);
-		pages.add(cur);
-		installWindow(win, inAnim, outAnim);
+		JPageInfo pi = new JPageInfo(cur, animType, cur.getId(), cur.getName());
+		pages.add(pi);
+		installWindow(win, animType);
 		lockScreen(false);
 	}
 	
-	public void loadExistPage(String pageName, int inAnim, int outAnim) {
+	public void loadExistPage(String pageName, int animType) {
 		lockScreen(true);
 		int i = 0;
 		for (; i < pages.size(); ++i) {
-			JPage p = pages.get(i);
-			if (p.getName().equals(pageName)) {
+			JPageInfo p = pages.get(i);
+			if (p.pageName.equals(pageName)) {
 				break;
 			}
 		}
@@ -167,17 +170,16 @@ public class JPageMgr extends ActivityGroup implements Animation.AnimationListen
 			Log.e("X", "JPageMgr.loadExisPage not find page '" + pageName + "'");
 			return;
 		}
-		int id = pages.get(i).getId();
-		loadExistPage(id, inAnim, outAnim);
+		int id = pages.get(i).pageId;
+		loadExistPage(id, animType);
 		lockScreen(false);
 	}
 	
-	public void loadExistPage(int pageId, int inAnim, int outAnim) {
+	public void loadExistPage(int pageId, int animType) {
 		lockScreen(true);
 		int i = 0;
 		for (; i < pages.size(); ++i) {
-			JPage p = pages.get(i);
-			if (p.getId() == pageId) {
+			if (pages.get(i).pageId == pageId) {
 				break;
 			}
 		}
@@ -187,31 +189,52 @@ public class JPageMgr extends ActivityGroup implements Animation.AnimationListen
 			return;
 		}
 		
-		JPage p = pages.get(i);
+		JPageInfo p = pages.get(i);
 		Intent it  = new Intent(this, JPage.class);
-		it.putExtra("pagename", p.getName());
-		JPage.setCurPageName(p.getName());
-		Window win = getLocalActivityManager().startActivity(String.valueOf(p.getId()), it);
+		it.putExtra("pagename", p.pageName);
+		JPage.setCurPageName(p.pageName);
+		Window win = getLocalActivityManager().startActivity(String.valueOf(p.pageId), it);
 		if (win == null) {
 			lockScreen(false);
-			Log.e("X", "JPageMgr.loadNewPage pageName=" + p.getName() + ",pageId=" +p.getId() + " start activity fail");
+			Log.e("X", "JPageMgr.loadNewPage pageName=" + p.pageName + ",pageId=" +p.pageId + " start activity fail");
 			return;
 		}
-		installWindow(win, inAnim, outAnim);
+		installWindow(win, animType);
 		
 		for (++i; i < pages.size(); ++i) {
-			JPage px = pages.remove(i);
-			getLocalActivityManager().destroyActivity(String.valueOf(px.getId()), true);
+			JPageInfo px = pages.remove(i);
+			destroyPage(px);
 		}
 		lockScreen(false);
 	}
 	
+	private void destroyPage(JPageInfo pi) {
+		long curTime = System.currentTimeMillis();
+		noUsedPages.add(pi);
+		pi.destroyTime = curTime;
+		for (int i = 0; i < noUsedPages.size(); ++i) {
+			JPageInfo px = noUsedPages.get(i);
+			if (px.page.canDestroy()/* && (curTime - px.destroyTime) > 3000*/) {
+				noUsedPages.remove(i);
+				getLocalActivityManager().destroyActivity(String.valueOf(px.pageId), true);
+				--i;
+			}
+		}
+	}
+	
 	public void goBack() {
 		if (pages.size() < 2) {
+			//finish
+			int id = pages.get(0).pageId;
+			getLocalActivityManager().destroyActivity(String.valueOf(id), true);
+			System.exit(0);
 			return;
 		}
-		JPage p = pages.get(pages.size() - 2);
-		loadExistPage(p.getId(), 0, 0);
+		
+		JPageInfo p1 = pages.get(pages.size() - 1);
+		JPageInfo p2 = pages.get(pages.size() - 2);
+		int at = JAnimHelper.getReverseAnim(p1.aminType);
+		loadExistPage(p2.pageId, at);
 	}
 	
 	public void removePage(int pageId) {
@@ -221,10 +244,10 @@ public class JPageMgr extends ActivityGroup implements Animation.AnimationListen
 			return;
 		}
 		for (int i = 0; i < pages.size(); ++i) {
-			JPage p = pages.get(i);
-			if (p.getId() == pageId) {
+			JPageInfo p = pages.get(i);
+			if (p.pageId == pageId) {
 				pages.remove(i);
-				getLocalActivityManager().destroyActivity(String.valueOf(pageId), true);
+				destroyPage(p);
 				break;
 			}
 		}
@@ -233,10 +256,10 @@ public class JPageMgr extends ActivityGroup implements Animation.AnimationListen
 	public void removeFirstPage(String pageName) {
 		int curPageId = this.getCurPage().getId();
 		for (int i = 0; i < pages.size(); ++i) {
-			JPage p = pages.get(i);
-			if (curPageId != p.getId() && p.getName().equals(pageName)) {
+			JPageInfo p = pages.get(i);
+			if (curPageId != p.pageId && p.pageName.equals(pageName)) {
 				pages.remove(i);
-				getLocalActivityManager().destroyActivity(String.valueOf(p.getId()), true);
+				destroyPage(p);
 				break;
 			}
 		}
@@ -245,10 +268,10 @@ public class JPageMgr extends ActivityGroup implements Animation.AnimationListen
 	public void removeLastPage(String pageName) {
 		int curPageId = this.getCurPage().getId();
 		for (int i = pages.size() - 1; i >= 0; --i) {
-			JPage p = pages.get(i);
-			if (curPageId != p.getId() && p.getName().equals(pageName)) {
+			JPageInfo p = pages.get(i);
+			if (curPageId != p.pageId && p.pageName.equals(pageName)) {
 				pages.remove(i);
-				getLocalActivityManager().destroyActivity(String.valueOf(p.getId()), true);
+				destroyPage(p);
 				break;
 			}
 		}
@@ -257,33 +280,26 @@ public class JPageMgr extends ActivityGroup implements Animation.AnimationListen
 	public void removeAllPage(String pageName) {
 		int curPageId = this.getCurPage().getId();
 		for (int i = pages.size() - 1; i >= 0; --i) {
-			JPage p = pages.get(i);
-			if (curPageId != p.getId() && p.getName().equals(pageName)) {
+			JPageInfo p = pages.get(i);
+			if (curPageId != p.pageId && p.pageName.equals(pageName)) {
 				pages.remove(i);
-				getLocalActivityManager().destroyActivity(String.valueOf(p.getId()), true);
+				destroyPage(p);
 			}
 		}
 	}
 	
-	public void onConfigurationChanged(Configuration newConfig) {
-    	super.onConfigurationChanged(newConfig);
-	}
-
-	@Override
-	public void onAnimationEnd(Animation animation) {
-		// TODO Auto-generated method stub
-		lockScreen(false);
-	}
-
-	@Override
-	public void onAnimationRepeat(Animation animation) {
-		// TODO Auto-generated method stub
+	private static final class JPageInfo {
+		public JPage page;
+		public int aminType;
+		public int pageId;
+		public String pageName;
+		public long destroyTime;
 		
-	}
-
-	@Override
-	public void onAnimationStart(Animation animation) {
-		// TODO Auto-generated method stub
-		
+		public JPageInfo(JPage p, int at, int id, String name) {
+			page = p;
+			aminType = at;
+			pageId = id;
+			pageName = name;
+		}
 	}
 }

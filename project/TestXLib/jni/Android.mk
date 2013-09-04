@@ -25,7 +25,7 @@ LOCAL_C_INCLUDES += $(LOCAL_X_ROOT)/init $(LOCAL_X_ROOT)/page $(LOCAL_X_ROOT)/pl
 					
 LOCAL_LDFLAGS += -L../XLib/libs/armeabi
 LOCAL_MODULE    := TestX
-LOCAL_SRC_FILES := main.cpp HelloPage.cpp
+LOCAL_SRC_FILES := main.cpp HelloPage.cpp NiPage.cpp
 LOCAL_LDLIBS    := -llog -lX
 
 include $(BUILD_SHARED_LIBRARY)
