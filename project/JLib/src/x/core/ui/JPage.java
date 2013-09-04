@@ -135,6 +135,7 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	}
 
 	protected void onCreate(Bundle savedInstanceState) {
+		Log.w("X", "onCreate pageName=" + name);
 		super.onCreate(savedInstanceState);
 		View v = (View)OnCreate(id);
 		applyStyle();
@@ -143,6 +144,7 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	}
 	
 	protected void onDestroy() {
+		Log.w("X", "onDestroy pageName=" + name);
 		status = STATUS_CREATE;
 		OnDestroy(id);
 		super.onDestroy();
@@ -150,23 +152,27 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	}
 	
 	protected void onStart() {
+		Log.w("X", "onStart pageName=" + name);
 		status = STATUS_START;
 		super.onStart();
 		OnStart(id);
 	}
 	
 	protected void onStop() {
+		Log.w("X", "onStop pageName=" + name);
 		status = STATUS_STOP;
 		OnStop(id);
 		super.onStop();
 	}
 	
 	protected void onResume() {
+		Log.w("X", "onResume pageName=" + name);
 		status = STATUS_RESUME;
 		super.onResume();
 	}
 	
 	protected void onPause() {
+		Log.w("X", "onPause pageName=" + name);
 		status = STATUS_PAUSE;
 		super.onPause();
 	}

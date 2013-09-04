@@ -300,10 +300,10 @@ public class JPlatform {
     }
     
     public static void setTitle(Object obj, String txt) {
-    	Activity a = (Activity)obj;
-		if (a != null) {
-			a.setTitle(txt);
-		}
+    	JPageMgr ins = JPageMgr.instance();
+    	if (ins != null) {
+    		ins.setTitle(txt);
+    	}
     }
     
     public static void setOrientation(Object obj, boolean b) {

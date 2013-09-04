@@ -1,7 +1,13 @@
 <Page>
 	<Style  src="/sdcard/main.style"/>
+	<Style>
+		Lab {
+			bgcolor:0accff
+			color:ff00ff
+		}
+	</Style>
 	
-	<MainView title="Hello">
+	<MainView title="World">
 		<LineLay ori="ver" id="content">
 			<Lab txt="This is World page!" />
 			<Lab txt="Hello world label" id="click_btn1"/>

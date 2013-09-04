@@ -1,7 +1,7 @@
 <Page>
 	<Style  src="/sdcard/main.style"/>
 	
-	<MainView title="Hello">
+	<MainView title="Ni">
 		<LineLay ori="ver" id="content">
 			<LineLay>
 				<Btn txt="Btn1" id="click_btn3" />
