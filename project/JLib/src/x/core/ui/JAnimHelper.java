@@ -1,5 +1,6 @@
 package x.core.ui;
 
+import android.util.Log;
 import android.view.animation.*;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.ViewFlipper;
@@ -56,11 +57,17 @@ public class JAnimHelper {
 		createAnim(animType);
 		flip.setInAnimation(in);
 		flip.setOutAnimation(out);
+		al.reset();
 		if (in != null) {
 			in.setAnimationListener(al);
+			al.incAnimCount();
 		}
 		if (out != null) {
 			out.setAnimationListener(al);
+			al.incAnimCount();
+		}
+		if (in != null || out != null) {
+			JPageMgr.instance().lockScreen(true);
 		}
 	}
 	
@@ -81,13 +88,21 @@ public class JAnimHelper {
 	}
 	
 	private static class AnimListener implements AnimationListener {
+		private int animCount;
 		
-		public void increaseAnim() {
-			JPageMgr.instance().lockScreen(true);
+		public void reset() {
+			animCount = 0;
+		}
+		
+		public void incAnimCount() {
+			++animCount;
 		}
 		
 		public void onAnimationEnd(Animation animation) {
-			JPageMgr.instance().lockScreen(false);
+			--animCount;
+			if (animCount == 0) {
+				JPageMgr.instance().lockScreen(false);
+			}
 		}
 
 		@Override
@@ -96,7 +111,6 @@ public class JAnimHelper {
 
 		@Override
 		public void onAnimationStart(Animation animation) {
-			JPageMgr.instance().lockScreen(true);
 		}
     }
 }

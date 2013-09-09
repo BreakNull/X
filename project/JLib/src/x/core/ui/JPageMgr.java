@@ -58,6 +58,8 @@ public class JPageMgr extends ActivityGroup {
 		} else {
 			if (screenDisable > 0)
 				--screenDisable;
+			else
+				Log.e("X", "lockScreen the lock num < 0");
 		}
 	}
 	
@@ -90,7 +92,7 @@ public class JPageMgr extends ActivityGroup {
 				((ev.getFlags() & KeyEvent.FLAG_LONG_PRESS) != 0)) {
 			return true;
 		}
-		
+		Log.i("X", "");
 		Activity cur = getCurPage();
 		if(null != cur) {
 			if (cur.dispatchKeyEvent(ev)) {
