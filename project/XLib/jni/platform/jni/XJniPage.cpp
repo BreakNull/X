@@ -21,7 +21,7 @@ jint XJniPage::GetStyle(JNIEnv *pEnv, jobject jpage, jint id)
 
 void XJniPage::OnNew(JNIEnv *pEnv, jobject jpage, jstring pageName, jint id)
 {
-    LOGD("jpage=%p, pageName=%p, id=%d", jpage, pageName, id);
+    //LOGD("jpage=%p, pageName=%p, id=%d", jpage, pageName, id);
     const char *pName = pEnv->GetStringUTFChars(pageName, NULL);
     if (!pName) {
         LOGE("Fail, pName is NULL");
@@ -39,7 +39,7 @@ void XJniPage::OnNew(JNIEnv *pEnv, jobject jpage, jstring pageName, jint id)
 
 jobject XJniPage::OnCreate(JNIEnv *pEnv, jobject jpage, jint id)
 {
-    LOGD("XJniPage::OnCreate");
+    //LOGD("XJniPage::OnCreate");
     XPage *page = XPageMgr::Instance()->GetPage(id);
     if (!page) {
         LOGE("fail, page is NULL");
@@ -55,7 +55,7 @@ jobject XJniPage::OnCreate(JNIEnv *pEnv, jobject jpage, jint id)
 
 void XJniPage::OnDestroy(JNIEnv *pEnv, jobject jpage, jint id)
 {
-    LOGD("XJniPage::OnDestroy");
+    //LOGD("XJniPage::OnDestroy");
     XPage *page = XPageMgr::Instance()->GetPage(id);
     if (!page) {
         LOGE("fail, page is NULL");
@@ -66,7 +66,7 @@ void XJniPage::OnDestroy(JNIEnv *pEnv, jobject jpage, jint id)
 
 void XJniPage::OnStart(JNIEnv *pEnv, jobject jpage, jint id)
 {
-    LOGD("XJniPage::OnStart");
+    //LOGD("XJniPage::OnStart");
     XPage *page = XPageMgr::Instance()->GetPage(id);
     if (!page) {
         LOGE("fail, page is NULL");
@@ -77,7 +77,7 @@ void XJniPage::OnStart(JNIEnv *pEnv, jobject jpage, jint id)
 
 void XJniPage::OnStop(JNIEnv *pEnv, jobject jpage, jint id)
 {
-    LOGD("XJniPage::OnStop");
+    //LOGD("XJniPage::OnStop");
     XPage *page = XPageMgr::Instance()->GetPage(id);
     if (!page) {
         LOGE("fail, page is NULL");
@@ -88,7 +88,7 @@ void XJniPage::OnStop(JNIEnv *pEnv, jobject jpage, jint id)
 
 void XJniPage::OnBackPressed(JNIEnv *pEnv, jobject jpage, jint id)
 {
-    LOGD("XJniPage::OnBackPressed");
+    //LOGD("XJniPage::OnBackPressed");
     XPage *page = XPageMgr::Instance()->GetPage(id);
     if (!page) {
         LOGE("fail, page is NULL");

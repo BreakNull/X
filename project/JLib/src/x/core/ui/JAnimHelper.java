@@ -19,7 +19,7 @@ public class JAnimHelper {
 	
 	private static void createAnim(int animType) {
 		final int T = Animation.RELATIVE_TO_SELF;
-		final int M = 200;
+		final int M = 500;
 		
 		switch (animType) {
 		case AnimType.S_IN_LEFT:

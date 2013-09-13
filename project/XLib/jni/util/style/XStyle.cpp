@@ -82,7 +82,7 @@ void XStyle::LoadData(char *pData)
 
 void XStyle::LoadFile(const char *pFileName)
 {
-    LOGD("Load style file '%s'", pFileName);
+    //LOGD("Load style file '%s'", pFileName);
     m_bFree = true;
     if (NULL == pFileName) {
         return;

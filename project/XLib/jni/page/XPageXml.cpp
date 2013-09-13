@@ -27,7 +27,7 @@ XPageXml *XPageXml::Clone(XPage *p)
 
 bool XPageXml::LoadData(char *pXmlData)
 {
-    LOGD("XPageXml::LoadData");
+    //LOGD("XPageXml::LoadData");
     m_pDoc = new TiXmlDocument();
     const char *p = m_pDoc->Parse(pXmlData, NULL, TIXML_ENCODING_UTF8);
     if (p && *p == '\0') {
@@ -40,7 +40,7 @@ bool XPageXml::LoadData(char *pXmlData)
 
 bool XPageXml::LoadFile(const char *pFileName)
 {
-    LOGD("XPageXml::LoadFile fileName='%s'", pFileName);
+    //LOGD("XPageXml::LoadFile fileName='%s'", pFileName);
     m_pDoc = new TiXmlDocument();
     bool b = m_pDoc->LoadFile(pFileName, TIXML_ENCODING_UTF8);
     if (!b) {
@@ -56,7 +56,7 @@ XWidget *XPageXml::GetMainView()
 
 void XPageXml::Parse()
 {
-    LOGD("XPageXml::Parse begin ===>");
+    //LOGD("XPageXml::Parse begin ===>");
     if (!m_pDoc) {
         LOGE("XPageXml::LoadFile m_pDoc is NULL");
         return;
@@ -69,7 +69,7 @@ void XPageXml::Parse()
         else if (strcmp(pE->Value(),"Style") == 0)
             ParseStyle(pE);
     }
-    LOGD("XPageXml::Parse end <===");
+    //LOGD("XPageXml::Parse end <===");
 }
 
 void XPageXml::ParseMainView(TiXmlElement *pElem)

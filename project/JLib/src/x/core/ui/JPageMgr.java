@@ -92,7 +92,11 @@ public class JPageMgr extends ActivityGroup {
 				((ev.getFlags() & KeyEvent.FLAG_LONG_PRESS) != 0)) {
 			return true;
 		}
-		Log.i("X", "");
+		if (isScreenLocked() || isKeyLocked()) {
+			Log.i("X", "====ignore key evt==" + ev);
+			return true;
+		}
+		Log.i("X", "key evt=" + ev);
 		Activity cur = getCurPage();
 		if(null != cur) {
 			if (cur.dispatchKeyEvent(ev)) {
@@ -122,9 +126,9 @@ public class JPageMgr extends ActivityGroup {
 	
 	private void installWindow(Window win, int animType) {
 		ViewGroup vg = (ViewGroup)win.getDecorView().getParent();
-		if (vg != null) {
-			vg.removeView(win.getDecorView());
-		}
+//		if (vg != null) {
+//			vg.removeView(win.getDecorView());
+//		}
 		for (int i = fliper.getChildCount() - 1; i >= 0; --i) {
 			if (fliper.getChildAt(i) != fliper.getCurrentView()) {
 				fliper.removeViewAt(i);
@@ -152,6 +156,7 @@ public class JPageMgr extends ActivityGroup {
 			return;
 		}
 		JPage cur = getPageById(id);
+		Log.d("X", "JPageMgr.loadNewPage cur=" + cur);
 		JPageInfo pi = new JPageInfo(cur, animType, cur.getId(), cur.getName());
 		pages.add(pi);
 		installWindow(win, animType);

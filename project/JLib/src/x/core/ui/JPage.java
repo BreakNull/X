@@ -21,7 +21,7 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	public static final int STATUS_NONE = 0;
 	public static final int STATUS_CREATE = 1;
 	public static final int STATUS_START = 2;
-	public static final int STATUS_RESUME = 3;
+	public static final int STATUS_RESUMED = 3;
 	public static final int STATUS_PAUSE = 4;
 	public static final int STATUS_STOP = 5;
 	public static final int STATUS_DESTROY = 6;
@@ -144,7 +144,7 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	}
 
 	protected void onCreate(Bundle savedInstanceState) {
-		//Log.w("X", "onCreate pageName=" + name);
+		Log.d("X", "onCreate '" + name + "'");
 		super.onCreate(savedInstanceState);
 		View v = (View)OnCreate(id);
 		applyStyle();
@@ -153,7 +153,7 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	}
 	
 	protected void onDestroy() {
-		//Log.w("X", "onDestroy pageName=" + name);
+		Log.d("X", "onDestroy '" + name + "'");
 		status = STATUS_CREATE;
 		OnDestroy(id);
 		super.onDestroy();
@@ -161,49 +161,51 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	}
 	
 	protected void onStart() {
-		//Log.w("X", "onStart pageName=" + name);
-		status = STATUS_START;
+		Log.d("X", "onStart '" + name + "'");
 		super.onStart();
 		OnStart(id);
+		status = STATUS_START;
 	}
 	
 	protected void onStop() {
-		//Log.w("X", "onStop pageName=" + name);
+		Log.d("X", "onStop '" + name + "'");
 		status = STATUS_STOP;
 		OnStop(id);
 		super.onStop();
 	}
 	
 	protected void onResume() {
-		//Log.w("X", "onResume pageName=" + name);
-		status = STATUS_RESUME;
+		Log.d("X", "onResume '" + name + "'");
 		if (hasTitle) {
 			JPlatform.setTitle(this, title);
 		}
 		super.onResume();
+		status = STATUS_RESUMED;
 	}
 	
 	protected void onPause() {
-		//Log.w("X", "onPause pageName=" + name);
+		Log.d("X", "onPause '" + name + "'");
 		status = STATUS_PAUSE;
 		super.onPause();
 	}
 	
 	public boolean dispatchKeyEvent(KeyEvent ev){
+		Log.d("X", "dispatchKeyEvent '" + name + "'");
 		if (JPageMgr.instance().isKeyLocked() || JPageMgr.instance().isScreenLocked()) {
 			return true;
 		}
-		if (status >= STATUS_PAUSE) {
+		if (status != STATUS_RESUMED) {
 			return true;
 		}
 		return super.dispatchKeyEvent(ev);
 	}
 	
 	public boolean dispatchTouchEvent(MotionEvent ev) {
+		//Log.d("X", "dispatchTouchEvent '" + name + "'");
 		if (JPageMgr.instance().isTouchLocked() || JPageMgr.instance().isScreenLocked()) {
 			return true;
 		}
-		if (status >= STATUS_PAUSE) {
+		if (status != STATUS_RESUMED) {
 			return true;
 		}
 		return super.dispatchTouchEvent(ev);	
@@ -213,7 +215,7 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 		if (JPageMgr.instance().isScreenLocked()) {
 			return true;
 		}
-		if (status >= STATUS_PAUSE) {
+		if (status != STATUS_RESUMED) {
 			return true;
 		}
 		return super.dispatchTrackballEvent(ev);
@@ -223,11 +225,12 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 		if (JPageMgr.instance().isKeyLocked() || JPageMgr.instance().isScreenLocked()) {
 			return true;
 		}
-		if (status >= STATUS_PAUSE) {
+		if (status != STATUS_RESUMED) {
 			return true;
 		}
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if (event.getRepeatCount() == 0) {
+			if (event.getRepeatCount() == 0 && event.getAction() == KeyEvent.ACTION_DOWN) {
+				Log.i("X", "--->key back pressed-----<");
 				OnBackPressed(id);
 			}
 			return true;
@@ -239,11 +242,10 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 		if (JPageMgr.instance().isKeyLocked() || JPageMgr.instance().isScreenLocked()) {
 			return true;
 		}
-		if (status >= STATUS_PAUSE) {
+		if (status != STATUS_RESUMED) {
 			return true;
 		}
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			//OnBackPressed(id);
 			return true;
 		}
 		return super.onKeyUp(keyCode, event);
@@ -253,7 +255,7 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 		if (JPageMgr.instance().isTouchLocked() || JPageMgr.instance().isScreenLocked()) {
 			return true;
 		}
-		if (status >= STATUS_PAUSE) {
+		if (status != STATUS_RESUMED) {
 			return true;
 		}
 		return super.onTouchEvent(event);
@@ -291,5 +293,9 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	@Override
 	public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 		OnDateChanged(id, getWidgetId(view), year, monthOfYear, dayOfMonth);
+	}
+	
+	public String toString() {
+		return super.toString() + ", name=" + name + ", id=" + id;
 	}
 }

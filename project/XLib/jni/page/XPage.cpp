@@ -24,7 +24,7 @@ XPage::~XPage()
 
 XWidget *XPage::OnCreate()
 {
-    LOGD("XPage::OnCreate page name is '%s'", m_cName.c_str());
+    //LOGD("XPage::OnCreate page name is '%s'", m_cName.c_str());
     if (::GetXPageXml()) {
         delete m_pXml;
         m_pXml = ::GetXPageXml()->Clone(this);
@@ -43,7 +43,7 @@ XWidget *XPage::OnCreate()
 
 void XPage::OnDestroy()
 {
-    LOGD("XPage::OnDestroy page name is '%s'", m_cName.c_str());
+    //LOGD("XPage::OnDestroy page name is '%s'", m_cName.c_str());
     delete m_pXml;
     m_pXml = NULL;
     XPageMgr::Instance()->RemovePage(m_id);
@@ -52,13 +52,13 @@ void XPage::OnDestroy()
 
 void XPage::OnStart()
 {
-    LOGD("XPage::OnStart page name is '%s'", m_cName.c_str());
+    //LOGD("XPage::OnStart page name is '%s'", m_cName.c_str());
     //TODO:
 }
 
 void XPage::OnStop()
 {
-    LOGD("XPage::OnStop page name is '%s'", m_cName.c_str());
+    //LOGD("XPage::OnStop page name is '%s'", m_cName.c_str());
     //TODO:
 }
 
