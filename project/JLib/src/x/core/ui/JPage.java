@@ -12,8 +12,6 @@ public class JPage extends Activity implements View.OnClickListener,
 DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	protected int id;
 	protected String name;
-	protected String title;
-	protected boolean hasTitle;
 	private static int curId = 0;
 	private static String curName;
 	private int status = STATUS_NONE;
@@ -71,13 +69,6 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	
 	public String getName() {
 		return name;
-	}
-	
-	public void setTitle(CharSequence t) {
-		super.setTitle(t);
-		JPageMgr.instance().setTitle(t);
-		this.title = t.toString();
-		hasTitle = true;
 	}
 	
 	public static int getNextId() {
@@ -172,9 +163,6 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	
 	protected void onResume() {
 		Log.d("X", "onResume '" + name + "'");
-		if (hasTitle) {
-			JPlatform.setTitle(this, title);
-		}
 		super.onResume();
 		status = STATUS_RESUMED;
 	}

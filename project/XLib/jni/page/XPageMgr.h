@@ -12,11 +12,20 @@ using namespace std;
 class XPageMgr
 {
 public:
+    enum AnimType {
+        A_USE_HISTORY = -1, //often used for loadExistPage
+        A_NONE = 0,
+        A_LEFT_IN_RIGHT_OUT = 1,
+        A_RIGHT_IN_LEFT_OUT = 2,
+        A_BOTTOM_IN_TOP_OUT = 3,
+        A_TOP_IN_BOTTOM_OUT = 4
+    };
+
     static XPageMgr *Instance();
 
-    void LoadNewPage(const char *pName, int anim);
-    void LoadExistPage(const char *pName, int anim);
-    void LoadExistPage(int pageId, int anim);
+    void LoadNewPage(const char *pName, AnimType anim = A_NONE);
+    void LoadExistPage(const char *pName, AnimType anim = A_NONE);
+    void LoadExistPage(int pageId, AnimType anim = A_NONE);
     void GoBack();
 
     void AddPage(int id, XPage *p);

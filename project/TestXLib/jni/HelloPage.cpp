@@ -20,7 +20,7 @@ void HelloPage::OnClick(const string &id)
 		return;
 	}
 	if (id == "go_ni") {
-        XPageMgr::Instance()->LoadNewPage("NiPage", 2);
+        XPageMgr::Instance()->LoadNewPage("NiPage", XPageMgr::A_RIGHT_IN_LEFT_OUT);
 		return;
 	}
 	LOGD("find widget=%p", pBtn);

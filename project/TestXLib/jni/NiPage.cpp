@@ -13,6 +13,6 @@ NiPage::NiPage(void *pRealPage, const string &name, int id)
 void NiPage::OnClick(const string &id)
 {
     if (id == "go_world") {
-        XPageMgr::Instance()->LoadNewPage("WorldPage", 3);
+        XPageMgr::Instance()->LoadNewPage("WorldPage", XPageMgr::A_TOP_IN_BOTTOM_OUT);
     }
 }
