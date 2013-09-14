@@ -1,10 +1,12 @@
 <Page>
 	<Style  src="/sdcard/main.style"/>
 	<Style>
+	<![CDATA[
 		Lab {
 			bgcolor:0accff
 			color:ff00ff
 		}
+	]]>
 	</Style>
 	
 	<MainView title="World">

@@ -30,7 +30,7 @@ XWidget *XPage::OnCreate()
         m_pXml = ::GetXPageXml()->Clone(this);
         //TODO:
         string root("/sdcard/");
-        string fn = root + m_cName + ".xml";
+        string fn = root + m_cName + ".xml.o";
         if (m_pXml->LoadFile(fn.c_str())) {
             m_pXml->Parse();
         }

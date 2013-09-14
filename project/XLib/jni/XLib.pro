@@ -89,7 +89,9 @@ SOURCES += \
     util/schedule/XTaskSchedule.cpp \
     platform/jni/XJniUiThreadRunnable.cpp \
     util/style/XStyle.cpp \
-    page/XPageMgr.cpp
+    page/XPageMgr.cpp \
+    util/oml/XmlElement.cpp \
+    util/oml/XmlDocument.cpp
 
 HEADERS +=\
     page/XPage.h \
@@ -166,7 +168,9 @@ HEADERS +=\
     util/schedule/XTaskSchedule.h \
     platform/jni/XJniUiThreadRunnable.h \
     util/style/XStyle.h \
-    page/XPageMgr.h
+    page/XPageMgr.h \
+    util/oml/XmlElement.h \
+    util/oml/XmlDocument.h
 
 unix:!symbian {
     maemo5 {

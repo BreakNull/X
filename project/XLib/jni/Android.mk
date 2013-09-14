@@ -29,7 +29,7 @@ endif
 LOCAL_MODULE := libX
 
 
-#---------------------------------------------------Source file folder define------------------------------------------------------------#SRCEXTS = .c .C .cc .cpp .CPP .c++ .cxx .cp
+#---------------------------------------------------Source file folder define------------------------------------------------------------#SRCEXTS = .c .C .cc .cpp .CPP .c++ .cxx .cp
 #SRCDIRS = $(LOCAL_PATH)/datetime $(LOCAL_PATH)/timer $(LOCAL_PATH)/log $(LOCAL_PATH)/thread $(LOCAL_PATH)/variant $(LOCAL_PATH)/sqlite3 \
 		$(LOCAL_PATH)/tinyxml $(LOCAL_PATH)/init
 		
@@ -54,7 +54,7 @@ LOCAL_SRC_FILES+=	$(subst ./, ./util/sqlite3/, $(shell cd $(LOCAL_PATH)/util/sql
 LOCAL_SRC_FILES+=	$(subst ./, ./util/sqlite3/, $(shell cd $(LOCAL_PATH)/util/sqlite3; find . -name '*.c'))
 LOCAL_SRC_FILES+=	$(subst ./, ./util/thread/, $(shell cd $(LOCAL_PATH)/util/thread; find . -name '*.cpp'))
 LOCAL_SRC_FILES+=	$(subst ./, ./util/timer/, $(shell cd $(LOCAL_PATH)/util/timer; find . -name '*.cpp'))
-LOCAL_SRC_FILES+=	$(subst ./, ./util/tinyxml/, $(shell cd $(LOCAL_PATH)/util/tinyxml; find . -name '*.cpp'))
+LOCAL_SRC_FILES+=	$(subst ./, ./util/oml/, $(shell cd $(LOCAL_PATH)/util/oml; find . -name '*.cpp'))
 LOCAL_SRC_FILES+=	$(subst ./, ./util/variant/, $(shell cd $(LOCAL_PATH)/util/variant; find . -name '*.cpp'))
 LOCAL_SRC_FILES+=	$(subst ./, ./util/style/, $(shell cd $(LOCAL_PATH)/util/style; find . -name '*.cpp'))
 
@@ -88,7 +88,7 @@ PROJECT_INCLUDE:=	$(ANDROID_NDK_ROOT)/sources/cxx-stl/gnu-libstdc++/include \
 					$(LOCAL_PATH)/util/sqlite3 \
 					$(LOCAL_PATH)/util/thread \
 					$(LOCAL_PATH)/util/timer \
-					$(LOCAL_PATH)/util/tinyxml \
+					$(LOCAL_PATH)/util/oml \
 					$(LOCAL_PATH)/util/variant  \
 					$(LOCAL_PATH)/util/style
 					
