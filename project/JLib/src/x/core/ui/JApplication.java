@@ -13,4 +13,6 @@ public abstract class JApplication extends Application {
 	}
 	
 	public abstract String getFirstPageName();
+	
+	public abstract boolean isFullScreen();
 }

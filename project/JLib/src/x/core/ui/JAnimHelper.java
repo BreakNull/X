@@ -1,5 +1,8 @@
 package x.core.ui;
 
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.animation.*;
 import android.view.animation.Animation.AnimationListener;
@@ -9,47 +12,44 @@ public class JAnimHelper {
 	private static Animation in, out;
 	private static AnimListener al = new AnimListener();
 	
-	public static interface AnimType {
-		public static int S_NONE = 0;
-		public static int S_IN_LEFT = 1;
-		public static int S_IN_RIGHT = 2;
-		public static int S_IN_BOTTOM = 3;
-		public static int S_IN_TOP = 4;
-	}
-	
 	private static void createAnim(int animType) {
 		final int T = Animation.RELATIVE_TO_SELF;
 		final int M = 500;
+		int mask = AnimType.getMask(animType);
+		in = null;
+		out = null;
 		
-		switch (animType) {
-		case AnimType.S_IN_LEFT:
+		if ((mask & AnimType.MASK_LEFT_IN) != 0) {
 			in = new TranslateAnimation(T, -1, T, 0, T, 0, T, 0);
 			in.setDuration(M);
-			out = new TranslateAnimation(T, 0, T, 1.0f, T, 0, T, 0);
+		}
+		if ((mask & AnimType.MASK_LEFT_OUT) != 0) {
+			out = new TranslateAnimation(T, 0, T, 0, T, -1, T, 0);
 			out.setDuration(M);
-			break;
-		case AnimType.S_IN_RIGHT:
+		}
+		if ((mask & AnimType.MASK_RIGHT_IN) != 0) {
 			in = new TranslateAnimation(T, 1, T, 0, T, 0, T, 0);
 			in.setDuration(M);
-			out = new TranslateAnimation(T, 0, T, -1, T, 0, T, 0);
+		}
+		if ((mask & AnimType.MASK_RIGHT_OUT) != 0) {
+			out = new TranslateAnimation(T, 0, T, 0, T, 1, T, 0);
 			out.setDuration(M);
-			break;
-		case AnimType.S_IN_BOTTOM:
-			in = new TranslateAnimation(T, 0, T, 0, T, 1, T, 0);
+		}
+		if ((mask & AnimType.MASK_TOP_IN) != 0) {
+			in = new TranslateAnimation(T, 0, T, -1, T, 0, T, 0);
 			in.setDuration(M);
+		}
+		if ((mask & AnimType.MASK_TOP_OUT) != 0) {
 			out = new TranslateAnimation(T, 0, T, 0, T, 0, T, -1);
 			out.setDuration(M);
-			break;
-		case AnimType.S_IN_TOP:
-			in = new TranslateAnimation(T, 0, T, 0, T, -1, T, 0);
+		}
+		if ((mask & AnimType.MASK_BOTTOM_IN) != 0) {
+			in = new TranslateAnimation(T, 0, T, 1, T, 0, T, 0);
 			in.setDuration(M);
+		}
+		if ((mask & AnimType.MASK_BOTTOM_OUT) != 0) {
 			out = new TranslateAnimation(T, 0, T, 0, T, 0, T, 1);
 			out.setDuration(M);
-			break;
-		default:
-			in = null;
-			out = null;
-			break;
 		}
 	}
 	
@@ -71,22 +71,6 @@ public class JAnimHelper {
 		}
 	}
 	
-	//get the reverse anim's id
-	public static int getReverseAnim(int an) {
-		switch (an) {
-		case AnimType.S_IN_LEFT:
-			return AnimType.S_IN_RIGHT;
-		case AnimType.S_IN_RIGHT:
-			return AnimType.S_IN_LEFT;
-		case AnimType.S_IN_BOTTOM:
-			return AnimType.S_IN_TOP;
-		case AnimType.S_IN_TOP:
-			return AnimType.S_IN_BOTTOM;
-		default:
-			return AnimType.S_NONE;
-		}
-	}
-	
 	private static class AnimListener implements AnimationListener {
 		private int animCount;
 		
@@ -101,7 +85,10 @@ public class JAnimHelper {
 		public void onAnimationEnd(Animation animation) {
 			--animCount;
 			if (animCount == 0) {
-				JPageMgr.instance().lockScreen(false);
+				//after 50ms, unlock the screen
+				Handler hd = UiThread.getHandler();
+				long time = SystemClock.uptimeMillis() + 50;
+				hd.sendEmptyMessageAtTime(UiThread.MSG_UNLOCK_SCREEN, time);
 			}
 		}
 

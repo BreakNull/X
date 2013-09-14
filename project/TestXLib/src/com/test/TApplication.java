@@ -20,4 +20,9 @@ public class TApplication extends JApplication {
 		return "HelloPage";
 	}
 
+	@Override
+	public boolean isFullScreen() {
+		return false;
+	}
+
 }

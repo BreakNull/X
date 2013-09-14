@@ -78,11 +78,15 @@ public class JPageMgr extends ActivityGroup {
 	public void onCreate(Bundle savedInstanceState) {
 		lockScreen(true);
 		super.onCreate(savedInstanceState);
+		getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+		JApplication app = (JApplication) this.getApplication();
+		if (app.isFullScreen()) {
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN); 
+		}
 		fliper = new ViewFlipper(this);
 		setContentView(fliper);
-		JApplication app = (JApplication) this.getApplication();
 		String name = app.getFirstPageName();
-		loadNewPage(name, JAnimHelper.AnimType.S_NONE);
+		loadNewPage(name, AnimType.A_NONE);
 		lockScreen(false);
 	}
 	
@@ -241,7 +245,7 @@ public class JPageMgr extends ActivityGroup {
 		
 		JPageInfo p1 = pages.get(pages.size() - 1);
 		JPageInfo p2 = pages.get(pages.size() - 2);
-		int at = JAnimHelper.getReverseAnim(p1.aminType);
+		int at = AnimType.getReverseAnim(p1.aminType);
 		loadExistPage(p2.pageId, at);
 	}
 	

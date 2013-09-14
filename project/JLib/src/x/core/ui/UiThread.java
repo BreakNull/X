@@ -9,6 +9,12 @@ public class UiThread {
 	private static long uiThreadId;
 	private static UiHandler handler = new UiHandler();
 	
+	public static final int MSG_UNLOCK_SCREEN = 1;
+	
+	public static Handler getHandler() {
+		return handler;
+	}
+	
 	public static boolean post(long addr, long r2) {
 		if (addr == 0) {
 			return false;
@@ -40,6 +46,9 @@ public class UiThread {
 		
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
+			case MSG_UNLOCK_SCREEN:
+				JPageMgr.instance().lockScreen(false);
+				break;
 			}
 		}
 	}
