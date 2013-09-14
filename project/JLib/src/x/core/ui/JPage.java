@@ -138,10 +138,6 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 	public static String[] getMethods() {
 		return null;
 	}
-	
-	public boolean canDestroy() {
-		return status == STATUS_NONE;
-	}
 
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.d("X", "onCreate '" + name + "'");

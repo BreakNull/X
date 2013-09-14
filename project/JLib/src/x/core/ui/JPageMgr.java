@@ -87,7 +87,6 @@ public class JPageMgr extends ActivityGroup {
 	}
 	
 	public boolean dispatchKeyEvent(KeyEvent ev) {
-		//TODO: if key locked return true
 		if ((ev.getKeyCode() == KeyEvent.KEYCODE_BACK) && 
 				((ev.getFlags() & KeyEvent.FLAG_LONG_PRESS) != 0)) {
 			return true;
@@ -107,7 +106,9 @@ public class JPageMgr extends ActivityGroup {
 	}
 	
 	public boolean dispatchTouchEvent(MotionEvent ev) {
-		//TODO:
+		if (isScreenLocked() || isTouchLocked()) {
+			return true;
+		}
 		return super.dispatchTouchEvent(ev);	
 	}
 	
@@ -203,13 +204,13 @@ public class JPageMgr extends ActivityGroup {
 		Window win = getLocalActivityManager().startActivity(String.valueOf(p.pageId), it);
 		if (win == null) {
 			lockScreen(false);
-			Log.e("X", "JPageMgr.loadNewPage pageName=" + p.pageName + ",pageId=" +p.pageId + " start activity fail");
+			Log.e("X", "JPageMgr.loadExistPage pageName=" + p.pageName + ",pageId=" +p.pageId + " start activity fail");
 			return;
 		}
 		installWindow(win, animType);
 		
-		for (++i; i < pages.size(); ++i) {
-			JPageInfo px = pages.remove(i);
+		for (int j = pages.size() - 1; j > i; --j) {
+			JPageInfo px = pages.remove(j);
 			destroyPage(px);
 		}
 		lockScreen(false);
@@ -221,7 +222,7 @@ public class JPageMgr extends ActivityGroup {
 		pi.destroyTime = curTime;
 		for (int i = 0; i < noUsedPages.size(); ++i) {
 			JPageInfo px = noUsedPages.get(i);
-			if (px.page.canDestroy()/* && (curTime - px.destroyTime) > 3000*/) {
+			if (true /*&& (curTime - px.destroyTime) > 3000*/) {
 				noUsedPages.remove(i);
 				getLocalActivityManager().destroyActivity(String.valueOf(px.pageId), true);
 				--i;

@@ -32,7 +32,7 @@ public class JPlatform {
 			return val;
 		} catch (Exception e) {
 			Log.e("X", "Platform.getRid there is no image named '" + rid + "'");
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return 0;
 	}
