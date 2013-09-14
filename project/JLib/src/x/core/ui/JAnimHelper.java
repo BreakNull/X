@@ -24,7 +24,7 @@ public class JAnimHelper {
 			in.setDuration(M);
 		}
 		if ((mask & AnimType.MASK_LEFT_OUT) != 0) {
-			out = new TranslateAnimation(T, 0, T, 0, T, -1, T, 0);
+			out = new TranslateAnimation(T, 0, T, -1, T, 0, T, 0);
 			out.setDuration(M);
 		}
 		if ((mask & AnimType.MASK_RIGHT_IN) != 0) {
@@ -32,11 +32,11 @@ public class JAnimHelper {
 			in.setDuration(M);
 		}
 		if ((mask & AnimType.MASK_RIGHT_OUT) != 0) {
-			out = new TranslateAnimation(T, 0, T, 0, T, 1, T, 0);
+			out = new TranslateAnimation(T, 0, T, 1.0f, T, 0, T, 0);
 			out.setDuration(M);
 		}
 		if ((mask & AnimType.MASK_TOP_IN) != 0) {
-			in = new TranslateAnimation(T, 0, T, -1, T, 0, T, 0);
+			in = new TranslateAnimation(T, 0, T, 0, T, -1, T, 0);
 			in.setDuration(M);
 		}
 		if ((mask & AnimType.MASK_TOP_OUT) != 0) {
@@ -44,7 +44,7 @@ public class JAnimHelper {
 			out.setDuration(M);
 		}
 		if ((mask & AnimType.MASK_BOTTOM_IN) != 0) {
-			in = new TranslateAnimation(T, 0, T, 1, T, 0, T, 0);
+			in = new TranslateAnimation(T, 0, T, 0, T, 1, T, 0);
 			in.setDuration(M);
 		}
 		if ((mask & AnimType.MASK_BOTTOM_OUT) != 0) {
