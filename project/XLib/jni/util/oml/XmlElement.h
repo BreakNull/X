@@ -17,7 +17,6 @@ class XmlElement
 {
 public:
     XmlElement();
-    void Load(char *pData, char *pSs);
     char *GetData() {return m_pData;}
     const char *Name();
     int ChildSize();
@@ -29,7 +28,11 @@ public:
     const char *GetText();
 
 private:
+    friend class XmlDocument;
+    void Load(char *pData, char *pSs);
     int GetDataLen();
+
+private:
     char *m_pData;
     char *m_pSs;
     short m_sChildSize;
