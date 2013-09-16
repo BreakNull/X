@@ -61,22 +61,6 @@ SOURCES += \
     util/thread/XAutoSync.cpp \
     util/timer/XTimerManager.cpp \
     util/timer/XTimer.cpp \
-    util/tinyxml/xpath_syntax.cpp \
-    util/tinyxml/xpath_stream.cpp \
-    util/tinyxml/xpath_static.cpp \
-    util/tinyxml/xpath_stack.cpp \
-    util/tinyxml/xpath_processor.cpp \
-    util/tinyxml/xpath_expression.cpp \
-    util/tinyxml/xml_util.cpp \
-    util/tinyxml/tokenlist.cpp \
-    util/tinyxml/tinyxmlparser.cpp \
-    util/tinyxml/tinyxmlerror.cpp \
-    util/tinyxml/tinyxml.cpp \
-    util/tinyxml/tinystr.cpp \
-    util/tinyxml/node_set.cpp \
-    util/tinyxml/lex_util.cpp \
-    util/tinyxml/htmlutil.cpp \
-    util/tinyxml/action_store.cpp \
     util/variant/XVariant.cpp \
     init/Init.cpp \
     page/XPageXml.cpp \
@@ -141,23 +125,6 @@ HEADERS +=\
     util/thread/XAutoSync.h \
     util/timer/XTimerManager.h \
     util/timer/XTimer.h \
-    util/tinyxml/xpath_syntax.h \
-    util/tinyxml/xpath_stream.h \
-    util/tinyxml/xpath_static.h \
-    util/tinyxml/xpath_stack.h \
-    util/tinyxml/xpath_processor.h \
-    util/tinyxml/xpath_expression.h \
-    util/tinyxml/xml_util.h \
-    util/tinyxml/tokenlist.h \
-    util/tinyxml/tinyxpath_conf.h \
-    util/tinyxml/tinyxml.h \
-    util/tinyxml/tinystr.h \
-    util/tinyxml/node_set.h \
-    util/tinyxml/lex_util.h \
-    util/tinyxml/lex_token.h \
-    util/tinyxml/htmlutil.h \
-    util/tinyxml/byte_stream.h \
-    util/tinyxml/action_store.h \
     util/variant/XVariant.h \
     init/Init.h \
     page/XPageXml.h \
