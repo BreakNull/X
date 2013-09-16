@@ -105,19 +105,12 @@ bool XFile::Cd(const string &dir)
         return false;
     }
 
-    XFile f;
-    string p;
     if (*n.c_str() == '/') {
-        p = n;
+        m_cPath = n;
     } else {
-        p = m_cPath + "/" + n;
+        m_cPath = m_cPath + "/" + n;
     }
-    f.SetPath(p);
-    if (f.IsExists()) {
-        m_cPath = p;
-        return true;
-    }
-    return false;
+    return true;
 }
 
 bool XFile::OpenDir()
