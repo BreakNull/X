@@ -7,13 +7,13 @@ class XmlDocument
 {
 public:
     XmlDocument();
-    void LoadFile(const char *pFileName);
-    void LoadBuffer(char *pBuf, int iLen);
+    bool LoadFile(const char *pFileName);
+    bool LoadBuffer(char *pBuf, int iLen);
     XmlElement* GetRoot();
     ~XmlDocument();
 
 private:
-    void Parse();
+    bool Parse();
 
 private:
     char *m_pBuf;

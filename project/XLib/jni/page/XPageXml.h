@@ -15,7 +15,7 @@ public:
     virtual ~XPageXml();
     virtual XPageXml *Clone(XPage *p);
 
-    bool LoadData(char *pXmlData, int len);
+    bool LoadBuffer(char *pXmlData, int len);
     bool LoadFile(const char *pFileName);
     virtual void Parse();
     XWidget *GetMainView();

@@ -91,7 +91,8 @@ SOURCES += \
     util/style/XStyle.cpp \
     page/XPageMgr.cpp \
     util/oml/XmlElement.cpp \
-    util/oml/XmlDocument.cpp
+    util/oml/XmlDocument.cpp \
+    util/file/XFile.cpp
 
 HEADERS +=\
     page/XPage.h \
@@ -170,7 +171,8 @@ HEADERS +=\
     util/style/XStyle.h \
     page/XPageMgr.h \
     util/oml/XmlElement.h \
-    util/oml/XmlDocument.h
+    util/oml/XmlDocument.h \
+    util/file/XFile.h
 
 unix:!symbian {
     maemo5 {

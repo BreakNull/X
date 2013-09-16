@@ -17,10 +17,11 @@ class XmlElement
 {
 public:
     XmlElement();
-    char *GetData() {return m_pData;}
-    const char *Name();
-    int ChildSize();
-    int AttrSize();
+    ~XmlElement();
+
+    const char *GetName();
+    int ChildCount();
+    int AttrCount();
     XmlElement* ChildAt(int idx);
     XmlAttr AttrAt(int idx);
     XmlElement *GetChild(const char * name);

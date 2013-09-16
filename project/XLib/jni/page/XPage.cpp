@@ -25,20 +25,19 @@ XPage::~XPage()
 XWidget *XPage::OnCreate()
 {
     //LOGD("XPage::OnCreate page name is '%s'", m_cName.c_str());
-    if (::GetXPageXml()) {
-        delete m_pXml;
-        m_pXml = ::GetXPageXml()->Clone(this);
-        //TODO:
-        string root("/sdcard/");
-        string fn = root + m_cName + ".xml.o";
-        if (m_pXml->LoadFile(fn.c_str())) {
-            m_pXml->Parse();
-        }
-        m_pRoot = m_pXml->GetMainView();
-        return m_pRoot;
+    if (!::GetXPageXml()) {
+        return NULL;
     }
-
-    return NULL;
+    delete m_pXml;
+    m_pXml = ::GetXPageXml()->Clone(this);
+    //TODO:
+    string root("/sdcard/");
+    string fn = root + m_cName + ".oml";
+    if (m_pXml->LoadFile(fn.c_str())) {
+        m_pXml->Parse();
+    }
+    m_pRoot = m_pXml->GetMainView();
+    return m_pRoot;
 }
 
 void XPage::OnDestroy()
@@ -64,7 +63,7 @@ void XPage::OnStop()
 
 void XPage::OnBackPressed()
 {
-    XPlatform::Instance()->GoBack();
+    XPageMgr::Instance()->GoBack();
 }
 
 void *XPage::FindById(const string &id, XWidget *parent)

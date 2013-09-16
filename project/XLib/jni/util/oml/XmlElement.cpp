@@ -17,6 +17,13 @@ XmlElement::XmlElement()
     m_pChildren = NULL;
 }
 
+XmlElement::~XmlElement()
+{
+    if (m_pChildren != NULL) {
+        delete[] m_pChildren;
+    }
+}
+
 void XmlElement::Load(char *pData, char *pSs)
 {
     m_pData = pData;
@@ -24,7 +31,9 @@ void XmlElement::Load(char *pData, char *pSs)
 
     m_sAttrSize = *(short*)(pData + 2);
     m_sChildSize = *(short*)(pData + 4 + m_sAttrSize * 4);
-    m_pChildren = new XmlElement[m_sChildSize];
+    if (m_sChildSize > 0) {
+        m_pChildren = new XmlElement[m_sChildSize];
+    }
 
     if (m_sAttrSize > 0) {
         unsigned short sTxt = *(unsigned short*)(pData + 4 + (m_sAttrSize-1)*4);
@@ -42,18 +51,18 @@ void XmlElement::Load(char *pData, char *pSs)
     }
 }
 
-const char *XmlElement::Name()
+const char *XmlElement::GetName()
 {
     unsigned short idx = *(unsigned short*)m_pData;
     return m_pSs + idx;
 }
 
-int XmlElement::ChildSize()
+int XmlElement::ChildCount()
 {
     return m_sChildSize;
 }
 
-int XmlElement::AttrSize()
+int XmlElement::AttrCount()
 {
     return m_sAttrSize - (m_bHasTxt ? 1 : 0);
 }
@@ -76,7 +85,7 @@ XmlAttr XmlElement::AttrAt(int idx)
 XmlElement *XmlElement::GetChild(const char * name)
 {
     for (int i = 0; i < m_sChildSize; ++i) {
-        if (strcmp(m_pChildren[i].Name(), name) == 0) {
+        if (strcmp(m_pChildren[i].GetName(), name) == 0) {
             return m_pChildren + i;
         }
     }
@@ -85,7 +94,7 @@ XmlElement *XmlElement::GetChild(const char * name)
 
 const char *XmlElement::GetAttr(const char* name)
 {
-    int num = AttrSize();
+    int num = AttrCount();
     for (int i = 0; i < num; ++i) {
         unsigned short *s = (unsigned short*)(m_pData + 4 + i * 4);
         if (strcmp(m_pSs + s[0], name) == 0) {

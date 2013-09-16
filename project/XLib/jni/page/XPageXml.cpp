@@ -18,6 +18,7 @@ XPageXml::XPageXml(XPage *p)
 XPageXml::~XPageXml()
 {
     delete m_pDoc;
+    delete m_pStyle;
 }
 
 XPageXml *XPageXml::Clone(XPage *p)
@@ -25,21 +26,18 @@ XPageXml *XPageXml::Clone(XPage *p)
     return new XPageXml(p);
 }
 
-bool XPageXml::LoadData(char *pXmlData, int len)
+bool XPageXml::LoadBuffer(char *pXmlData, int len)
 {
     //LOGD("XPageXml::LoadData");
     m_pDoc = new XmlDocument();
-    m_pDoc->LoadBuffer(pXmlData, len);
-    return true;
+    return m_pDoc->LoadBuffer(pXmlData, len);
 }
 
 bool XPageXml::LoadFile(const char *pFileName)
 {
     //LOGD("XPageXml::LoadFile fileName='%s'", pFileName);
     m_pDoc = new XmlDocument();
-    m_pDoc->LoadFile(pFileName);
-
-    return true;
+    return m_pDoc->LoadFile(pFileName);
 }
 
 XWidget *XPageXml::GetMainView()
@@ -55,11 +53,11 @@ void XPageXml::Parse()
         return;
     }
     XmlElement *pRoot = m_pDoc->GetRoot();
-    for (int i = 0; i < pRoot->ChildSize(); ++i) {
+    for (int i = 0; i < pRoot->ChildCount(); ++i) {
         XmlElement *pE = pRoot->ChildAt(i);
-        if (strcmp(pE->Name(),"MainView") == 0)
+        if (strcmp(pE->GetName(),"MainView") == 0)
             ParseMainView(pE);
-        else if (strcmp(pE->Name(),"Style") == 0)
+        else if (strcmp(pE->GetName(),"Style") == 0)
             ParseStyle(pE);
     }
     //LOGD("XPageXml::Parse end <===");
@@ -73,9 +71,9 @@ void XPageXml::ParseMainView(XmlElement *pElem)
         LOGE("XPageXml::ParseMainView note <MainView> has no child");
         return;
     }
-    m_pMainView = XWidgetFactory::Instance()->New(p->Name(), m_page);
+    m_pMainView = XWidgetFactory::Instance()->New(p->GetName(), m_page);
     if (!m_pMainView) {
-        LOGE("XPageXml::ParseMainView() Not find %s::New() in XWidgetFactory", p->Name());
+        LOGE("XPageXml::ParseMainView() Not find %s::New() in XWidgetFactory", p->GetName());
         return;
     }
     m_pMainView->Create();
@@ -91,7 +89,7 @@ void XPageXml::ParseMainView(XmlElement *pElem)
 
 void XPageXml::ParseStyle(XmlElement *pElem)
 {
-    if (pElem->AttrSize() != 0) {
+    if (pElem->AttrCount() != 0) {
         XmlAttr attr = pElem->AttrAt(0);
         if (strcmp(attr.GetName(), "src") != 0) {
             LOGE("Invalid Style attribute '%s'", attr.GetName());
@@ -140,11 +138,11 @@ void XPageXml::MergeAttr(XmlElement *pE, vector<XStyleAttr> &vec)
     pId = pE->GetAttr("id");
 
     if (m_pStyle) {
-        pss = m_pStyle->Search(pE->Name(), pClass, pId);
+        pss = m_pStyle->Search(pE->GetName(), pClass, pId);
         vec = pss->GetAttrs();
     }
 
-    for (int i = 0; i < pE->AttrSize(); ++i) {
+    for (int i = 0; i < pE->AttrCount(); ++i) {
         XmlAttr attr = pE->AttrAt(i);
         int idx = -1;
         if (pss != NULL) {
@@ -166,10 +164,11 @@ void XPageXml::ParseContainer(XWidget *pw, XmlElement *pElem)
 {
     ParseAttr(pw, pElem);
 
-    for (int i = 0; i < pElem->ChildSize(); ++i) {
+    for (int i = 0; i < pElem->ChildCount(); ++i) {
         XmlElement *pE = pElem->ChildAt(i);
-        XWidget *pC = XWidgetFactory::Instance()->New(pE->Name(), m_page);
+        XWidget *pC = XWidgetFactory::Instance()->New(pE->GetName(), m_page);
         if (NULL == pC) {
+            LOGE("new widget error");
             break;
         }
         pC->Create();
@@ -186,10 +185,10 @@ void XPageXml::ParseWidget(XWidget *pw, XmlElement *pElem)
 {
     ParseAttr(pw, pElem);
 
-    if (pElem->Name() == "Btn") {
+    if (pElem->GetName() == "Btn") {
         ParseButton(pw, pElem);
     }
-    else if (pElem->Name() == "Lab") {
+    else if (pElem->GetName() == "Lab") {
         ParseLabel(pw, pElem);
     }
 }

@@ -57,6 +57,7 @@ LOCAL_SRC_FILES+=	$(subst ./, ./util/timer/, $(shell cd $(LOCAL_PATH)/util/timer
 LOCAL_SRC_FILES+=	$(subst ./, ./util/oml/, $(shell cd $(LOCAL_PATH)/util/oml; find . -name '*.cpp'))
 LOCAL_SRC_FILES+=	$(subst ./, ./util/variant/, $(shell cd $(LOCAL_PATH)/util/variant; find . -name '*.cpp'))
 LOCAL_SRC_FILES+=	$(subst ./, ./util/style/, $(shell cd $(LOCAL_PATH)/util/style; find . -name '*.cpp'))
+LOCAL_SRC_FILES+=	$(subst ./, ./util/file/, $(shell cd $(LOCAL_PATH)/util/file; find . -name '*.cpp'))
 
 
 #---------------------------------------------------Source file folder define------------------------------------------------------------
@@ -90,7 +91,8 @@ PROJECT_INCLUDE:=	$(ANDROID_NDK_ROOT)/sources/cxx-stl/gnu-libstdc++/include \
 					$(LOCAL_PATH)/util/timer \
 					$(LOCAL_PATH)/util/oml \
 					$(LOCAL_PATH)/util/variant  \
-					$(LOCAL_PATH)/util/style
+					$(LOCAL_PATH)/util/style  \
+					$(LOCAL_PATH)/util/file
 					
 LOCAL_C_INCLUDES :=	$(PROJECT_INCLUDE) 
 
