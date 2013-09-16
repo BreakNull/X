@@ -176,7 +176,7 @@ string XFile::RegularizName(const string &name)
     }
 
     string tmp(pB);
-    delete pBuf;
+    delete[] pBuf;
     return tmp;
 }
 
