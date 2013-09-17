@@ -84,6 +84,9 @@ public:
     virtual void LoadExistPage(int pageId, int anim);
     virtual void GoBack();
 
+    //-----app--------------------
+    virtual string GetWorkDir();
+
 private:
     char m_pClassName[40];
     void *m_pClass;

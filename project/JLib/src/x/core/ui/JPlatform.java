@@ -380,6 +380,11 @@ public class JPlatform {
 		JPageMgr.instance().goBack();
 	}
 	
+	//-------------app-----------------
+	public static String getWorkDir() {
+		return "/data/data/" + JApplication.instance().getPackageName();
+	}
+	
     public static String[] getFields() {
     	return null;
     }
@@ -429,7 +434,8 @@ public class JPlatform {
     			"loadNewPage", "(Ljava/lang/String;I)V", "S",
     			"loadExistPage", "(Ljava/lang/String;I)V", "S",
     			"loadExistPage2", "(II)V", "S",
-    			"goBack", "()V", "S"
+    			"goBack", "()V", "S",
+    			"getWorkDir", "()Ljava/lang/String;", "S"
     	};
     }
 }

@@ -93,6 +93,9 @@ public:
     virtual void LoadExistPage(int pageId, int anim) = 0;
     virtual void GoBack() = 0;
 
+    //-----app--------------------
+    virtual string GetWorkDir() = 0;
+
 protected:
     XPlatform();
 

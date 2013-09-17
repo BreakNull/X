@@ -452,5 +452,13 @@ void XPlatformAndroid::GoBack()
     CALL_VOID();
 }
 
+string XPlatformAndroid::GetWorkDir()
+{
+    GET_MID("getWorkDir", "");
+    CALL_OBJ();
+    return Js2N((jstring)_obj, pEnv);
+}
+
+
 
 

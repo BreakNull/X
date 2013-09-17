@@ -3,8 +3,14 @@ package x.core.ui;
 import android.app.Application;
 
 public abstract class JApplication extends Application {
+	private static JApplication app;
+	
 	public JApplication() {
-		
+		app = this;
+	}
+	
+	public static JApplication instance() {
+		return app;
 	}
 	
 	public void onCreate() {
