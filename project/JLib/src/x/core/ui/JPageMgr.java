@@ -96,10 +96,10 @@ public class JPageMgr extends ActivityGroup {
 			return true;
 		}
 		if (isScreenLocked() || isKeyLocked()) {
-			Log.i("X", "====ignore key evt==" + ev);
+			//Log.i("X", "====ignore key evt==" + ev);
 			return true;
 		}
-		Log.i("X", "key evt=" + ev);
+		//Log.i("X", "key evt=" + ev);
 		Activity cur = getCurPage();
 		if(null != cur) {
 			if (cur.dispatchKeyEvent(ev)) {
@@ -161,7 +161,7 @@ public class JPageMgr extends ActivityGroup {
 			return;
 		}
 		JPage cur = getPageById(id);
-		Log.d("X", "JPageMgr.loadNewPage cur=" + cur);
+		//Log.d("X", "JPageMgr.loadNewPage cur=" + cur);
 		JPageInfo pi = new JPageInfo(cur, animType, cur.getId(), cur.getName());
 		pages.add(pi);
 		installWindow(win, animType);

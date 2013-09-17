@@ -29,8 +29,6 @@ protected:
     void MergeAttr(XmlElement *pE, vector<XStyleAttr> &vec);
     virtual void ParseContainer(XWidget *pw, XmlElement *pElem);
     virtual void ParseWidget(XWidget *pw, XmlElement *pElem);
-    void ParseButton(XWidget *pw, XmlElement *pElem);
-    void ParseLabel(XWidget *pw, XmlElement *pElem);
 
     XmlDocument *m_pDoc;
     XPage *m_page;

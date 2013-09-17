@@ -214,7 +214,7 @@ DatePicker.OnDateChangedListener, TimePicker.OnTimeChangedListener {
 		}
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if (event.getRepeatCount() == 0 && event.getAction() == KeyEvent.ACTION_DOWN) {
-				Log.i("X", "--->key back pressed-----<");
+				//Log.i("X", "--->key back pressed-----<");
 				OnBackPressed(id);
 			}
 			return true;

@@ -184,22 +184,8 @@ void XPageXml::ParseContainer(XWidget *pw, XmlElement *pElem)
 void XPageXml::ParseWidget(XWidget *pw, XmlElement *pElem)
 {
     ParseAttr(pw, pElem);
-
-    if (pElem->GetName() == "Btn") {
-        ParseButton(pw, pElem);
-    }
-    else if (pElem->GetName() == "Lab") {
-        ParseLabel(pw, pElem);
-    }
 }
 
-void XPageXml::ParseButton(XWidget *pw, XmlElement *pElem)
-{
-}
-
-void XPageXml::ParseLabel(XWidget *pw, XmlElement *pElem)
-{
-}
 
 
 
