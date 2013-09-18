@@ -459,6 +459,30 @@ string XPlatformAndroid::GetWorkDir()
     return Js2N((jstring)_obj, pEnv);
 }
 
+void *XPlatformAndroid::GetPltRes(const char *pName, int *pLen)
+{
+    CHECK_PP(pName, pLen);
+    CHECK_B(NULL);
+    *pLen = 0;
+    GET_MID("getResData", NULL);
+    jstring js = pEnv->NewStringUTF(pName);
+    CALL_OBJ(js);
+    pEnv->DeleteLocalRef(js);
+    jbyteArray arr = (jbyteArray)_obj;
+    if (arr == NULL) {
+        return NULL;
+    }
+    *pLen = pEnv->GetArrayLength(arr);
+    if (*pLen <= 0) {
+        *pLen = 0;
+        return NULL;
+    }
+
+    void *buf = malloc(*pLen);
+    pEnv->GetByteArrayRegion(arr, 0, *pLen, (jbyte*)buf);
+    return buf;
+}
+
 
 
 

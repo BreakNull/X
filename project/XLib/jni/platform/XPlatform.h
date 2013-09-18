@@ -96,6 +96,9 @@ public:
     //-----app--------------------
     virtual string GetWorkDir() = 0;
 
+    //---Resource-----
+    virtual void *GetPltRes(const char *pName, int *len) = 0;
+
 protected:
     XPlatform();
 

@@ -87,6 +87,9 @@ public:
     //-----app--------------------
     virtual string GetWorkDir();
 
+    //---Resource-----
+    virtual void *GetPltRes(const char *pName, int *pLen);
+
 private:
     char m_pClassName[40];
     void *m_pClass;

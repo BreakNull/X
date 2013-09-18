@@ -1,8 +1,12 @@
 package x.core.ui;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -385,6 +389,33 @@ public class JPlatform {
 		return "/data/data/" + JApplication.instance().getPackageName();
 	}
 	
+	public static byte[] getResData(String path) {
+		JApplication app = JApplication.instance();
+		AssetManager am = app.getResources().getAssets();
+		byte[] dat = null;
+		try {
+			AssetFileDescriptor fd = am.openFd(path);
+			int len = (int)fd.getLength();
+			dat = new byte[len];
+			FileInputStream in = fd.createInputStream();
+			int r = 0;
+			while (r < len) {
+				int n = in.read(dat, r, len - r);
+				if (n <= 0) {
+					break;
+				}
+				r += n;
+			}
+			if (r != len) {
+				dat = null;
+			}
+		} catch (Exception e) {
+			dat = null;
+			e.printStackTrace();
+		}
+		return dat;
+	}
+	
     public static String[] getFields() {
     	return null;
     }
@@ -435,7 +466,8 @@ public class JPlatform {
     			"loadExistPage", "(Ljava/lang/String;I)V", "S",
     			"loadExistPage2", "(II)V", "S",
     			"goBack", "()V", "S",
-    			"getWorkDir", "()Ljava/lang/String;", "S"
+    			"getWorkDir", "()Ljava/lang/String;", "S",
+    			"getResData", "(Ljava/lang/String;)[B", "S"
     	};
     }
 }
