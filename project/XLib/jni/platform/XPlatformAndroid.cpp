@@ -84,6 +84,8 @@ void *XPlatformAndroid::NewLineLayout(XPage *p)
     CHECK_B(NULL);
     GET_MID("newLineLayout", NULL);
     CALL_OBJ_R(R(p));
+    //TODO: may be need a global ref !!!
+    //return (void*)pEnv->NewGlobalRef(_obj);
 }
 
 void *XPlatformAndroid::NewImageButton(XPage *p)

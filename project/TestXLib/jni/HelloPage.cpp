@@ -13,16 +13,19 @@ HelloPage::HelloPage(void *pRealPage, const string &name, int id)
 void HelloPage::OnClick(const string &id)
 {
 	LOGD("widget id=%s", id.c_str());
+	
 	void *pBtn = FindById(id, NULL);
 	LOGD("widget id=%s, find=%p", id.c_str(), pBtn);
 	if (pBtn == NULL) {
 		LOGE("not find widget, id=%s", id.c_str());
 		return;
 	}
+	
 	if (id == "go_ni") {
         XPageMgr::Instance()->LoadNewPage("NiPage", XPageMgr::A_RIGHT_IN_LEFT_OUT);
 		return;
 	}
+	
 	LOGD("find widget=%p", pBtn);
     ++m_idx;
     char buf[50] = {0};

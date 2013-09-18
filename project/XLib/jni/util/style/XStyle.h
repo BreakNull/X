@@ -39,7 +39,7 @@ public:
     /**
      * @param pData The data will be change
      */
-    void LoadData(char *pData);
+    void LoadData(char *pData, bool bFree);
     void LoadFile(const char *pFileName);
     vector<XStyleSpec*> &GetSpecs() {return m_specs;}
     const char *GetName() {return m_pName;}
@@ -77,6 +77,7 @@ private:
     vector<XStyleSpec*> m_specs;
     bool m_bCache;
     //map<string, XStyleSpec*> m_cache;
+    bool m_bFree;
 };
 
 #endif // XSTYLE_H

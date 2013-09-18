@@ -100,7 +100,7 @@ void XPageXml::ParseStyle(XmlElement *pElem)
     } else {
         const char *pTxt = pElem->GetText();
         m_pStyle = new XStyle(m_pStyle, "<TAIL>");
-        m_pStyle->LoadData((char*)pTxt);
+        m_pStyle->LoadData((char*)pTxt, false);
     }
 }
 
