@@ -146,6 +146,7 @@ public class JPageMgr extends ActivityGroup {
 	}
 	
 	public void loadNewPage(String pageName, int animType) {
+		Log.d("X", "JPageMgr.loadNewPage name='"+pageName + " ,anim="+animType);
 		if (pageName == null || pageName.length() == 0) {
 			return;
 		}

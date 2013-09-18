@@ -2,6 +2,7 @@
 #include <string.h>
 #include "XLog.h"
 #include <stdio.h>
+#include "XResource.h"
 
 extern void print(XStyleSpec *p);
 
@@ -54,7 +55,6 @@ XStyle::XStyle(XStyle *parent, const char *pName)
     :m_pData(NULL)
     ,m_iDataLen(0)
     ,m_bCache(false)
-    ,m_bFree(false)
 {
     m_parent = parent;
     m_pName = pName;
@@ -62,7 +62,7 @@ XStyle::XStyle(XStyle *parent, const char *pName)
 
 XStyle::~XStyle()
 {
-    if (m_bFree && m_pData) {
+    if (m_pData) {
         free(m_pData);
     }
     for (int i = 0; i < m_specs.size(); ++i) {
@@ -83,32 +83,14 @@ void XStyle::LoadData(char *pData)
 void XStyle::LoadFile(const char *pFileName)
 {
     //LOGD("Load style file '%s'", pFileName);
-    m_bFree = true;
     if (NULL == pFileName) {
         return;
     }
-
-    FILE *f = fopen(pFileName, "r");
-    if (!f) {
-        LOGE("Open file %s fail.", pFileName);
-        return;
-    }
-    fseek(f, 0, SEEK_END);
-    m_iDataLen = ftell(f);
-    if (m_iDataLen <= 0) {
-        return;
-    }
-    fseek(f, 0, SEEK_SET);
-    m_pData = (char *)malloc(m_iDataLen + 1);
-    int iRead = 0;
-    while (iRead < m_iDataLen) {
-        int x = fread(m_pData + iRead, 1, m_iDataLen - iRead, f);
-        iRead += x;
-        if (x == 0)
-            break;
-    }
-    m_pData[iRead] = 0;
-    m_iDataLen = iRead;
+    string path("loc:");
+    path += pFileName;
+    XResource res(path);
+    m_pData = (char*)res.GetData();
+    m_iDataLen = res.GetDataLen();
     Parse();
 }
 

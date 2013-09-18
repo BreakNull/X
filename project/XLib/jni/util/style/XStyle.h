@@ -76,7 +76,6 @@ private:
     int m_iDataLen;
     vector<XStyleSpec*> m_specs;
     bool m_bCache;
-    bool m_bFree;
     //map<string, XStyleSpec*> m_cache;
 };
 
