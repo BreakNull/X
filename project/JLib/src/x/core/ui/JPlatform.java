@@ -264,7 +264,6 @@ public class JPlatform {
     }
     
     public static Object findById(String id, Object obj) {
-    	Log.w("X", "findById id="+id + ", obj="+ obj);
     	String sid = id;
     	if (id == null || id.trim().equals("") || obj == null) {
     		return null;
