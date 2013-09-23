@@ -42,6 +42,11 @@ public:
     void *GetRealPage() {return m_pRealPage;}
     string &GetName() {return m_cName;}
     int &GetId() {return m_id;}
+
+    /**
+     * 通过id来查找widget，返回平台相关的widget
+     * Note: 你不应该缓存此函数的返回值，否则在某些android平台上可能会存在问题
+     */
     void *FindById(const string &id, XWidget *parent = NULL);
 
     //设置标题栏上的标题

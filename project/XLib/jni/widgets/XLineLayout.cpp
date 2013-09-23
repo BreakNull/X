@@ -1,5 +1,6 @@
 #include "XLineLayout.h"
 #include "XPlatform.h"
+#include "XLog.h"
 
 XLineLayout::XLineLayout(XPage *p)
     :XWidget(p)

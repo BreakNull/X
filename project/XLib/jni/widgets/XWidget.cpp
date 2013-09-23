@@ -20,11 +20,18 @@ XWidget::~XWidget()
 #ifdef _FOR_ANDROID_
     if (m_iFlags & F_NEW_REF) {
         JNIEnv *pEnv = XJniMgr::Instance()->GetJniEnv();
-        if (!pEnv->IsSameObject(reinterpret_cast<jobject>(m_pRealWidget), (jobject)NULL)) {
-            pEnv->DeleteWeakGlobalRef(reinterpret_cast<jobject>(m_pRealWidget));
-        } else {
+        /*
+         * (1).A java method returned object is a global object ref.
+         *      And can't new its weak ref.(Its weak ref is a invalid pointer, like 0x02aaef)
+         * (2).On a global object new its global ref will return a pointer same as itself.
+         *      But they(global obj, its global ref) are not full the same.
+         *
+        if (pEnv->IsSameObject(reinterpret_cast<jobject>(m_pRealWidget), (jobject)NULL)) {
             LOGD("java widget %p has been delete by java GC", m_pRealWidget);
         }
+        pEnv->DeleteWeakGlobalRef(reinterpret_cast<jobject>(m_pRealWidget));
+        */
+        pEnv->DeleteGlobalRef(reinterpret_cast<jobject>(m_pRealWidget));
     }
 #endif
 }
@@ -35,7 +42,9 @@ void XWidget::Create(int flags)
 #ifdef _FOR_ANDROID_
     if ((m_iFlags & F_NEW_REF) && (m_pRealWidget != NULL)) {
         JNIEnv *pEnv = XJniMgr::Instance()->GetJniEnv();
-        m_pRealWidget = pEnv->NewWeakGlobalRef(reinterpret_cast<jobject>(m_pRealWidget));
+        jobject obj = pEnv->NewGlobalRef(reinterpret_cast<jobject>(m_pRealWidget));
+        //jobject obj = pEnv->NewWeakGlobalRef(reinterpret_cast<jobject>(m_pRealWidget));
+        m_pRealWidget = reinterpret_cast<void*>(obj);
     }
 #endif
 }

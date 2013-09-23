@@ -344,12 +344,6 @@ void *XPlatformAndroid::FindById(const char *pId, XWidget *p)
     jstring js = pEnv->NewStringUTF(pId);
     CALL_OBJ(js, W(p));
     pEnv->DeleteLocalRef(js);
-    if (NULL != _obj) {
-        _obj = pEnv->NewWeakGlobalRef(_obj);
-        if (_obj == NULL) {
-            LOGE("new weak global ref error");
-        }
-    }
     return reinterpret_cast<void*>(_obj);
 }
 
