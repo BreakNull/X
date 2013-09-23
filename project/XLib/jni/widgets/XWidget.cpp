@@ -1,23 +1,43 @@
 #include "XWidget.h"
 #include "XLog.h"
 #include "XPlatform.h"
-#include<ctype.h>
+#include <ctype.h>
+
+#ifdef _FOR_ANDROID_
+#include <jni.h>
+#include "XJniMgr.h"
+#endif
 
 XWidget::XWidget(XPage *p)
     :m_pRealWidget(NULL)
-    ,m_pParent(NULL)
     ,m_pPage(p)
-    ,m_bRoot(false)
+    ,m_iFlags(0)
 {
 }
 
 XWidget::~XWidget()
 {
+#ifdef _FOR_ANDROID_
+    if (m_iFlags & F_NEW_REF) {
+        JNIEnv *pEnv = XJniMgr::Instance()->GetJniEnv();
+        if (!pEnv->IsSameObject(reinterpret_cast<jobject>(m_pRealWidget), (jobject)NULL)) {
+            pEnv->DeleteWeakGlobalRef(reinterpret_cast<jobject>(m_pRealWidget));
+        } else {
+            LOGD("java widget %p has been delete by java GC", m_pRealWidget);
+        }
+    }
+#endif
 }
 
-void XWidget::Create()
+void XWidget::Create(int flags)
 {
-    //TODO:
+    m_iFlags = flags;
+#ifdef _FOR_ANDROID_
+    if ((m_iFlags & F_NEW_REF) && (m_pRealWidget != NULL)) {
+        JNIEnv *pEnv = XJniMgr::Instance()->GetJniEnv();
+        m_pRealWidget = pEnv->NewWeakGlobalRef(reinterpret_cast<jobject>(m_pRealWidget));
+    }
+#endif
 }
 
 static bool GetColor(const string &s, int *val)
@@ -60,8 +80,7 @@ void XWidget::SetProperty(const string &name, const XVariant &v)
     } else if (name == "h") {
 
     } else if (name == "id") {
-        m_cId = v.ToString();
-        XPlatform::Instance()->SetId(this, m_cId);
+        XPlatform::Instance()->SetId(this, v.ToString());
     } else if (name == "bgcolor") {
         string s = v.ToString();
         int d = 0;
@@ -73,7 +92,6 @@ void XWidget::SetProperty(const string &name, const XVariant &v)
     } else if (name == "bgimg") {
         XPlatform::Instance()->SetBgImg(this, v.ToString());
     }
-
 }
 
 XVariant XWidget::GetProperty(const string &name)
@@ -88,21 +106,10 @@ XVariant XWidget::GetProperty(const string &name)
     } else if (name == "h") {
 
     } else if (name == "id") {
-        return XVariant(m_cId.c_str());
     }
 
     //not find this property
     return XVariant();
-}
-
-bool XWidget::IsRoot()
-{
-    return m_bRoot;
-}
-
-void XWidget::SetRoot(bool b)
-{
-    m_bRoot = b;
 }
 
 bool XWidget::IsContainer()
@@ -110,37 +117,9 @@ bool XWidget::IsContainer()
     return false;
 }
 
-string XWidget::GetId()
+XPage *XWidget::GetXPage()
 {
-    XVariant v = GetProperty("id");
-    return v.ToString();
-}
-
-XWidget *XWidget::GetRootWidget()
-{
-    if (this->IsRoot()) {
-        return this;
-    }
-
-    XWidget *p = m_pParent;
-    while (p) {
-        if (p->IsRoot()) {
-            return p;
-        }
-        p = p->m_pParent;
-    }
-
-    return NULL;
-}
-
-XWidget *XWidget::GetParent()
-{
-    return m_pParent;
-}
-
-void XWidget::SetParent(XWidget *parent)
-{
-    m_pParent = parent;
+    return m_pPage;
 }
 
 void *XWidget::GetChild(const string &id)
@@ -160,10 +139,7 @@ void *XWidget::GetChildAt(int idx)
 
 void XWidget::AddChild(XWidget *pChild, int idx)
 {
-    bool b = XPlatform::Instance()->AddChild(this, pChild, idx);
-    if (b) {
-        pChild->SetParent(this);
-    }
+    XPlatform::Instance()->AddChild(this, pChild, idx);
 }
 
 

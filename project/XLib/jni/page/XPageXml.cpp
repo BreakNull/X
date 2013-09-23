@@ -76,7 +76,7 @@ void XPageXml::ParseMainView(XmlElement *pElem)
         LOGE("XPageXml::ParseMainView() Not find %s::New() in XWidgetFactory", p->GetName());
         return;
     }
-    m_pMainView->Create();
+    m_pMainView->Create(XWidget::F_NEW_REF);
     //parse MainView attr
     ParseAttr(m_page, pElem);
     if (m_pMainView->IsContainer()) {
@@ -100,7 +100,7 @@ void XPageXml::ParseStyle(XmlElement *pElem)
     } else {
         const char *pTxt = pElem->GetText();
         m_pStyle = new XStyle(m_pStyle, "<TAIL>");
-        m_pStyle->LoadData((char*)pTxt);
+        m_pStyle->LoadData((char*)pTxt, false);
     }
 }
 
@@ -168,16 +168,17 @@ void XPageXml::ParseContainer(XWidget *pw, XmlElement *pElem)
         XmlElement *pE = pElem->ChildAt(i);
         XWidget *pC = XWidgetFactory::Instance()->New(pE->GetName(), m_page);
         if (NULL == pC) {
-            LOGE("new widget error");
+            LOGE("new widget '%s' error", pE->GetName());
             break;
         }
-        pC->Create();
+        pC->Create(XWidget::F_NONE);
         if (pC->IsContainer()) {
             ParseContainer(pC, pE);
         } else {
             ParseWidget(pC, pE);
         }
         pw->AddChild(pC);
+        delete pC;
     }
 }
 

@@ -74,6 +74,11 @@ PROJECT_C_FLAGS:=	--exceptions \
 					
 LOCAL_CFLAGS:=		$(PROJECT_C_FLAGS) 
 
+#---debug-------
+#LOCAL_CFLAGS    += -g
+#LOCAL_CFLAGS    += -ggdb
+#LOCAL_CFLAGS    += -O1
+
 # ----Include path Define----					
 PROJECT_INCLUDE:=	$(ANDROID_NDK_ROOT)/sources/cxx-stl/gnu-libstdc++/include \
 					$(ANDROID_NDK_ROOT)/sources/cxx-stl/gnu-libstdc++/libs/$(TARGET_ARCH_ABI)/include \

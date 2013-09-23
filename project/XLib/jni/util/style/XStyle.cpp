@@ -55,6 +55,7 @@ XStyle::XStyle(XStyle *parent, const char *pName)
     :m_pData(NULL)
     ,m_iDataLen(0)
     ,m_bCache(false)
+    ,m_bFree(false)
 {
     m_parent = parent;
     m_pName = pName;
@@ -62,7 +63,7 @@ XStyle::XStyle(XStyle *parent, const char *pName)
 
 XStyle::~XStyle()
 {
-    if (m_pData) {
+    if (m_pData && m_bFree) {
         free(m_pData);
     }
     for (int i = 0; i < m_specs.size(); ++i) {
@@ -70,11 +71,12 @@ XStyle::~XStyle()
     }
 }
 
-void XStyle::LoadData(char *pData)
+void XStyle::LoadData(char *pData, bool bFree)
 {
     if (NULL == pData) {
         return;
     }
+    m_bFree = bFree;
     m_pData = pData;
     m_iDataLen = strlen(pData);
     Parse();

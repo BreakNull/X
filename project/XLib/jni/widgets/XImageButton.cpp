@@ -6,9 +6,10 @@ XImageButton::XImageButton(XPage *p)
 {
 }
 
-void XImageButton::Create()
+void XImageButton::Create(int flags)
 {
     m_pRealWidget = XPlatform::Instance()->NewImageButton(m_pPage);
+    XWidget::Create(flags);
 }
 
 void XImageButton::SetProperty(const string &name, const XVariant &v)

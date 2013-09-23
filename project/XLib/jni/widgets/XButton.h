@@ -11,7 +11,7 @@ public:
 
     WIDGET_NEW(XButton)
 
-    virtual void Create();
+    virtual void Create(int flags);
 
     virtual void SetProperty(const string &name, const XVariant &v);
     virtual XVariant GetProperty(const string &name);

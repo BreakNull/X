@@ -6,9 +6,10 @@ XLineLayout::XLineLayout(XPage *p)
 {
 }
 
-void XLineLayout::Create()
+void XLineLayout::Create(int flags)
 {
     m_pRealWidget = XPlatform::Instance()->NewLineLayout(m_pPage);
+    XWidget::Create(flags);
 }
 
 void XLineLayout::SetProperty(const string &name, const XVariant &v)

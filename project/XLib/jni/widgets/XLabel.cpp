@@ -6,9 +6,10 @@ XLabel::XLabel(XPage *p)
 {
 }
 
-void XLabel::Create()
+void XLabel::Create(int flags)
 {
     m_pRealWidget = XPlatform::Instance()->NewLabel(m_pPage);
+    XWidget::Create(flags);
 }
 
 void XLabel::SetProperty(const string &name, const XVariant &v)

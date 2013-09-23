@@ -84,6 +84,8 @@ void *XPlatformAndroid::NewLineLayout(XPage *p)
     CHECK_B(NULL);
     GET_MID("newLineLayout", NULL);
     CALL_OBJ_R(R(p));
+    //TODO: may be need a global ref !!!
+    //return (void*)pEnv->NewGlobalRef(_obj);
 }
 
 void *XPlatformAndroid::NewImageButton(XPage *p)
@@ -342,6 +344,12 @@ void *XPlatformAndroid::FindById(const char *pId, XWidget *p)
     jstring js = pEnv->NewStringUTF(pId);
     CALL_OBJ(js, W(p));
     pEnv->DeleteLocalRef(js);
+    if (NULL != _obj) {
+        _obj = pEnv->NewWeakGlobalRef(_obj);
+        if (_obj == NULL) {
+            LOGE("new weak global ref error");
+        }
+    }
     return reinterpret_cast<void*>(_obj);
 }
 

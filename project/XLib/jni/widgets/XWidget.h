@@ -42,11 +42,16 @@ public:
     //每个Widget的子类都需要有一个static的New函数
     WIDGET_NEW(XWidget)
 
+    enum FLAGS {
+        F_NONE = 0,
+        F_NEW_REF =  1      //used for new a global ref for java object
+    };
+
     /*
      * 创建出对应到平台的实际widget
      * 在创建一个带有ID的widget时， 需要将id设置到实际平台widget的tag中
      */
-    virtual void Create();
+    virtual void Create(int flags);
 
     virtual void SetProperty(const string &name, const XVariant &v);
     virtual XVariant GetProperty(const string &name);
@@ -59,11 +64,7 @@ public:
      */
     virtual bool IsContainer();
 
-    string GetId();
-
-    XWidget *GetRootWidget();
-    XWidget *GetParent();
-    void SetParent(XWidget *parent);
+    XPage *GetXPage();
 
     void *GetChild(const string &id);
     int GetChildCount();
@@ -84,10 +85,8 @@ private:
 
 protected:
     void *m_pRealWidget;    //实际的Widget
-    string m_cId;           //Widget的ID
-    XWidget *m_pParent;
     XPage *m_pPage;
-    bool m_bRoot;
+    int m_iFlags;
 };
 
 #endif // WIDGET_H

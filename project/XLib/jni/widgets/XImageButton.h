@@ -10,7 +10,7 @@ public:
 
     WIDGET_NEW(XImageButton)
 
-    virtual void Create();
+    virtual void Create(int flags);
     virtual void SetProperty(const string &name, const XVariant &v);
 };
 
