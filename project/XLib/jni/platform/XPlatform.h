@@ -88,10 +88,9 @@ public:
     virtual void SetImgButtonSrc(XWidget *p, const char *pSrc) = 0;
 
     //-----page mgr-----------------
-    virtual void LoadNewPage(const char *pName, int anim) = 0;
-    virtual void LoadExistPage(const char *pName, int anim) = 0;
-    virtual void LoadExistPage(int pageId, int anim) = 0;
-    virtual void GoBack() = 0;
+    virtual void LoadNewPage(XPage *pCur, const char *pName, int anim) = 0;
+    virtual void LoadExistPage(XPage *pCur, const char *pName, int pageId, int anim) = 0;
+    virtual void DetachContent(XPage *p) = 0;
 
     //-----app--------------------
     virtual string GetWorkDir() = 0;

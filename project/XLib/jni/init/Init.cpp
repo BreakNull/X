@@ -47,9 +47,9 @@ static void RegisterNativPageMethod(JNIEnv *pEnv)
 {
     //LOGD("Init->RegisterNativPageMethod");
     XJniMgr *pMgr = XJniMgr::Instance();
-    jclass pageclazz = (jclass)pMgr->GetClass("x.core.ui.JPage");
+    jclass pageclazz = (jclass)pMgr->GetClass("x.core.ui.p.JPage2");
     if (!pageclazz) {
-        LOGE("Init->RegisterNativPageeMethod fail, not find x.core.ui.JPage");
+        LOGE("Init->RegisterNativPageeMethod fail, not find x.core.ui.p.JPage2");
         return;
     }
 
@@ -58,6 +58,7 @@ static void RegisterNativPageMethod(JNIEnv *pEnv)
     methods[i++] = GetNativeMethod("GetStyle", "(I)I", (void*)XJniPage::GetStyle);
     methods[i++] = GetNativeMethod("OnNew", "(Ljava/lang/String;I)V", (void*)XJniPage::OnNew);
     methods[i++] = GetNativeMethod("OnCreate", "(I)Ljava/lang/Object;", (void*)XJniPage::OnCreate);
+    methods[i++] = GetNativeMethod("OnReload", "(I)Ljava/lang/Object;", (void*)XJniPage::OnReload);
     methods[i++] = GetNativeMethod("OnDestroy", "(I)V", (void*)XJniPage::OnDestroy);
     methods[i++] = GetNativeMethod("OnStart", "(I)V", (void*)XJniPage::OnStart);
     methods[i++] = GetNativeMethod("OnStop", "(I)V", (void*)XJniPage::OnStop);

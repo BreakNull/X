@@ -40,8 +40,10 @@ public:
 //    virtual void OnPause() {}
 
     void *GetRealPage() {return m_pRealPage;}
+    void SetRealPage(void *p) {m_pRealPage = p;}
     string &GetName() {return m_cName;}
-    int &GetId() {return m_id;}
+    int GetId() {return m_id;}
+    XWidget *GetRoot() {return m_pRoot;}
 
     /**
      * 通过id来查找widget，返回平台相关的widget

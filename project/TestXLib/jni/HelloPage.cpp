@@ -22,7 +22,7 @@ void HelloPage::OnClick(const string &id)
 	}
 	
 	if (id == "go_ni") {
-        XPageMgr::Instance()->LoadNewPage("NiPage", XPageMgr::A_RIGHT_IN_LEFT_OUT);
+        XPageMgr::Instance()->LoadNewPage("NiPage", XPageMgr::A_RIGHT_IN| XPageMgr::A_LEFT_OUT);
 		return;
 	}
 	

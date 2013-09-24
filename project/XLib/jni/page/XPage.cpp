@@ -45,8 +45,7 @@ void XPage::OnDestroy()
     //LOGD("XPage::OnDestroy page name is '%s'", m_cName.c_str());
     delete m_pXml;
     m_pXml = NULL;
-    XPageMgr::Instance()->RemovePage(m_id);
-    delete this;
+    XPageMgr::Instance()->Remove(m_id);
 }
 
 void XPage::OnStart()

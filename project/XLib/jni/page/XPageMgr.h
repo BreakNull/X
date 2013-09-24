@@ -2,7 +2,7 @@
 #define XPAGEMANAGER_H
 
 class XPage;
-#include <map>
+#include <vector>
 using namespace std;
 
 /**
@@ -12,30 +12,64 @@ using namespace std;
 class XPageMgr
 {
 public:
-    enum AnimType {
+    enum ANIM {
         A_USE_HISTORY = -1, //often used for loadExistPage
         A_NONE = 0,
-        A_LEFT_IN_RIGHT_OUT = 1,
-        A_RIGHT_IN_LEFT_OUT = 2,
-        A_BOTTOM_IN_TOP_OUT = 3,
-        A_TOP_IN_BOTTOM_OUT = 4
+        A_LEFT_IN = 	1 << 0,
+        A_LEFT_OUT = 	1 << 1,
+        A_RIGHT_IN = 	1 << 2,
+        A_RIGHT_OUT = 	1 << 3,
+        A_TOP_IN = 		1 << 4,
+        A_TOP_OUT = 	1 << 5,
+        A_BOTTOM_IN = 	1 << 6,
+        A_BOTTOM_OUT = 	1 << 7,
+        A_FADE_IN = 	1 << 8,
+        A_FADE_OUT = 	1 << 9,
+
+        A_MASK_IN = 0x55555555,
+        A_MASK_OUT = 0xAAAAAAAA
+    };
+
+    enum FLAGS {
+        F_NONE = 0,
+        F_NO_HISTORY = 1
     };
 
     static XPageMgr *Instance();
 
-    void LoadNewPage(const char *pName, AnimType anim = A_NONE);
-    void LoadExistPage(const char *pName, AnimType anim = A_NONE);
-    void LoadExistPage(int pageId, AnimType anim = A_NONE);
+    void LoadNewPage(const char *pName, int anim = A_NONE, int flags = F_NONE);
+    void LoadExistPage(const char *pName, int anim = A_NONE);
+    void LoadExistPage(int pageId, int anim = A_NONE);
     void GoBack();
 
-    void AddPage(int id, XPage *p);
-    XPage *RemovePage(int id);
-    XPage *GetPage(int id);
+    int IndexOf(int id);
+    int IndexOf(const char *pName);
+    //all page's count
+    int Count();
+    XPage *At(int idx);
+    XPage *Get(int id);
+    XPage *FindInAll(int id);
+    void Remove(int idx);
 
 private:
+    class PageInfo {
+    public:
+        PageInfo() {Reset();}
+        void Reset();
+        XPage *m_page;
+        int m_iAnim;
+        int m_iFlags;
+    };
+    int GetReverseAnim(int anim);
+    int GetInAnim(int anim) {return anim & A_MASK_IN;}
+    int GetOutAnim(int anim) {return anim & A_MASK_OUT;}
+    friend class XJniPage;
+    void AddPage(XPage *p);
     XPageMgr();
     static XPageMgr *s_ins;
-    std::map<int, XPage*> m_cPages;
+    vector<PageInfo> m_cPages;
+    vector<XPage*> m_cDelPages;
+    PageInfo m_curPi;
 };
 
 #endif // PAGEMANAGER_H

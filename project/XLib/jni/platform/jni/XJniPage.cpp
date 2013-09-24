@@ -11,7 +11,7 @@
 
 jint XJniPage::GetStyle(JNIEnv *pEnv, jobject jpage, jint id)
 {
-    XPage *page = XPageMgr::Instance()->GetPage(id);
+    XPage *page = XPageMgr::Instance()->Get(id);
     if (!page) {
         LOGE("fail, page is NULL");
         return NULL;
@@ -21,7 +21,7 @@ jint XJniPage::GetStyle(JNIEnv *pEnv, jobject jpage, jint id)
 
 void XJniPage::OnNew(JNIEnv *pEnv, jobject jpage, jstring pageName, jint id)
 {
-    //LOGD("jpage=%p, pageName=%p, id=%d", jpage, pageName, id);
+    LOGD("jpage=%p, pageName=%p, id=%d", jpage, pageName, id);
     const char *pName = pEnv->GetStringUTFChars(pageName, NULL);
     if (!pName) {
         LOGE("Fail, pName is NULL");
@@ -34,13 +34,13 @@ void XJniPage::OnNew(JNIEnv *pEnv, jobject jpage, jstring pageName, jint id)
         LOGE("Fail, page is NULL");
         return;
     }
-    XPageMgr::Instance()->AddPage(id, page);
+    XPageMgr::Instance()->AddPage(page);
 }
 
 jobject XJniPage::OnCreate(JNIEnv *pEnv, jobject jpage, jint id)
 {
-    //LOGD("XJniPage::OnCreate");
-    XPage *page = XPageMgr::Instance()->GetPage(id);
+    LOGD("XJniPage::OnCreate jpage=%p id=%d", jpage, id);
+    XPage *page = XPageMgr::Instance()->Get(id);
     if (!page) {
         LOGE("fail, page is NULL");
         return NULL;
@@ -53,10 +53,22 @@ jobject XJniPage::OnCreate(JNIEnv *pEnv, jobject jpage, jint id)
     return (jobject)pW->GetRealWidget();
 }
 
+jobject XJniPage::OnReload(JNIEnv *pEnv, jobject jpage, jint id)
+{
+    LOGD("XJniPage::OnReload jpage=%p id=%d", jpage, id);
+    XPage *page = XPageMgr::Instance()->Get(id);
+    if (!page) {
+        LOGE("fail, page is NULL");
+        return NULL;
+    }
+    page->SetRealPage(reinterpret_cast<void*>(jpage));
+    return (jobject)page->GetRoot()->GetRealWidget();
+}
+
 void XJniPage::OnDestroy(JNIEnv *pEnv, jobject jpage, jint id)
 {
-    //LOGD("XJniPage::OnDestroy");
-    XPage *page = XPageMgr::Instance()->GetPage(id);
+    LOGD("XJniPage::OnDestroy jpage=%p id=%d", jpage, id);
+    XPage *page = XPageMgr::Instance()->FindInAll(id);
     if (!page) {
         LOGE("fail, page is NULL");
         return;
@@ -66,8 +78,8 @@ void XJniPage::OnDestroy(JNIEnv *pEnv, jobject jpage, jint id)
 
 void XJniPage::OnStart(JNIEnv *pEnv, jobject jpage, jint id)
 {
-    //LOGD("XJniPage::OnStart");
-    XPage *page = XPageMgr::Instance()->GetPage(id);
+    LOGD("XJniPage::OnStart jpage=%p id=%d", jpage, id);
+    XPage *page = XPageMgr::Instance()->Get(id);
     if (!page) {
         LOGE("fail, page is NULL");
         return;
@@ -77,8 +89,8 @@ void XJniPage::OnStart(JNIEnv *pEnv, jobject jpage, jint id)
 
 void XJniPage::OnStop(JNIEnv *pEnv, jobject jpage, jint id)
 {
-    //LOGD("XJniPage::OnStop");
-    XPage *page = XPageMgr::Instance()->GetPage(id);
+    LOGD("XJniPage::OnStop  jpage=%p id=%d", jpage, id);
+    XPage *page = XPageMgr::Instance()->FindInAll(id);
     if (!page) {
         LOGE("fail, page is NULL");
         return;
@@ -88,8 +100,8 @@ void XJniPage::OnStop(JNIEnv *pEnv, jobject jpage, jint id)
 
 void XJniPage::OnBackPressed(JNIEnv *pEnv, jobject jpage, jint id)
 {
-    //LOGD("XJniPage::OnBackPressed");
-    XPage *page = XPageMgr::Instance()->GetPage(id);
+    //LOGD("XJniPage::OnBackPressed pageId=%d", id);
+    XPage *page = XPageMgr::Instance()->Get(id);
     if (!page) {
         LOGE("fail, page is NULL");
         return;
@@ -99,7 +111,7 @@ void XJniPage::OnBackPressed(JNIEnv *pEnv, jobject jpage, jint id)
 
 void XJniPage::OnClick(JNIEnv *pEnv, jobject jpage, jint id, jstring widgetId)
 {
-    XPage *page = XPageMgr::Instance()->GetPage(id);
+    XPage *page = XPageMgr::Instance()->Get(id);
     if (!page) {
         LOGE("fail, page is NULL");
         return;
@@ -115,7 +127,7 @@ void XJniPage::OnClick(JNIEnv *pEnv, jobject jpage, jint id, jstring widgetId)
 
 void XJniPage::OnTimeChanged(JNIEnv *pEnv, jobject jpage, jint id, jstring widgetId, jint hourOfDay, jint minute)
 {
-    XPage *page = XPageMgr::Instance()->GetPage(id);
+    XPage *page = XPageMgr::Instance()->Get(id);
     if (!page) {
         //Log err
         return;
@@ -132,7 +144,7 @@ void XJniPage::OnTimeChanged(JNIEnv *pEnv, jobject jpage, jint id, jstring widge
 void XJniPage::OnDateChanged(JNIEnv *pEnv, jobject jpage, jint id, jstring widgetId, jint y, jint m, jint d)
 {
     LOGD("XJniPage::OnDateChanged");
-    XPage *page = XPageMgr::Instance()->GetPage(id);
+    XPage *page = XPageMgr::Instance()->Get(id);
     if (!page) {
         //Log err
         return;
@@ -148,7 +160,7 @@ void XJniPage::OnDateChanged(JNIEnv *pEnv, jobject jpage, jint id, jstring widge
 
 jboolean XJniPage::OnCreateOptionsMenu(JNIEnv *pEnv, jobject jpage, jint id, jobject menu)
 {
-    XPage *page = XPageMgr::Instance()->GetPage(id);
+    XPage *page = XPageMgr::Instance()->Get(id);
     if (!page) {
         //Log err
         return false;
@@ -160,7 +172,7 @@ jboolean XJniPage::OnCreateOptionsMenu(JNIEnv *pEnv, jobject jpage, jint id, job
 
 void XJniPage::OnOptionsItemSelected(JNIEnv *pEnv, jobject jpage, jint id, jint menuId)
 {
-    XPage *page = XPageMgr::Instance()->GetPage(id);
+    XPage *page = XPageMgr::Instance()->Get(id);
     if (!page) {
         //Log err
         return;
