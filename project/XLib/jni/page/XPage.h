@@ -59,7 +59,7 @@ public:
 
     /**
      * 设置监听器
-     * @param name 监听器名字，多个名字之间用|分隔. 如： "click|press"
+     * @param name 监听器名字，多个名字之间用,分隔. 如： "click,press"
      */
     void SetListener(XWidget *pw, const string &name);
     void ClearListener(XWidget *pw, const string &name);
