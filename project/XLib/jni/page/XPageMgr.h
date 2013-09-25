@@ -13,7 +13,6 @@ class XPageMgr
 {
 public:
     enum ANIM {
-        A_USE_HISTORY = -1, //often used for loadExistPage
         A_NONE = 0,
         A_LEFT_IN = 	1 << 0,
         A_LEFT_OUT = 	1 << 1,

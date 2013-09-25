@@ -2,6 +2,7 @@ package x.core.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
@@ -169,6 +170,12 @@ public class JPage extends Activity implements View.OnClickListener,
 		return super.onTouchEvent(event);
 	}
 	
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		//Log.d("X", "onConfigurationChanged " + newConfig);
+	}
+
+	
 	/**
 	 * 设置事件监听器
 	 * @param name 事件名称 
@@ -179,7 +186,7 @@ public class JPage extends Activity implements View.OnClickListener,
 			Log.e("X", "JPage.setListner widget=" + v + ", name="+name + ", page id="+id);
 			return;
 		}
-		String[] sl = name.split("\\|");
+		String[] sl = name.split(",");
 		for (int i = 0; sl != null && i < sl.length; ++i) {
 			if (sl[i].trim().equals("click")) {
 				v.setOnClickListener(this);
@@ -193,7 +200,7 @@ public class JPage extends Activity implements View.OnClickListener,
 			Log.e("X", "JPage.clearListener widget=" + v + ", name="+name + ", page id="+id);
 			return;
 		}
-		String[] sl = name.split("\\|");
+		String[] sl = name.split(",");
 		for (int i = 0; sl != null && i < sl.length; ++i) {
 			if (sl[i].trim().equals("click")) {
 				v.setOnClickListener(null);

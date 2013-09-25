@@ -3,16 +3,26 @@
       package="com.test"
       android:versionCode="1"
       android:versionName="1.0">
+    <uses-sdk android:minSdkVersion="9"/>
 
+    <!-- 
+    	(1).When up android 3.2 you should use 
+		    	android:configChanges="orientation|screenSize" ,
+		    	instead of android:configChanges="orientation|keyboard" 
+    	(2).When screen translate, but not translate the view, to set:
+    			android:screenOrientation="landscape"  (horizontal), or 
+    			android:screenOrientation="portrait"  (vertical)
+     -->
+    
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:name="TApplication">
-        <activity android:name="x.core.ui.JEntryPage"
+        <activity android:name="x.core.ui.JEntryPage" android:configChanges="orientation|keyboard"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="x.core.ui.JPage"></activity>
+        <activity android:name="x.core.ui.JPage" android:configChanges="orientation|keyboard"></activity>
 
     </application>
 </manifest>

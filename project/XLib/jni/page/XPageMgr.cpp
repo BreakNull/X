@@ -58,9 +58,6 @@ void XPageMgr::LoadExistPage(int pageId, int anim)
     XPage *pCur = m_curPi.m_page;
     PageInfo &info = m_cPages.at(idx);
 
-    if (anim == A_USE_HISTORY) {
-        anim = GetInAnim(info.m_iAnim) | GetOutAnim(m_curPi.m_iAnim);
-    }
     m_curPi = info;
     XPlatform::Instance()->LoadExistPage(pCur, info.m_page->GetName().c_str(), pageId, anim);
 
@@ -79,7 +76,8 @@ void XPageMgr::GoBack()
         return;
     }
     PageInfo &info = m_cPages.at(m_cPages.size() - 2);
-    LoadExistPage(info.m_page->GetId(), A_USE_HISTORY);
+    int anim = GetReverseAnim(m_curPi.m_iAnim);
+    LoadExistPage(info.m_page->GetId(), anim);
 }
 
 bool XPageMgr::IsScreenLocked()
