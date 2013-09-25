@@ -9,7 +9,7 @@
 	]]>
 	</Style>
 	
-	<MainView title="World">
+	<MainView title="World" fullscreen="false">
 		<LineLay ori="ver" id="content">
 			<Lab txt="This is World page!" />
 			<Lab txt="Hello world label" id="click_btn1"/>
