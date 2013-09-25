@@ -81,13 +81,12 @@ public:
     //-----page mgr-----------------
     virtual void LoadNewPage(XPage *pCur, const char *pName, int anim);
     virtual void LoadExistPage(XPage *pCur, const char *pName, int pageId, int anim);
-    virtual void DetachContent(XPage *p);
 
     //-----app--------------------
     virtual string GetWorkDir();
 
     //---Resource-----
-    virtual void *GetPltRes(const char *pName, int *pLen);
+    virtual void *GetPlatformRes(const char *pName, int *pLen);
 
 private:
     char m_pClassName[40];

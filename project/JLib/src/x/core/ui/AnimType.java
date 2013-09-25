@@ -20,21 +20,6 @@ public class AnimType {
 	public static final int A_FADE_IN = 	1 << 8;
 	public static final int A_FADE_OUT = 	1 << 9;
 	
-	
-	//get the reverse anim's id
-	public static int getReverseAnim(int animType) {
-		if (animType == A_NONE) {
-			return A_NONE;
-		}
-		int r = 0;
-		for (int i = 0; i < 30; ++i) {
-			if ((animType & (1 << i)) != 0) {
-				r |= (i % 2) == 0 ? (1<<i+1) : (1<<i-1);
-			}
-		}
-		return r;
-	}
-	
 	private static int getRField(String name) {
 		int i = 0;
 		try {

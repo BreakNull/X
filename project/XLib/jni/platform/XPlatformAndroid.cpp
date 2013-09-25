@@ -442,14 +442,6 @@ void XPlatformAndroid::LoadExistPage(XPage *pCur, const char *pName, int pageId,
     pEnv->DeleteLocalRef(js);
 }
 
-void XPlatformAndroid::DetachContent(XPage *p)
-{
-    CHECK_P(p);
-    CHECK_B_NO();
-    GET_MID_NO("detachContent");
-    CALL_VOID(R(p));
-}
-
 string XPlatformAndroid::GetWorkDir()
 {
     GET_MID("getWorkDir", "");
@@ -457,7 +449,7 @@ string XPlatformAndroid::GetWorkDir()
     return Js2N((jstring)_obj, pEnv);
 }
 
-void *XPlatformAndroid::GetPltRes(const char *pName, int *pLen)
+void *XPlatformAndroid::GetPlatformRes(const char *pName, int *pLen)
 {
     CHECK_PP(pName, pLen);
     CHECK_B(NULL);

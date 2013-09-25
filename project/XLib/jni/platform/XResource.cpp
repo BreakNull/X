@@ -83,5 +83,5 @@ void XResource::LoadFromFile()
 
 void XResource::LoadFromPlt()
 {
-    m_pDat = XPlatform::Instance()->GetPltRes(m_cAbsPath.c_str(), &m_iDatLen);
+    m_pDat = XPlatform::Instance()->GetPlatformRes(m_cAbsPath.c_str(), &m_iDatLen);
 }

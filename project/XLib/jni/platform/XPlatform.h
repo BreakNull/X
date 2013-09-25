@@ -90,13 +90,12 @@ public:
     //-----page mgr-----------------
     virtual void LoadNewPage(XPage *pCur, const char *pName, int anim) = 0;
     virtual void LoadExistPage(XPage *pCur, const char *pName, int pageId, int anim) = 0;
-    virtual void DetachContent(XPage *p) = 0;
 
     //-----app--------------------
     virtual string GetWorkDir() = 0;
 
     //---Resource-----
-    virtual void *GetPltRes(const char *pName, int *len) = 0;
+    virtual void *GetPlatformRes(const char *pName, int *len) = 0;
 
 protected:
     XPlatform();

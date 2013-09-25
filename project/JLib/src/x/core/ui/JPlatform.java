@@ -368,11 +368,6 @@ public class JPlatform {
 		JPageMgr.loadExistPage(obj, name, pageId, anim);
 	}
 	
-	public static void detachContent(Object obj) {
-		JPage p = (JPage)obj;
-		p.setContentView(new View(p));
-	}
-	
 	//-------------app-----------------
 	public static String getWorkDir() {
 		return "/data/data/" + JApplication.instance().getPackageName();
@@ -453,7 +448,6 @@ public class JPlatform {
     			"setImgButtonSrc", "(Ljava/lang/Object;Ljava/lang/String;)V", "S",
     			"loadNewPage", "(Ljava/lang/Object;Ljava/lang/String;I)V", "S",
     			"loadExistPage", "(Ljava/lang/Object;Ljava/lang/String;II)V", "S",
-    			"detachContent", "(Ljava/lang/Object;)V", "S",
     			"getWorkDir", "()Ljava/lang/String;", "S",
     			"getResData", "(Ljava/lang/String;)[B", "S"
     	};
