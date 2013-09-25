@@ -42,10 +42,7 @@ XWidget *XPage::OnCreate()
 
 void XPage::OnDestroy()
 {
-    //LOGD("XPage::OnDestroy page name is '%s'", m_cName.c_str());
-    delete m_pXml;
-    m_pXml = NULL;
-    XPageMgr::Instance()->Remove(m_id);
+    LOGD("page name is '%s' id=%d", m_cName.c_str(), m_id);
 }
 
 void XPage::OnStart()
@@ -65,14 +62,9 @@ void XPage::OnBackPressed()
     XPageMgr::Instance()->GoBack();
 }
 
-void *XPage::FindById(const string &id, XWidget *parent)
+void *XPage::FindById(const string &id)
 {
-    XWidget *p = (NULL == parent ? m_pRoot : parent);
-    if (NULL == p) {
-        LOGE("There has not any widgets in this page");
-        return NULL;
-    }
-    return XPlatform::Instance()->FindById(id.c_str(), p);
+    return XPlatform::Instance()->FindById(id.c_str(), m_pRoot);
 }
 
 bool XPage::OnCreateOptionsMenu(XMenu *pMenu)
@@ -83,7 +75,13 @@ bool XPage::OnCreateOptionsMenu(XMenu *pMenu)
 
 void XPage::SetTitle(const string &title)
 {
+    m_cTitle = title;
     XPlatform::Instance()->SetTitle(this, title);
+}
+
+void XPage::ResetTitle()
+{
+    XPlatform::Instance()->SetTitle(this, m_cTitle);
 }
 
 void XPage::SetProperty(const string &name, const XVariant &val)

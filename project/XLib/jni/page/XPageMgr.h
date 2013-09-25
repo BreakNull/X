@@ -42,6 +42,9 @@ public:
     void LoadExistPage(int pageId, int anim = A_NONE);
     void GoBack();
 
+    bool IsScreenLocked();
+    void LockScreen(bool lock);
+
     int IndexOf(int id);
     int IndexOf(const char *pName);
     //all page's count
@@ -50,6 +53,7 @@ public:
     XPage *Get(int id);
     XPage *FindInAll(int id);
     void Remove(int idx);
+    void RemoveById(int id);
 
 private:
     class PageInfo {
@@ -70,6 +74,7 @@ private:
     vector<PageInfo> m_cPages;
     vector<XPage*> m_cDelPages;
     PageInfo m_curPi;
+    int m_iLockNum;
 };
 
 #endif // PAGEMANAGER_H

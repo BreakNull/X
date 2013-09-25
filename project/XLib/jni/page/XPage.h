@@ -47,12 +47,13 @@ public:
 
     /**
      * 通过id来查找widget，返回平台相关的widget
-     * Note: 你不应该缓存此函数的返回值，否则在某些android平台上可能会存在问题
+     * Note: 不应该缓存此函数的返回值，否则在某些android平台上可能会存在问题
      */
-    void *FindById(const string &id, XWidget *parent = NULL);
+    void *FindById(const string &id);
 
     //设置标题栏上的标题
     void SetTitle(const string &title);
+    void ResetTitle();
     void SetProperty(const string &name, const XVariant &val);
     int GetStyle() {return m_iStyle;}
 
@@ -77,6 +78,7 @@ protected:
     XPageXml *m_pXml;
     XWidget *m_pRoot;
     int m_iStyle;       //样式
+    string m_cTitle;
 };
 
 #endif // PAGE_H

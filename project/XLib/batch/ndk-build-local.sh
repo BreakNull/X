@@ -9,7 +9,8 @@ echo ndk build on bash
 NDK_VER=$(cat $ANDROID_NDK_ROOT/RELEASE.TXT)
 echo "using ndk version: $NDK_VER"
 echo "===================build native code=========================="
-ndk-build -j4
+echo $1
+ndk-build -j4 $1
 RETURN_PARAM=$?
 
 if test $RETURN_PARAM = 0

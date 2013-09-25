@@ -62,6 +62,7 @@ jobject XJniPage::OnReload(JNIEnv *pEnv, jobject jpage, jint id)
         return NULL;
     }
     page->SetRealPage(reinterpret_cast<void*>(jpage));
+    page->ResetTitle();
     return (jobject)page->GetRoot()->GetRealWidget();
 }
 

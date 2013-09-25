@@ -8,6 +8,7 @@
 XPageMgr *XPageMgr::s_ins;
 
 XPageMgr::XPageMgr()
+    :m_iLockNum(0)
 {
 }
 
@@ -21,15 +22,20 @@ XPageMgr *XPageMgr::Instance()
 
 void XPageMgr::LoadNewPage(const char *pName, int anim, int flags)
 {
+    //LOGD("---------begin---------");
+    LockScreen(true);
     XPage *pCur = m_curPi.m_page;
     m_curPi.Reset();
     m_curPi.m_iAnim = anim;
     m_curPi.m_iFlags = flags;
     XPlatform::Instance()->LoadNewPage(pCur, pName, anim);
+    LockScreen(false);
+    //LOGD("---------end---------");
 }
 
 void XPageMgr::LoadExistPage(const char *pName, int anim)
 {
+    LockScreen(true);
     int i = IndexOf(pName);
     if (i < 0) {
         LOGE("Not find page '%s'", pName);
@@ -37,10 +43,13 @@ void XPageMgr::LoadExistPage(const char *pName, int anim)
     }
     PageInfo &pi = m_cPages.at(i);
     LoadExistPage(pi.m_page->GetId(), anim);
+    LockScreen(false);
 }
 
 void XPageMgr::LoadExistPage(int pageId, int anim)
 {
+    //LOGD("=========begin=======");
+    LockScreen(true);
     int idx = IndexOf(pageId);
     if (idx < 0) {
         LOGE("Not find page id =%d", pageId);
@@ -55,14 +64,16 @@ void XPageMgr::LoadExistPage(int pageId, int anim)
     m_curPi = info;
     XPlatform::Instance()->LoadExistPage(pCur, info.m_page->GetName().c_str(), pageId, anim);
 
-    for (int i = m_cPages.size() - 1; i > idx; --i) {
+    for (int i = idx + 1; i < m_cPages.size(); ++i) {
         Remove(i);
     }
+    LockScreen(false);
+    //LOGD("=========end=======");
 }
 
 void XPageMgr::GoBack()
 {
-    LOGD("page size:%d", m_cPages.size());
+    //LOGD("page size:%d", m_cPages.size());
     if (m_cPages.size() <= 1) {
         exit(0);
         return;
@@ -70,6 +81,25 @@ void XPageMgr::GoBack()
     PageInfo &info = m_cPages.at(m_cPages.size() - 2);
     LoadExistPage(info.m_page->GetId(), A_USE_HISTORY);
 }
+
+bool XPageMgr::IsScreenLocked()
+{
+    return m_iLockNum > 0;
+}
+
+void XPageMgr::LockScreen(bool lock)
+{
+    if (lock) {
+        ++m_iLockNum;
+    } else {
+        if (m_iLockNum > 0) {
+            --m_iLockNum;
+        } else {
+            LOGE("lock num error");
+        }
+    }
+}
+
 
 int XPageMgr::GetReverseAnim(int anim)
 {
@@ -106,10 +136,17 @@ void XPageMgr::Remove(int idx)
     m_cDelPages.push_back(p.m_page);
 
     if (m_cDelPages.size() > 2) {
-        XPage *page = m_cDelPages.at(m_cDelPages.size() - 1);
+        XPage *page = m_cDelPages.at(0);
+        m_cDelPages.erase(m_cDelPages.begin());
         page->OnDestroy();
         delete page;
     }
+}
+
+void XPageMgr::RemoveById(int id)
+{
+    int idx = IndexOf(id);
+    Remove(idx);
 }
 
 XPage *XPageMgr::At(int idx)

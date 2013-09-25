@@ -47,7 +47,7 @@ public class UiThread {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case MSG_UNLOCK_SCREEN:
-				JPageMgr.instance().lockScreen(false);
+				JPageMgr.lockScreen(false);
 				break;
 			}
 		}

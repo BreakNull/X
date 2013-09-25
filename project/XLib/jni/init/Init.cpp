@@ -31,6 +31,7 @@ static void InitWidgetFactory();
 #include "jni.h"
 #include "XJniPage.h"
 #include "XJniUiThreadRunnable.h"
+#include "XJniPageMgr.h"
 #include <android/log.h>
 
 static JNINativeMethod GetNativeMethod(const char *pName, const char *pSig, void *func)
@@ -47,9 +48,9 @@ static void RegisterNativPageMethod(JNIEnv *pEnv)
 {
     //LOGD("Init->RegisterNativPageMethod");
     XJniMgr *pMgr = XJniMgr::Instance();
-    jclass pageclazz = (jclass)pMgr->GetClass("x.core.ui.p.JPage2");
+    jclass pageclazz = (jclass)pMgr->GetClass("x.core.ui.JPage");
     if (!pageclazz) {
-        LOGE("Init->RegisterNativPageeMethod fail, not find x.core.ui.p.JPage2");
+        LOGE("Init->RegisterNativPageeMethod fail, not find x.core.ui.JPage");
         return;
     }
 
@@ -85,11 +86,27 @@ static void RegisterNativUiThreadRunnableMethod(JNIEnv *pEnv)
     }
 
     int i = 0;
-    JNINativeMethod methods[30];
+    JNINativeMethod methods[10];
     methods[i++] = GetNativeMethod("Run", "(JJ)V", (void*)XJniUiThreadRunnable::Run);
     jint num = pEnv->RegisterNatives(pageclazz, methods, i);
 
     //LOGD("Init->RegisterNativUiThreadRunnableMethod register natives num=%d", num);
+}
+
+static void RegisterNativPageMgrMethod(JNIEnv *pEnv)
+{
+    XJniMgr *pMgr = XJniMgr::Instance();
+    jclass pageclazz = (jclass)pMgr->GetClass("x.core.ui.JPageMgr");
+    if (!pageclazz) {
+        LOGE("Init->RegisterNativPageMgrMethod fail, not find x.core.ui.JPageMgr");
+        return;
+    }
+
+    int i = 0;
+    JNINativeMethod methods[10];
+    methods[i++] = GetNativeMethod("LockScreen", "(Z)V", (void*)XJniPageMgr::LockScreen);
+    methods[i++] = GetNativeMethod("IsScreenLocked", "()Z", (void*)XJniPageMgr::IsScreenLocked);
+    jint num = pEnv->RegisterNatives(pageclazz, methods, i);
 }
 
 jint JNI_OnLoad(JavaVM *pJavaVm, void *reserved)
@@ -105,6 +122,7 @@ jint JNI_OnLoad(JavaVM *pJavaVm, void *reserved)
     }
     RegisterNativPageMethod(env);
     RegisterNativUiThreadRunnableMethod(env);
+    RegisterNativPageMgrMethod(env);
     InitWidgetFactory();
 
     SetXPageXml(new XPageXml(NULL));

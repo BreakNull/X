@@ -18,7 +18,7 @@ public abstract class JApplication extends Application {
 		System.loadLibrary("X");
 	}
 	
-	public abstract String getFirstPageName();
+	public abstract String getEntryPageName();
 	
-	public abstract boolean isFullScreen();
+	public abstract Class getR();
 }

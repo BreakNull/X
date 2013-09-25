@@ -3,9 +3,6 @@ package x.core.ui;
 import java.io.FileInputStream;
 import java.lang.reflect.Field;
 
-import x.core.ui.p.JApplication2;
-import x.core.ui.p.JPage2;
-import x.core.ui.p.JPageMgr2;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
@@ -22,7 +19,7 @@ public class JPlatform {
 	private static int getRid(String rid) {
 		try {
     		if (s_drawable == null) {
-    			String d = JApplication2.instance().getR().getName() + "$drawable";
+    			String d = JApplication.instance().getR().getName() + "$drawable";
     			s_drawable = Class.forName(d);
     		}
     		
@@ -327,7 +324,7 @@ public class JPlatform {
     
     public static void setListener(Object obj1, Object obj2, String name) {
     	//Log.d("X", "Platform.setListener obj1=" + obj1 + ", obj2=" + obj2 + ",name=" + name);
-    	JPage2 p = (JPage2)obj1;
+    	JPage p = (JPage)obj1;
     	if (p != null) {
     		p.setListener(obj2, name);
     	}
@@ -335,7 +332,7 @@ public class JPlatform {
     
     public static void clearListener(Object obj1, Object obj2, String name) {
     	//Log.d("X", "Platform.setListener obj1=" + obj1 + ", obj2=" + obj2 + ",name=" + name);
-    	JPage2 p = (JPage2)obj1;
+    	JPage p = (JPage)obj1;
     	if (p != null) {
     		p.clearListener(obj2, name);
     	}
@@ -364,15 +361,15 @@ public class JPlatform {
 	}
 	
 	public static void loadNewPage(Object obj, String pageName, int anim) {
-		JPageMgr2.loadNewPage(obj, pageName, anim);
+		JPageMgr.loadNewPage(obj, pageName, anim);
 	}
 	
 	public static void loadExistPage(Object obj, String name, int pageId, int anim) {
-		JPageMgr2.loadExistPage(obj, name, pageId, anim);
+		JPageMgr.loadExistPage(obj, name, pageId, anim);
 	}
 	
 	public static void detachContent(Object obj) {
-		JPage2 p = (JPage2)obj;
+		JPage p = (JPage)obj;
 		p.setContentView(new View(p));
 	}
 	
