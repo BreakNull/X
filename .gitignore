@@ -9,3 +9,5 @@ gen
 bin
 classes
 Password.txt
+gdb.setup
+gdbserver
