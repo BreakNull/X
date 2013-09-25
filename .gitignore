@@ -11,3 +11,4 @@ classes
 Password.txt
 gdb.setup
 gdbserver
+*.oml

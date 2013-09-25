@@ -21,7 +21,7 @@ XPageXml::~XPageXml()
     delete m_pStyle;
 }
 
-XPageXml *XPageXml::Clone(XPage *p)
+XPageXml *XPageXml::New(XPage *p)
 {
     return new XPageXml(p);
 }

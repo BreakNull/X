@@ -12,10 +12,10 @@ XResource::XResource(const string &url)
     ,m_bLoaded(false)
 {
     const char *p = url.c_str();
-    if (strcmp("plt:", p) == 0) {
+    if (memcmp("plt:", p, 4) == 0) {
         m_eDt = DT_PLT;
         m_cAbsPath = p + 4;
-    } else if (strcmp("loc:", p)) {
+    } else if (memcmp("loc:", p, 4) == 0) {
         m_eDt = DT_LOC;
         if (p[4] == '/') {
             m_cAbsPath = p + 4;
@@ -28,20 +28,27 @@ XResource::XResource(const string &url)
 
 void *XResource::GetData()
 {
-    if (!m_bLoaded) {
-        m_bLoaded = true;
-        if (m_eDt == DT_PLT) {
-            LoadFromPlt();
-        } else if (m_eDt == DT_LOC) {
-            LoadFromFile();
-        }
-    }
+    Load();
     return m_pDat;
 }
 
 int XResource::GetDataLen()
 {
+    Load();
     return m_iDatLen;
+}
+
+void XResource::Load()
+{
+    if (m_bLoaded) {
+        return;
+    }
+    m_bLoaded = true;
+    if (m_eDt == DT_PLT) {
+        LoadFromPlt();
+    } else if (m_eDt == DT_LOC) {
+        LoadFromFile();
+    }
 }
 
 void XResource::LoadFromFile()

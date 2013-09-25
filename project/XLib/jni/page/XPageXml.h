@@ -11,16 +11,15 @@ class XmlAttr;
 class XPageXml
 {
 public:
-    XPageXml(XPage *p);
-    virtual ~XPageXml();
-    virtual XPageXml *Clone(XPage *p);
-
+    static XPageXml *New(XPage *p);
     bool LoadBuffer(char *pXmlData, int len);
     bool LoadFile(const char *pFileName);
     virtual void Parse();
     XWidget *GetMainView();
+    virtual ~XPageXml();
 
 protected:
+    XPageXml(XPage *p);
     void ParseMainView(XmlElement *pElem);
     void ParseStyle(XmlElement *pElem);
 

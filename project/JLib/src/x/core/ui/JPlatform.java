@@ -1,6 +1,7 @@
 package x.core.ui;
 
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 
 
@@ -15,6 +16,7 @@ import android.app.*;
 
 public class JPlatform {
 	private static Class s_drawable = null;
+	private static Class s_raw = null;
 	
 	private static int getRid(String rid) {
 		try {
@@ -373,6 +375,7 @@ public class JPlatform {
 		return "/data/data/" + JApplication.instance().getPackageName();
 	}
 	
+	/*
 	public static byte[] getResData(String path) {
 		JApplication app = JApplication.instance();
 		AssetManager am = app.getResources().getAssets();
@@ -394,8 +397,42 @@ public class JPlatform {
 				dat = null;
 			}
 		} catch (Exception e) {
+			Log.e("X", "JPlatform.getResData " + e.getMessage());
 			dat = null;
-			e.printStackTrace();
+		}
+		return dat;
+	}
+	*/
+	
+	public static byte[] getResData(String path) {
+		byte[] dat = null;
+		try {
+    		if (s_raw == null) {
+    			String d = JApplication.instance().getR().getName() + "$raw";
+    			s_raw = Class.forName(d);
+    		}
+    		
+			Field f = s_raw.getField(path);
+			int val = f.getInt(null);
+			InputStream in = JApplication.instance().getResources().openRawResource(val);
+			int len = in.available();
+			dat = new byte[len];
+			int i = 0;
+			while (i < len) {
+				int r = in.read(dat, i, len - i);
+				if (r <= 0) {
+					break;
+				}
+				i += r;
+			}
+			if (i != len) {
+				Log.e("X", "JPlatform.getResData('" + path +"') read fail");
+				dat = null;
+			}
+		} catch (Exception e) {
+			dat = null;
+			Log.e("X", "JPlatform.getResData('" + path +"') " + e.getMessage());
+			//e.printStackTrace();
 		}
 		return dat;
 	}

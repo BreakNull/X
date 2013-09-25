@@ -77,7 +77,9 @@ SOURCES += \
     util/oml/XmlElement.cpp \
     util/oml/XmlDocument.cpp \
     util/file/XFile.cpp \
-    platform/jni/XJniPageMgr.cpp
+    platform/jni/XJniPageMgr.cpp \
+    util/oml/XOmlDb.cpp \
+    platform/jni/XJniEntryPage.cpp
 
 HEADERS +=\
     page/XPage.h \
@@ -141,7 +143,9 @@ HEADERS +=\
     util/oml/XmlElement.h \
     util/oml/XmlDocument.h \
     util/file/XFile.h \
-    platform/jni/XJniPageMgr.h
+    platform/jni/XJniPageMgr.h \
+    util/oml/XOmlDb.h \
+    platform/jni/XJniEntryPage.h
 
 unix:!symbian {
     maemo5 {

@@ -34,6 +34,7 @@ private:
         DT_LOC
     };
 
+    void Load();
     void LoadFromFile();
     void LoadFromPlt();
 

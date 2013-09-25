@@ -5,6 +5,7 @@
 #include "XPlatform.h"
 #include "XWidget.h"
 #include "XPageMgr.h"
+#include "XOmlDb.h"
 
 XPage::XPage(void *pRealXPage, const string &name, int id)
     :m_pRealPage(pRealXPage)
@@ -25,15 +26,12 @@ XPage::~XPage()
 XWidget *XPage::OnCreate()
 {
     //LOGD("XPage::OnCreate page name is '%s'", m_cName.c_str());
-    if (!::GetXPageXml()) {
-        return NULL;
-    }
     delete m_pXml;
-    m_pXml = ::GetXPageXml()->Clone(this);
-    //TODO:
-    string root("/sdcard/");
-    string fn = root + m_cName + ".oml";
-    if (m_pXml->LoadFile(fn.c_str())) {
+    m_pXml = XPageXml::New(this);
+
+    int len = 0;
+    void *pData = XOmlDb::Instance()->ReadContent(m_cName.c_str(), &len);
+    if (pData && m_pXml->LoadBuffer((char*)pData, len)) {
         m_pXml->Parse();
     }
     m_pRoot = m_pXml->GetMainView();

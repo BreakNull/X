@@ -23,6 +23,8 @@
 #include "XTimePicker.h"
 #include "XToast.h"
 #include "XPageXml.h"
+#include "XApp.h"
+#include "XJniEntryPage.h"
 
 static void InitWidgetFactory();
 
@@ -33,6 +35,7 @@ static void InitWidgetFactory();
 #include "XJniUiThreadRunnable.h"
 #include "XJniPageMgr.h"
 #include <android/log.h>
+
 
 static JNINativeMethod GetNativeMethod(const char *pName, const char *pSig, void *func)
 {
@@ -109,6 +112,21 @@ static void RegisterNativPageMgrMethod(JNIEnv *pEnv)
     jint num = pEnv->RegisterNatives(pageclazz, methods, i);
 }
 
+static void RegisterNativEntryPageMethod(JNIEnv *pEnv)
+{
+    XJniMgr *pMgr = XJniMgr::Instance();
+    jclass pageclazz = (jclass)pMgr->GetClass("x.core.ui.JEntryPage");
+    if (!pageclazz) {
+        LOGE("Init->RegisterNativEntryPageMethod fail, not find x.core.ui.JEntryPage");
+        return;
+    }
+
+    int i = 0;
+    JNINativeMethod methods[10];
+    methods[i++] = GetNativeMethod("CopyOmlDbFile", "()V", (void*)XJniEntryPage::CopyOmlDbFile);
+    jint num = pEnv->RegisterNatives(pageclazz, methods, i);
+}
+
 jint JNI_OnLoad(JavaVM *pJavaVm, void *reserved)
 {
     LOGD("Init->JniOnLoad -- begin");
@@ -123,9 +141,9 @@ jint JNI_OnLoad(JavaVM *pJavaVm, void *reserved)
     RegisterNativPageMethod(env);
     RegisterNativUiThreadRunnableMethod(env);
     RegisterNativPageMgrMethod(env);
+    RegisterNativEntryPageMethod(env);
     InitWidgetFactory();
 
-    SetXPageXml(new XPageXml(NULL));
     LOGD("Init->JniOnLoad -- end");
 
     return JNI_VERSION_1_4;
@@ -166,15 +184,4 @@ static void InitWidgetFactory()
     pFac->RegistNew("Tab", XTab::New);
     pFac->RegistNew("TimePicker", XTimePicker::New);
     pFac->RegistNew("Toast", XToast::New);
-}
-
-static XPageXml *s_pageXml;
-XPageXml *GetXPageXml()
-{
-    return s_pageXml;
-}
-
-void SetXPageXml(XPageXml *p)
-{
-    s_pageXml = p;
 }
