@@ -23,7 +23,7 @@ public:
     XPage *New(void *pRealPage, const string &name, int id);
 
     /**
-     * 注册一个Widget的New函数
+     * 注册一个XPage的New函数
      * @param name 标签名
      * @param fun New函数指针
      */
