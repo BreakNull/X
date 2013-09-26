@@ -1,3 +1,5 @@
+#ifdef _FOR_ANDROID_
+
 #include "XPlatformAndroid.h"
 #include "XJniMgr.h"
 #include "jni.h"
@@ -476,3 +478,4 @@ void *XPlatformAndroid::GetPlatformRes(const char *pName, int *pLen)
 
 
 
+#endif

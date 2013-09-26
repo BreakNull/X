@@ -3,6 +3,8 @@
 #include <string>
 #include "XLog.h"
 #include "XApp.h"
+#include "XFile.h"
+#include "XResource.h"
 
 using namespace std;
 
@@ -26,6 +28,7 @@ XOmlDb *XOmlDb::s_pIns = NULL;
 XOmlDb::XOmlDb()
     :m_iNum(0)
     ,m_pItems(NULL)
+    ,m_bInited(false)
 {
 }
 
@@ -43,7 +46,14 @@ void *XOmlDb::ReadContent(const char *pName, int *pLen)
         LOGE("Invalid params pName=%p, pLen=%p", pName, pLen);
         return NULL;
     }
-    string dbName = XApp::Instance()->GetOmlDbFilePath();
+
+    //释放oml.db文件
+    if (!m_bInited) {
+        m_bInited = true;
+        CopyOmlDbFile();
+    }
+
+    string dbName = GetOmlDbFilePath();
     FILE *pf = fopen(dbName.c_str(), "rb");
     if (!pf) {
         LOGE("open file %s error", dbName.c_str());
@@ -99,4 +109,36 @@ DbHeadItem *XOmlDb::Find(const char *pName)
         }
     }
     return NULL;
+}
+
+string XOmlDb::GetOmlDbFilePath()
+{
+    return XApp::Instance()->GetWorkDir() + "/oml.db";
+}
+
+void XOmlDb::CopyOmlDbFile()
+{
+    string cPath = GetOmlDbFilePath();
+    XFile f(cPath);
+    if (f.IsExists()) {
+        return;
+    }
+
+    XResource res("plt:oml_db");
+    int len = res.GetDataLen();
+    void *pBuf = res.GetData();
+    if (!pBuf || !len) {
+        LOGE("can't load res 'plt:oml_db'");
+        return;
+    }
+
+    FILE *pf = fopen(cPath.c_str(), "wb");
+    if (!pf) {
+        free(pBuf);
+        LOGE("open %s error", cPath.c_str());
+        return;
+    }
+    fwrite(pBuf, 1, len, pf);
+    fclose(pf);
+    free(pBuf);
 }

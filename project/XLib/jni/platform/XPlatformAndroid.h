@@ -1,6 +1,8 @@
 #ifndef XPLATFORMANDROID_H
 #define XPLATFORMANDROID_H
 
+#ifdef _FOR_ANDROID_
+
 #include "XPlatform.h"
 
 class XPlatformAndroid : public XPlatform
@@ -92,5 +94,7 @@ private:
     char m_pClassName[40];
     void *m_pClass;
 };
+
+#endif
 
 #endif // XPLATFORMANDROID_H

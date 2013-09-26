@@ -23,9 +23,6 @@ public:
      */
     string GetAppFilesDir();
 
-    string GetOmlDbFilePath();
-
-    void CopyOmlDbFile();
 
 protected:
     XApp();

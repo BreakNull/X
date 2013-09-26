@@ -24,7 +24,6 @@
 #include "XToast.h"
 #include "XPageXml.h"
 #include "XApp.h"
-#include "XJniEntryPage.h"
 
 static void InitWidgetFactory();
 
@@ -112,21 +111,6 @@ static void RegisterNativPageMgrMethod(JNIEnv *pEnv)
     jint num = pEnv->RegisterNatives(pageclazz, methods, i);
 }
 
-static void RegisterNativEntryPageMethod(JNIEnv *pEnv)
-{
-    XJniMgr *pMgr = XJniMgr::Instance();
-    jclass pageclazz = (jclass)pMgr->GetClass("x.core.ui.JEntryPage");
-    if (!pageclazz) {
-        LOGE("Init->RegisterNativEntryPageMethod fail, not find x.core.ui.JEntryPage");
-        return;
-    }
-
-    int i = 0;
-    JNINativeMethod methods[10];
-    methods[i++] = GetNativeMethod("CopyOmlDbFile", "()V", (void*)XJniEntryPage::CopyOmlDbFile);
-    jint num = pEnv->RegisterNatives(pageclazz, methods, i);
-}
-
 jint JNI_OnLoad(JavaVM *pJavaVm, void *reserved)
 {
     LOGD("Init->JniOnLoad -- begin");
@@ -141,7 +125,6 @@ jint JNI_OnLoad(JavaVM *pJavaVm, void *reserved)
     RegisterNativPageMethod(env);
     RegisterNativUiThreadRunnableMethod(env);
     RegisterNativPageMgrMethod(env);
-    RegisterNativEntryPageMethod(env);
     InitWidgetFactory();
 
     LOGD("Init->JniOnLoad -- end");
