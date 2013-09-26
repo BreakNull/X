@@ -1,5 +1,5 @@
 <Page>
-	<Style  src="/sdcard/main.style"/>
+	<Style  src="main.css"/>
 	<Style>
 	<![CDATA[
 		Lab {

@@ -61,9 +61,11 @@ void *XOmlDb::ReadContent(const char *pName, int *pLen)
     }
     *pLen = pIt->m_iLen;
     fseek(pf, pIt->m_iPos, SEEK_SET);
-    void *pBuf = malloc(pIt->m_iLen);
+    void *pBuf = malloc(pIt->m_iLen + 1);
     fread(pBuf, 1, pIt->m_iLen, pf);
     fclose(pf);
+    char *pEnd = (char*)pBuf + pIt->m_iLen;
+    *pEnd = '\0';
 
     return pBuf;
 }

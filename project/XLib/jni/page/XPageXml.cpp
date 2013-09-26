@@ -6,6 +6,7 @@
 #include "XWidget.h"
 #include "XButton.h"
 #include "XLog.h"
+#include "XOmlDb.h"
 
 XPageXml::XPageXml(XPage *p)
     :m_pDoc(NULL)
@@ -95,8 +96,14 @@ void XPageXml::ParseStyle(XmlElement *pElem)
             LOGE("Invalid Style attribute '%s'", attr.GetName());
             return;
         }
+        int len = 0;
+        void *pDat = XOmlDb::Instance()->ReadContent(attr.GetValue(), &len);
+        if (!pDat) {
+            LOGE("can't read css '%s'", attr.GetValue());
+            return;
+        }
         m_pStyle = new XStyle(m_pStyle, attr.GetValue());
-        m_pStyle->LoadFile(attr.GetValue());
+        m_pStyle->LoadData((char*)pDat, true);
     } else {
         const char *pTxt = pElem->GetText();
         m_pStyle = new XStyle(m_pStyle, "<TAIL>");

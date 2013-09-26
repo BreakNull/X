@@ -1,5 +1,5 @@
 <Page>
-	<Style  src="/sdcard/main.style"/>
+	<Style  src="main.css"/>
 	
 	<MainView title="Ni">
 		<LineLay ori="ver" id="content">
