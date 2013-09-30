@@ -6,7 +6,7 @@
 class XScrollView : public XWidget
 {
 public:
-    XScrollView(XPage *p);
+    XScrollView();
 
     WIDGET_NEW(XScrollView)
 };

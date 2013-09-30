@@ -6,7 +6,7 @@
 class XCheckBox : public XWidget
 {
 public:
-    XCheckBox(XPage *p);
+    XCheckBox();
 
     WIDGET_NEW(XCheckBox)
 };

@@ -166,8 +166,8 @@ jboolean XJniPage::OnCreateOptionsMenu(JNIEnv *pEnv, jobject jpage, jint id, job
         //Log err
         return false;
     }
-    XMenu *pMenu = new XMenu(page);
-    pMenu->SetRealMenu((void*)menu);
+    XMenu *pMenu = new XMenu();
+    pMenu->SetRealWidget((void*)menu);
     return page->OnCreateOptionsMenu(pMenu);
 }
 

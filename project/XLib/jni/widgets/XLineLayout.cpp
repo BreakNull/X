@@ -2,15 +2,14 @@
 #include "XPlatform.h"
 #include "XLog.h"
 
-XLineLayout::XLineLayout(XPage *p)
-    :XWidget(p)
+XLineLayout::XLineLayout()
 {
 }
 
-void XLineLayout::Create(int flags)
+void XLineLayout::Create(XPage *p, int flags)
 {
-    m_pRealWidget = XPlatform::Instance()->NewLineLayout(m_pPage);
-    XWidget::Create(flags);
+    m_pRealWidget = XPlatform::Instance()->NewLineLayout(p);
+    XWidget::Create(p, flags);
 }
 
 void XLineLayout::SetProperty(const string &name, const XVariant &v)

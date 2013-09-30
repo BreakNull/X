@@ -9,7 +9,7 @@
 class XGridView : public XWidget
 {
 public:
-    XGridView(XPage *p);
+    XGridView();
 
     WIDGET_NEW(XGridView)
 };

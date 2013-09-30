@@ -6,7 +6,7 @@
 class XDatePicker : public XWidget
 {
 public:
-    XDatePicker(XPage *p);
+    XDatePicker();
 
     WIDGET_NEW(XDatePicker)
 };

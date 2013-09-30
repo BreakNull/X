@@ -6,7 +6,7 @@
 class XTimePicker : public XWidget
 {
 public:
-    XTimePicker(XPage *);
+    XTimePicker();
 
     WIDGET_NEW(XTimePicker)
 };

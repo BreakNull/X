@@ -14,13 +14,13 @@ XWidgetFactory *XWidgetFactory::Instance()
     return s_ins;
 }
 
-XWidget *XWidgetFactory::New(const string &name, XPage *p)
+XWidget *XWidgetFactory::New(const string &name)
 {
     map<string, NewFunc>::iterator it = m_cMap.find(name);
     if (it != m_cMap.end()) {
         NewFunc fun = (*it).second;
         if (NULL != fun) {
-            return fun(p);
+            return fun();
         }
     }
     return NULL;

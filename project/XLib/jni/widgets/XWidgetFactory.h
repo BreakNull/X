@@ -11,14 +11,14 @@ using namespace std;
 class XWidgetFactory
 {
 public:
-    typedef XWidget *(*NewFunc)(XPage *);
+    typedef XWidget *(*NewFunc)();
 
     static XWidgetFactory *Instance();
 
     /**
      * 根据标签名来创建一个Widget对象，此标签名就是xml中的标签
      */
-    XWidget *New(const string &name, XPage *p);
+    XWidget *New(const string &name);
 
     /**
      * 注册一个Widget的New函数

@@ -12,11 +12,11 @@
 class XLabel : public XWidget
 {
 public:
-    XLabel(XPage *p);
+    XLabel();
 
     WIDGET_NEW(XLabel)
 
-    virtual void Create(int flags);
+    virtual void Create(XPage *p, int flags);
 
     virtual void SetProperty(const string &name, const XVariant &v);
     virtual XVariant GetProperty(const string &name);

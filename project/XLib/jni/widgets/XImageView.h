@@ -6,7 +6,7 @@
 class XImageView : public XWidget
 {
 public:
-    XImageView(XPage *p);
+    XImageView();
 
     WIDGET_NEW(XWidget)
 };

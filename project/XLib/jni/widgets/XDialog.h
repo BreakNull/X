@@ -13,7 +13,7 @@ class XPage;
 class XDialog : public XWidget
 {
 public:
-    XDialog(XPage *p);
+    XDialog();
     WIDGET_NEW(XDialog)
 
     virtual void Show();

@@ -6,11 +6,11 @@
 class XImageButton : public XWidget
 {
 public:
-    XImageButton(XPage *p);
+    XImageButton();
 
     WIDGET_NEW(XImageButton)
 
-    virtual void Create(int flags);
+    virtual void Create(XPage *p, int flags);
     virtual void SetProperty(const string &name, const XVariant &v);
 };
 

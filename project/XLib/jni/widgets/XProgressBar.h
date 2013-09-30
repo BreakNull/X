@@ -9,7 +9,7 @@
 class XProgressBar : public XWidget
 {
 public:
-    XProgressBar(XPage *p);
+    XProgressBar();
 
     WIDGET_NEW(XProgressBar)
 };

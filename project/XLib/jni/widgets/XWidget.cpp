@@ -8,9 +8,8 @@
 #include "XJniMgr.h"
 #endif
 
-XWidget::XWidget(XPage *p)
+XWidget::XWidget()
     :m_pRealWidget(NULL)
-    ,m_pPage(p)
     ,m_iFlags(0)
 {
 }
@@ -36,7 +35,7 @@ XWidget::~XWidget()
 #endif
 }
 
-void XWidget::Create(int flags)
+void XWidget::Create(XPage *p, int flags)
 {
     m_iFlags = flags;
 #ifdef _FOR_ANDROID_
@@ -124,11 +123,6 @@ XVariant XWidget::GetProperty(const string &name)
 bool XWidget::IsContainer()
 {
     return false;
-}
-
-XPage *XWidget::GetXPage()
-{
-    return m_pPage;
 }
 
 void *XWidget::GetChild(const string &id)

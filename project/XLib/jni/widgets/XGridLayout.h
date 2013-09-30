@@ -6,7 +6,7 @@
 class XGridLayout : public XWidget
 {
 public:
-    XGridLayout(XPage *p);
+    XGridLayout();
     WIDGET_NEW(XGridLayout)
 };
 

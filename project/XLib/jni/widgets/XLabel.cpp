@@ -1,15 +1,14 @@
 #include "XLabel.h"
 #include "XPlatform.h"
 
-XLabel::XLabel(XPage *p)
-    :XWidget(p)
+XLabel::XLabel()
 {
 }
 
-void XLabel::Create(int flags)
+void XLabel::Create(XPage *p, int flags)
 {
-    m_pRealWidget = XPlatform::Instance()->NewLabel(m_pPage);
-    XWidget::Create(flags);
+    m_pRealWidget = XPlatform::Instance()->NewLabel(p);
+    XWidget::Create(p, flags);
 }
 
 void XLabel::SetProperty(const string &name, const XVariant &v)

@@ -9,7 +9,7 @@
 using namespace std;
 class XPage;
 
-#define WIDGET_NEW(x) static XWidget *New(XPage *p) {return new x(p);}
+#define WIDGET_NEW(x) static XWidget *New() {return new x();}
 
 /**
  * Widget *pw = new XXX();
@@ -36,7 +36,7 @@ class XPage;
 class XWidget
 {
 public:
-    XWidget(XPage *p);
+    XWidget();
     virtual ~XWidget();
 
     //每个Widget的子类都需要有一个static的New函数
@@ -51,7 +51,7 @@ public:
      * 创建出对应到平台的实际widget
      * 在创建一个带有ID的widget时， 需要将id设置到实际平台widget的tag中
      */
-    virtual void Create(int flags);
+    virtual void Create(XPage *p, int flags);
 
     virtual void SetProperty(const string &name, const XVariant &v);
     virtual XVariant GetProperty(const string &name);
@@ -63,8 +63,6 @@ public:
      *是否是一个容器，容器可以包含子Widget
      */
     virtual bool IsContainer();
-
-    XPage *GetXPage();
 
     void *GetChild(const string &id);
     int GetChildCount();
@@ -85,7 +83,6 @@ private:
 
 protected:
     void *m_pRealWidget;    //实际的Widget
-    XPage *m_pPage;
     int m_iFlags;
 };
 

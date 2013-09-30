@@ -1,7 +1,6 @@
 #include "XDialog.h"
 
-XDialog::XDialog(XPage *p)
-    :XWidget(p)
+XDialog::XDialog()
 {
 }
 

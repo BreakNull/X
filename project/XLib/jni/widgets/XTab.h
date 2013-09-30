@@ -7,7 +7,7 @@
 class XTab : public XWidget
 {
 public:
-    XTab(XPage *p);
+    XTab();
 
     WIDGET_NEW(XTab)
 };

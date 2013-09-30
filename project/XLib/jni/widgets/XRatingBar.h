@@ -9,7 +9,7 @@
 class XRatingBar : public XWidget
 {
 public:
-    XRatingBar(XPage *p);
+    XRatingBar();
 
     WIDGET_NEW(XRatingBar)
 };

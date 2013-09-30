@@ -7,7 +7,7 @@
 class XToast : public XWidget
 {
 public:
-    XToast(XPage *p);
+    XToast();
 
     WIDGET_NEW(XToast)
 

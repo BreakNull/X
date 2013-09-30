@@ -6,7 +6,7 @@
 class XRadio : public XWidget
 {
 public:
-    XRadio(XPage *p);
+    XRadio();
     WIDGET_NEW(XRadio)
 };
 

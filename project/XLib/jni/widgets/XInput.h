@@ -6,7 +6,7 @@
 class XInput : public XWidget
 {
 public:
-    XInput(XPage *p);
+    XInput();
     WIDGET_NEW(XInput)
 };
 

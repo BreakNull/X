@@ -72,12 +72,12 @@ void XPageXml::ParseMainView(XmlElement *pElem)
         LOGE("XPageXml::ParseMainView note <MainView> has no child");
         return;
     }
-    m_pMainView = XWidgetFactory::Instance()->New(p->GetName(), m_page);
+    m_pMainView = XWidgetFactory::Instance()->New(p->GetName());
     if (!m_pMainView) {
         LOGE("XPageXml::ParseMainView() Not find %s::New() in XWidgetFactory", p->GetName());
         return;
     }
-    m_pMainView->Create(XWidget::F_NEW_REF);
+    m_pMainView->Create(m_page, XWidget::F_NEW_REF);
     //parse MainView attr
     ParseAttr(m_page, pElem);
     if (m_pMainView->IsContainer()) {
@@ -173,12 +173,12 @@ void XPageXml::ParseContainer(XWidget *pw, XmlElement *pElem)
 
     for (int i = 0; i < pElem->ChildCount(); ++i) {
         XmlElement *pE = pElem->ChildAt(i);
-        XWidget *pC = XWidgetFactory::Instance()->New(pE->GetName(), m_page);
+        XWidget *pC = XWidgetFactory::Instance()->New(pE->GetName());
         if (NULL == pC) {
             LOGE("new widget '%s' error", pE->GetName());
             break;
         }
-        pC->Create(XWidget::F_NONE);
+        pC->Create(m_page, XWidget::F_NONE);
         if (pC->IsContainer()) {
             ParseContainer(pC, pE);
         } else {

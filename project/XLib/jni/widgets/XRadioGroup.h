@@ -6,7 +6,7 @@
 class XRadioGroup : public XWidget
 {
 public:
-    XRadioGroup(XPage *p);
+    XRadioGroup();
 
     WIDGET_NEW(XRadioGroup)
 };

@@ -1,15 +1,14 @@
 #include "XImageButton.h"
 #include "XPlatform.h"
 
-XImageButton::XImageButton(XPage *p)
-    :XWidget(p)
+XImageButton::XImageButton()
 {
 }
 
-void XImageButton::Create(int flags)
+void XImageButton::Create(XPage *p, int flags)
 {
-    m_pRealWidget = XPlatform::Instance()->NewImageButton(m_pPage);
-    XWidget::Create(flags);
+    m_pRealWidget = XPlatform::Instance()->NewImageButton(p);
+    XWidget::Create(p, flags);
 }
 
 void XImageButton::SetProperty(const string &name, const XVariant &v)

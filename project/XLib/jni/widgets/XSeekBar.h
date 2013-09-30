@@ -9,7 +9,7 @@
 class XSeekBar : public XWidget
 {
 public:
-    XSeekBar(XPage *p);
+    XSeekBar();
 
     WIDGET_NEW(XSeekBar)
 };

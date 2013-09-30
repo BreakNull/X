@@ -6,7 +6,7 @@
 class XFrameLayout : public XWidget
 {
 public:
-    XFrameLayout(XPage *p);
+    XFrameLayout();
     WIDGET_NEW(XFrameLayout)
 };
 

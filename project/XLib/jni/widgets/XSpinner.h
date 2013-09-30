@@ -9,7 +9,7 @@
 class XSpinner : public XWidget
 {
 public:
-    XSpinner(XPage *p);
+    XSpinner();
 
     WIDGET_NEW(XSpinner)
 
