@@ -8,10 +8,8 @@
 #include "XLog.h"
 #include "XOmlDb.h"
 
-XPageXml::XPageXml(XPage *p)
+XPageXml::XPageXml()
     :m_pDoc(NULL)
-    ,m_pMainView(NULL)
-    ,m_page(p)
     ,m_pStyle(NULL)
 {
 }
@@ -22,70 +20,97 @@ XPageXml::~XPageXml()
     delete m_pStyle;
 }
 
-XPageXml *XPageXml::New(XPage *p)
-{
-    return new XPageXml(p);
-}
-
 bool XPageXml::LoadBuffer(char *pXmlData, int len)
 {
     //LOGD("XPageXml::LoadData");
     m_pDoc = new XmlDocument();
-    return m_pDoc->LoadBuffer(pXmlData, len);
+    bool b = m_pDoc->LoadBuffer(pXmlData, len);
+    if (b) {
+        Parse();
+    }
+    return b;
 }
 
 bool XPageXml::LoadFile(const char *pFileName)
 {
     //LOGD("XPageXml::LoadFile fileName='%s'", pFileName);
     m_pDoc = new XmlDocument();
-    return m_pDoc->LoadFile(pFileName);
+    bool b =m_pDoc->LoadFile(pFileName);
+    if (b) {
+        Parse();
+    }
+    return b;
 }
 
-XWidget *XPageXml::GetMainView()
+XWidget *XPageXml::CreateRefView(const char *pRefName, XPage *page)
 {
-    return m_pMainView;
+    if (pRefName == NULL) {
+        LOGE("ref name is NULL");
+        return NULL;
+    }
+    XmlElement *pRoot = m_pDoc->GetRoot();
+    XmlElement *pElem = pRoot->GetChild(pRefName);
+    if (pElem == NULL) {
+        LOGE("Not find ref '%s'", pRefName);
+        return NULL;
+    }
+    XmlElement *p = pElem->ChildAt(0);
+    if (!p) {
+        LOGE("Note <RefView name='%s'> has no child", pRefName);
+        return NULL;
+    }
+    XWidget *pW = XWidgetFactory::Instance()->New(p->GetName());
+    if (!pW) {
+        LOGE("Not find %s::New() in XWidgetFactory", p->GetName());
+        return NULL;
+    }
+    pW->Create(page, XWidget::F_NEW_REF);
+    if (pW->IsContainer()) {
+        ParseContainer(pW, p, page);
+    } else {
+        ParseWidget(pW, p, page);
+    }
+    return pW;
 }
+
+XWidget *XPageXml::CreateMainView(XPage *page)
+{
+    XmlElement *pRoot = m_pDoc->GetRoot();
+    XmlElement *pElem = pRoot->GetChild("MainView");
+    if (pElem == NULL) {
+        LOGE("Not find <MainView>");
+        return NULL;
+    }
+    ParsePageAttr(page, pElem);
+
+    XmlElement *p = pElem->ChildAt(0);
+    if (!p) {
+        LOGE("Note <MainView> has no child");
+        return NULL;
+    }
+    XWidget *pW = XWidgetFactory::Instance()->New(p->GetName());
+    if (!pW) {
+        LOGE("Not find %s::New() in XWidgetFactory", p->GetName());
+        return NULL;
+    }
+    pW->Create(page, XWidget::F_NEW_REF);
+    if (pW->IsContainer()) {
+        ParseContainer(pW, p, page);
+    } else {
+        ParseWidget(pW, p, page);
+    }
+    return pW;
+}
+
 
 void XPageXml::Parse()
 {
-    //LOGD("XPageXml::Parse begin ===>");
-    if (!m_pDoc) {
-        LOGE("XPageXml::LoadFile m_pDoc is NULL");
-        return;
-    }
     XmlElement *pRoot = m_pDoc->GetRoot();
     for (int i = 0; i < pRoot->ChildCount(); ++i) {
         XmlElement *pE = pRoot->ChildAt(i);
-        if (strcmp(pE->GetName(),"MainView") == 0)
-            ParseMainView(pE);
-        else if (strcmp(pE->GetName(),"Style") == 0)
+        if (strcmp(pE->GetName(),"Style") == 0)
             ParseStyle(pE);
     }
-    //LOGD("XPageXml::Parse end <===");
-}
-
-void XPageXml::ParseMainView(XmlElement *pElem)
-{
-    //LOGD("XPageXml::ParseMainView begin");
-    XmlElement *p = pElem->ChildAt(0);
-    if (!p) {
-        LOGE("XPageXml::ParseMainView note <MainView> has no child");
-        return;
-    }
-    m_pMainView = XWidgetFactory::Instance()->New(p->GetName());
-    if (!m_pMainView) {
-        LOGE("XPageXml::ParseMainView() Not find %s::New() in XWidgetFactory", p->GetName());
-        return;
-    }
-    m_pMainView->Create(m_page, XWidget::F_NEW_REF);
-    //parse MainView attr
-    ParseAttr(m_page, pElem);
-    if (m_pMainView->IsContainer()) {
-        ParseContainer(m_pMainView, p);
-    } else {
-        ParseWidget(m_pMainView, p);
-    }
-    //LOGD("XPageXml::ParseMainView end");
 }
 
 void XPageXml::ParseStyle(XmlElement *pElem)
@@ -111,11 +136,11 @@ void XPageXml::ParseStyle(XmlElement *pElem)
     }
 }
 
-void XPageXml::ParseAttr(XWidget *pw, XmlElement *pElem)
+void XPageXml::ParseAttr(XWidget *pw, XmlElement *pElem, XPage *page)
 {
     const char *pLis = pElem->GetAttr("listen");
     if (pLis != NULL) {
-        m_page->SetListener(pw, pLis);
+        page->SetListener(pw, pLis);
     }
 
     vector<XStyleAttr> vec;
@@ -126,7 +151,7 @@ void XPageXml::ParseAttr(XWidget *pw, XmlElement *pElem)
     }
 }
 
-void XPageXml::ParseAttr(XPage *pw, XmlElement *pElem)
+void XPageXml::ParsePageAttr(XPage *pw, XmlElement *pElem)
 {
     vector<XStyleAttr> vec;
     MergeAttr(pElem, vec);
@@ -167,9 +192,9 @@ void XPageXml::MergeAttr(XmlElement *pE, vector<XStyleAttr> &vec)
     }
 }
 
-void XPageXml::ParseContainer(XWidget *pw, XmlElement *pElem)
+void XPageXml::ParseContainer(XWidget *pw, XmlElement *pElem, XPage *page)
 {
-    ParseAttr(pw, pElem);
+    ParseAttr(pw, pElem, page);
 
     for (int i = 0; i < pElem->ChildCount(); ++i) {
         XmlElement *pE = pElem->ChildAt(i);
@@ -178,20 +203,20 @@ void XPageXml::ParseContainer(XWidget *pw, XmlElement *pElem)
             LOGE("new widget '%s' error", pE->GetName());
             break;
         }
-        pC->Create(m_page, XWidget::F_NONE);
+        pC->Create(page, XWidget::F_NONE);
         if (pC->IsContainer()) {
-            ParseContainer(pC, pE);
+            ParseContainer(pC, pE, page);
         } else {
-            ParseWidget(pC, pE);
+            ParseWidget(pC, pE, page);
         }
         pw->AddChild(pC);
         delete pC;
     }
 }
 
-void XPageXml::ParseWidget(XWidget *pw, XmlElement *pElem)
+void XPageXml::ParseWidget(XWidget *pw, XmlElement *pElem, XPage *page)
 {
-    ParseAttr(pw, pElem);
+    ParseAttr(pw, pElem, page);
 }
 
 

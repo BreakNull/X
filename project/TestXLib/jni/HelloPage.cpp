@@ -30,7 +30,7 @@ void HelloPage::OnClick(const string &id)
     ++m_idx;
     char buf[50] = {0};
     sprintf(buf, "Click %d times", m_idx);
-	XButton btn(this);
+	XButton btn;
 	btn.SetRealWidget(pBtn);
     btn.SetProperty("txt", buf);
 }

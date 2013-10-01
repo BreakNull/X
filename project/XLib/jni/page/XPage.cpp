@@ -27,14 +27,14 @@ XWidget *XPage::OnCreate()
 {
     //LOGD("XPage::OnCreate page name is '%s'", m_cName.c_str());
     delete m_pXml;
-    m_pXml = XPageXml::New(this);
+    m_pXml = new XPageXml();
 
     int len = 0;
     void *pData = XOmlDb::Instance()->ReadContent(m_cName.c_str(), &len);
-    if (pData && m_pXml->LoadBuffer((char*)pData, len)) {
-        m_pXml->Parse();
+    if (pData) {
+        m_pXml->LoadBuffer((char*)pData, len);
     }
-    m_pRoot = m_pXml->GetMainView();
+    m_pRoot = m_pXml->CreateMainView(this);
     return m_pRoot;
 }
 

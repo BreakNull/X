@@ -11,27 +11,27 @@ class XmlAttr;
 class XPageXml
 {
 public:
-    static XPageXml *New(XPage *p);
-    bool LoadBuffer(char *pXmlData, int len);
-    bool LoadFile(const char *pFileName);
-    virtual void Parse();
-    XWidget *GetMainView();
+    XPageXml();
     virtual ~XPageXml();
 
+    bool LoadBuffer(char *pXmlData, int len);
+    bool LoadFile(const char *pFileName);
+
+    XWidget *CreateMainView(XPage *page);
+    XWidget *CreateRefView(const char *pRefName, XPage *page);
+
 protected:
-    XPageXml(XPage *p);
-    void ParseMainView(XmlElement *pElem);
+    void Parse();
     void ParseStyle(XmlElement *pElem);
 
-    void ParseAttr(XWidget *pw, XmlElement *pElem);
-    void ParseAttr(XPage *pw, XmlElement *pElem);
+    void ParseAttr(XWidget *pw, XmlElement *pElem, XPage *page);
+    void ParsePageAttr(XPage *pw, XmlElement *pElem);
     void MergeAttr(XmlElement *pE, vector<XStyleAttr> &vec);
-    virtual void ParseContainer(XWidget *pw, XmlElement *pElem);
-    virtual void ParseWidget(XWidget *pw, XmlElement *pElem);
+
+    void ParseContainer(XWidget *pw, XmlElement *pElem, XPage *page);
+    void ParseWidget(XWidget *pw, XmlElement *pElem, XPage *page);
 
     XmlDocument *m_pDoc;
-    XPage *m_page;
-    XWidget *m_pMainView;
     XStyle *m_pStyle;
 };
 

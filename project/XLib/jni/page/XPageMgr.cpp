@@ -98,7 +98,6 @@ void XPageMgr::LockScreen(bool lock)
     }
 }
 
-
 int XPageMgr::GetReverseAnim(int anim)
 {
     if (anim == A_NONE) {
