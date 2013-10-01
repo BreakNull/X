@@ -136,8 +136,8 @@ jint JNI_OnLoad(JavaVM *pJavaVm, void *reserved)
 
 bool InitXLib()
 {
-    SetXPageXml(new XPageXml(NULL));
     InitWidgetFactory();
+    LOGD("Init->InitXLib() end");
 }
 
 #endif //android end
