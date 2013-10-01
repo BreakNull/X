@@ -4,6 +4,7 @@
 #include <pthread.h>
 #include <list>
 #include "XMutex.h"
+#include "XRunnable.h"
 using namespace std;
 
 #ifndef INFINITE 
@@ -13,9 +14,7 @@ using namespace std;
 class XThread
 {
 public:
-    typedef void (*Runnable)(void *params);
-
-    XThread(Runnable r = NULL, void *params = NULL);
+    XThread(XRunnable r = NULL, void *params = NULL);
     
     virtual ~XThread();
     
@@ -35,7 +34,7 @@ protected:
     static void *ThreadProc(void* pParam);
     virtual	void Run() {}
 
-    Runnable m_runable;
+    XRunnable m_runable;
     void *m_pParams;
     bool m_bQuit;
     volatile bool m_bWaiting;

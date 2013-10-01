@@ -1,7 +1,6 @@
 #include "XThread.h"
 #include "XLog.h"
 #include "XDateTime.h"
-#include "XTimer.h"
 #include <string.h>
 
 #ifdef _FOR_ANDROID_
@@ -9,7 +8,7 @@
 #include "XJniMgr.h"
 #endif
 
-XThread::XThread(Runnable r, void *params)
+XThread::XThread(XRunnable r, void *params)
 {
     m_runable = r;
     m_pParams = params;

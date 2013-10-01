@@ -74,8 +74,8 @@ public:
     virtual bool AddChild(XWidget *p, XWidget *c, int idx);
 
     //------ui thread---------
-    virtual bool PostRunnable(XUiThread::Runnable r);
-    virtual bool PostRunnable(XUiThread::Runnable r, int delayMs);
+    virtual bool PostRunnable(XRunnable r);
+    virtual bool PostRunnable(XRunnable r, int delayMs);
 
     //-----ImageButton--------------
     virtual void SetImgButtonSrc(XWidget *p, const char *pSrc);

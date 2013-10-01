@@ -6,7 +6,7 @@
 
 void XJniUiThreadRunnable::Run(JNIEnv *pEnv, jlong addr, jlong param)
 {
-    XUiThread::Runnable r = reinterpret_cast<XUiThread::Runnable>(addr);
+    XRunnable r = reinterpret_cast<XRunnable>(addr);
     if (addr == 0) {
         LOGE("addr is NULL");
         return;

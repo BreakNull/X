@@ -5,12 +5,12 @@ XUiThread::XUiThread()
 {
 }
 
-bool XUiThread::PostRunnable(Runnable r)
+bool XUiThread::PostRunnable(XRunnable r)
 {
     return XPlatform::Instance()->PostRunnable(r);
 }
 
-bool XUiThread::PostRunnable(Runnable r, int delayMs)
+bool XUiThread::PostRunnable(XRunnable r, int delayMs)
 {
     return XPlatform::Instance()->PostRunnable(r, delayMs);
 }

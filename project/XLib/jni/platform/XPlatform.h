@@ -81,8 +81,8 @@ public:
     virtual bool AddChild(XWidget *p, XWidget *c, int idx) = 0;
 
     //------ui thread---------
-    virtual bool PostRunnable(XUiThread::Runnable r) = 0;
-    virtual bool PostRunnable(XUiThread::Runnable r, int delayMs) = 0;
+    virtual bool PostRunnable(XRunnable r) = 0;
+    virtual bool PostRunnable(XRunnable r, int delayMs) = 0;
 
     //-----ImageButton--------------
     virtual void SetImgButtonSrc(XWidget *p, const char *pSrc) = 0;

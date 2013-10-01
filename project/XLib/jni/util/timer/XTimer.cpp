@@ -11,11 +11,13 @@ XTimerManager& GetTimerManager()
 	return _tm;
 }
 
-XTimer::XTimer(int msec, bool it)
+XTimer::XTimer(XRunnable r, void *params, int msec, bool it)
 {
     m_iMsec	= msec;
     m_bIterate = it;
     m_id = 0;
+    m_runnable = r;
+    m_params = params;
 }
 
 XTimer::~XTimer()
@@ -50,6 +52,15 @@ void XTimer::Restart(int ms)
     m_iMsec = ms;
     Stop();
     Start();
+}
+
+void XTimer::DoAction()
+{
+    if (m_runnable) {
+        m_runnable(m_params);
+    } else {
+        OnTimer();
+    }
 }
 
 void XTimer::OnTimer()

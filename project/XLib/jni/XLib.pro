@@ -143,7 +143,8 @@ HEADERS +=\
     platform/jni/XJniPageMgr.h \
     util/oml/XOmlDb.h \
     util/thread/XAutoMutex.h \
-    util/thread/XMutex.h
+    util/thread/XMutex.h \
+    util/thread/XRunnable.h
 
 unix:!symbian {
     maemo5 {

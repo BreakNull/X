@@ -398,7 +398,7 @@ bool XPlatformAndroid::AddChild(XWidget *p, XWidget *c, int idx)
     return false;
 }
 
-bool XPlatformAndroid::PostRunnable(XUiThread::Runnable r)
+bool XPlatformAndroid::PostRunnable(XRunnable r)
 {
     CHECK_P(r);
     CHECK_B(false);
@@ -406,7 +406,7 @@ bool XPlatformAndroid::PostRunnable(XUiThread::Runnable r)
     CALL_BOOL_R((jlong)r);
 }
 
-bool XPlatformAndroid::PostRunnable(XUiThread::Runnable r, int delayMs)
+bool XPlatformAndroid::PostRunnable(XRunnable r, int delayMs)
 {
     CHECK_P(r);
     CHECK_B(false);
