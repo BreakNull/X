@@ -21,7 +21,7 @@ XTaskSchedule *XTaskSchedule::GetDefault()
     static XTaskSchedule *s_ins = NULL;
     if (!s_ins) {
         s_ins = new XTaskSchedule;
-        s_ins->StartThread("{Default TaskSchedule Thread}");
+        s_ins->StartThread();
     }
     return s_ins;
 }
@@ -31,19 +31,19 @@ void XTaskSchedule::Schedule(XTask *pTask)
     if (NULL == pTask) {
         return;
     }
-    m_sync.SyncStart();
+    m_sync.Lock();
     m_taskList.push_back(pTask);
-    m_sync.SyncEnd();
+    m_sync.Unlock();
     Notify();
 }
 
-int  XTaskSchedule::Run()
+void XTaskSchedule::Run()
 {
-    while (!m_bQuitFlg) {
+    while (!m_bQuit) {
         if (m_taskList.empty()) {
             Wait();
         }
-        if (m_bQuitFlg) {
+        if (m_bQuit) {
             break;
         }
         XTask *pTask = GetNext();
@@ -51,12 +51,11 @@ int  XTaskSchedule::Run()
             pTask->Run();
         }
     }
-    return 0;
 }
 
 XTask *XTaskSchedule::GetNext()
 {
-    m_sync.SyncStart();
+    m_sync.Lock();
     XTask *pNext = NULL;
     int pri = -1000;
     list<XTask*>::iterator it = m_taskList.begin();
@@ -73,7 +72,7 @@ XTask *XTaskSchedule::GetNext()
     if (NULL != pNext) {
         m_taskList.erase(next);
     }
-    m_sync.SyncEnd();
+    m_sync.Unlock();
     return pNext;
 }
 

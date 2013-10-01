@@ -3,10 +3,8 @@
 
 #include <pthread.h>
 #include <list>
-#include "XSyncObj.h"
+#include "XMutex.h"
 using namespace std;
-
-#define THREAD_INFO_NAME_LEN         (64)
 
 #ifndef INFINITE 
 #define INFINITE 0xffffffffL
@@ -15,37 +13,37 @@ using namespace std;
 class XThread
 {
 public:
-    XThread();
+    typedef void (*Runnable)(void *params);
+
+    XThread(Runnable r = NULL, void *params = NULL);
     
     virtual ~XThread();
     
-    void StartThread(const char *name = "Unknown Thread");
+    void StartThread();
     
-    bool StopThread(int msec = INFINITE); 
+    void StopThread();
     
-    bool Wait(int msec = INFINITE);
-    
+    void Wait(int msec = INFINITE);
+
     void Notify();
 
-    virtual	int  Run() = 0;
+    bool Join();
 
-	int GetThreadID() {return m_dwThreadID;}	void SetThreadID(int thread_id) {m_dwThreadID = thread_id;}
-	bool NotifyMsg(void* pAddr);
-private:
-	static void* ThreadProc(void* pParam);
+    int GetThreadID() {return m_dwThreadID;}
     
 protected:
-	bool			m_bQuitFlg;
-    bool         m_bSignalFlg;
-	char			m_szThreadName[THREAD_INFO_NAME_LEN];
-	int			m_dwThreadID;
+    static void *ThreadProc(void* pParam);
+    virtual	void Run() {}
+
+    Runnable m_runable;
+    void *m_pParams;
+    bool m_bQuit;
+    volatile bool m_bWaiting;
+    int	m_dwThreadID;
     pthread_t       m_tid;
     pthread_attr_t  m_attr;
     pthread_mutex_t m_mutex;
     pthread_cond_t  m_cond;
-
-	list<void*> m_cMsgQue;
-	XSyncObj m_cSyncMSg;
 };
 
 #endif

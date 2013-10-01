@@ -47,11 +47,11 @@ public:
     void Schedule(XTask *pTask);
 
 protected:
-    virtual	int  Run();
+    virtual	void  Run();
     XTask *GetNext();
 
     list<XTask*> m_taskList;
-    XSyncObj m_sync;
+    XMutex m_sync;
 };
 
 #endif // TASKSCHEDULE_H

@@ -19,7 +19,7 @@ XBroadcaster *XBroadcaster::Instance()
 {
     if (!s_ins) {
         s_ins = new XBroadcaster();
-        s_ins->StartThread("{XBroadcaster Thread}");
+        s_ins->StartThread();
     }
     return s_ins;
 }
@@ -29,9 +29,9 @@ void XBroadcaster::PostEvent(XEvent *pEvt)
     if (NULL == pEvt) {
         return;
     }
-    m_sync.SyncStart();
+    m_sync.Lock();
     m_events.push_back(pEvt);
-    m_sync.SyncEnd();
+    m_sync.Unlock();
 
     Notify();
 }
@@ -41,27 +41,26 @@ void XBroadcaster::SendEvent(XEvent *pEvt)
     DealEvent(pEvt);
 }
 
-int XBroadcaster::Run()
+void XBroadcaster::Run()
 {
-    while (!m_bQuitFlg) {
+    while (!m_bQuit) {
         if (m_events.empty()) {
             Wait();
         }
-        if (m_bQuitFlg) {
+        if (m_bQuit) {
             break;
         }
         XEvent *pEvt = GetNext();
         DealEvent(pEvt);
     }
-    return 0;
 }
 
 XEvent *XBroadcaster::GetNext()
 {
-    m_sync.SyncStart();
+    m_sync.Lock();
     XEvent *pEvt = m_events.at(0);
     m_events.erase(m_events.begin());
-    m_sync.SyncEnd();
+    m_sync.Unlock();
     return pEvt;
 }
 

@@ -3,176 +3,112 @@
 #include "XDateTime.h"
 #include "XTimer.h"
 #include <string.h>
+
 #ifdef _FOR_ANDROID_
 #include "jni.h"
 #include "XJniMgr.h"
 #endif
 
-XThread::XThread()
+XThread::XThread(Runnable r, void *params)
 {
-	m_tid = NULL;
-	m_bSignalFlg = false;
-    m_bQuitFlg = false;
+    m_runable = r;
+    m_pParams = params;
+    m_tid = NULL;
+    m_bQuit = false;
+    m_bWaiting = false;
 
 	int ret = pthread_attr_init(&m_attr);
 	ret = pthread_attr_setstacksize(&m_attr, 64*1024);
 	
-	if (0 != ret)
-	{
+    if (0 != ret) {
 		LOGE("thread m_attr stacksize init failed %d\n", ret);
 	}
 
 	ret = pthread_mutex_init(&m_mutex, NULL);
-	if (0 != ret)
-	{
+    if (0 != ret) {
 		LOGE("thread m_mutex init failed %d\n", ret);
 	}
 
 	ret = pthread_cond_init(&m_cond, NULL);
-	if (0 != ret)
-	{
-		//AIL_PRintF(("thread m_cond init failed %d\n", ret));
+    if (0 != ret) {
+        LOGE("thread m_cond init failed %d\n", ret);
 	}
 }
    
 XThread::~XThread()
 {
-
 }
    
-void 
-XThread::StartThread(const char *name)
+void XThread::StartThread()
 {
-	if (m_tid) return;
-
-	if (name == NULL)
-	{
-		name = "Unknown Thread";
-	}
-
-	strncpy(m_szThreadName, name, THREAD_INFO_NAME_LEN);
-	m_szThreadName[THREAD_INFO_NAME_LEN - 1] = ('\0');
-
-	m_bQuitFlg = false;
-	m_bSignalFlg = false;
+    if (m_tid) {
+        return;
+    }
+    m_bQuit = false;
+    m_bWaiting = false;
 	
-	int ret = pthread_create(&m_tid,&m_attr,ThreadProc, this);
+    int ret = pthread_create(&m_tid, &m_attr, ThreadProc, this);
 
-	if (0 == ret)
-	{
-		LOGE("<<<< StartThread error\n");
+    if (0 == ret) {
+        LOGE("StartThread error");
 	}
 }
    
-bool 
-XThread::StopThread(int msec)
+void XThread::StopThread()
 {
-	if (!m_tid)
-	{
-		return true;
+    if (!m_tid) {
+        return;
 	}
-
-	m_bQuitFlg = true;
-
+    m_bQuit = true;
 	Notify();
+}
 
-	if (!m_tid)
-	{
-		return true;
-	}
-
-	int ret = pthread_join(m_tid, NULL);
-
-	if (0 == ret)
-	{
-		return true;
-	}
-	else
-	{
-		LOGE("<<<< Stop thread [%s] (%lu, 0x%x) join failed %d [%s].", m_szThreadName, m_dwThreadID, m_dwThreadID, ret, strerror(ret));
-		return false;
-	}
-} 
-   
-bool 
-XThread::Wait(int msec)
+bool XThread::Join()
 {
-	int ret = 0;
-	pthread_mutex_lock(&m_mutex);
+    int ret = pthread_join(m_tid, NULL);
+    return 0 == ret;
+}
 
-	if (m_bSignalFlg == false)
-	{
-		if (INFINITE != msec)
-		{
+void XThread::Wait(int msec)
+{
+    int ret = 0;
+    if (m_bWaiting) {
+        return;
+    }
+    m_bWaiting = true;
+
+    if (INFINITE != msec) {
 #ifdef _FOR_IPHONE_
-			struct timespec nptime;
-			nptime.tv_sec = msec/1000;
-			nptime.tv_nsec = msec%1000*1000000;
+        struct timespec nptime;
+        nptime.tv_sec = msec/1000;
+        nptime.tv_nsec = msec%1000*1000000;
 
-			ret = pthread_cond_timedwait_relative_np(&m_cond, &m_mutex, &nptime);
+        ret = pthread_cond_timedwait_relative_np(&m_cond, &m_mutex, &nptime);
 
 #else //_FOR_ANDROID_
-			struct timespec nptime;
-			XTime::GetTimeSpec(&nptime, msec);
+        struct timespec nptime;
+        XTime::GetTimeSpec(&nptime, msec);
 
-			ret = pthread_cond_timedwait(&m_cond, &m_mutex, &nptime);
+        ret = pthread_cond_timedwait(&m_cond, &m_mutex, &nptime);
 #endif
-		}
-		else
-		{
-			ret = pthread_cond_wait(&m_cond, &m_mutex);
-		}
-	}
-
-	m_bSignalFlg = false;
-
-	pthread_mutex_unlock(&m_mutex);
-
-	unsigned long *pAddr = NULL; //[0] timer id; [1] timer pointer.
-	while(1)
-	{
-		m_cSyncMSg.SyncStart();
-		pAddr = (unsigned long*)m_cMsgQue.front();
-		m_cSyncMSg.SyncEnd();
-		if (pAddr != NULL)
-		{
-            if (XTimer::IsValid(*pAddr) == true)
-            {
-                reinterpret_cast<XTimer*>(*(pAddr+1))->DoAction();
-			}
-			delete pAddr;
-		}
-		else
-		{
-			break;
-		}
-	}
-
-	// ETIMEDOUT
-	if (0 == ret)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+    }
+    else {
+        ret = pthread_cond_wait(&m_cond, &m_mutex);
+    }
+    m_bWaiting = false;
 }
    
-void
-XThread::Notify()
+void XThread::Notify()
 {
-	pthread_mutex_lock(&m_mutex);
-	m_bSignalFlg = true;
-	int ret = pthread_cond_signal(&m_cond);
-	pthread_mutex_unlock(&m_mutex);
+    if (m_bWaiting) {
+        pthread_cond_signal(&m_cond);
+    }
 }
 
-void* 
-XThread::ThreadProc(void* pParam)
+void *XThread::ThreadProc(void* pParam)
 {
 	int dwThreadID;
-	XThread* pthread = (XThread*)pParam;
+    XThread* pthread = reinterpret_cast<XThread*>(pParam);
 	
 #ifdef _FOR_ANDROID_
 	dwThreadID = gettid();
@@ -184,29 +120,14 @@ XThread::ThreadProc(void* pParam)
 #endif
 
 	
-	pthread->SetThreadID(dwThreadID);
+    pthread->m_dwThreadID = dwThreadID;
 
-	if (NULL == pthread) {
-        return NULL;
+    if (pthread->m_runable) {
+        pthread->m_runable(pthread->m_pParams);
+    } else {
+        pthread->Run();
     }
-
-	int dwRunRet = pthread->Run();
-	return NULL;
-}
-
-bool 
-XThread::NotifyMsg(void* pAddr)
-{
-	m_cSyncMSg.SyncStart();
-	m_cMsgQue.push_back(pAddr);
-	m_cSyncMSg.SyncEnd();
-
-	pthread_mutex_lock(&m_mutex);
-	m_bSignalFlg = true;
-	int ret = pthread_cond_signal(&m_cond);
-	pthread_mutex_unlock(&m_mutex);
-
-	return true;
+    return NULL;
 }
 
 

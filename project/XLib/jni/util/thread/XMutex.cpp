@@ -1,34 +1,34 @@
-#include "XSyncObj.h"
+#include "XMutex.h"
 
 
-XSyncObj::XSyncObj()
+XMutex::XMutex()
 {
 	pthread_mutexattr_init(&attr);
 	pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
 	pthread_mutex_init(&mutex, &attr);
 }
 
-XSyncObj::~XSyncObj()
+XMutex::~XMutex()
 {
 	pthread_mutexattr_destroy(&attr);
 	pthread_mutex_destroy(&mutex);
 }
 
 void
-XSyncObj::SyncStart()
+XMutex::Lock()
 {
 	pthread_mutex_lock(&mutex);
 }
 
 bool
-XSyncObj::TrySyncStart()
+XMutex::TryLock()
 {
     int ret = pthread_mutex_trylock(&mutex);
 	return (ret==0)?true:false;
 }
 
 void
-XSyncObj::SyncEnd()
+XMutex::Unlock()
 {
 	pthread_mutex_unlock(&mutex);
 }

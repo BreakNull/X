@@ -57,8 +57,6 @@ SOURCES += \
     util/sqlite3/sqlite3.c \
     util/sqlite3/DataBaseOP.cpp \
     util/thread/XThread.cpp \
-    util/thread/XSyncObj.cpp \
-    util/thread/XAutoSync.cpp \
     util/timer/XTimerManager.cpp \
     util/timer/XTimer.cpp \
     util/variant/XVariant.cpp \
@@ -78,7 +76,9 @@ SOURCES += \
     util/oml/XmlDocument.cpp \
     util/file/XFile.cpp \
     platform/jni/XJniPageMgr.cpp \
-    util/oml/XOmlDb.cpp
+    util/oml/XOmlDb.cpp \
+    util/thread/XAutoMutex.cpp \
+    util/thread/XMutex.cpp
 
 HEADERS +=\
     page/XPage.h \
@@ -123,8 +123,6 @@ HEADERS +=\
     util/sqlite3/sqlite3.h \
     util/sqlite3/DataBaseOP.h \
     util/thread/XThread.h \
-    util/thread/XSyncObj.h \
-    util/thread/XAutoSync.h \
     util/timer/XTimerManager.h \
     util/timer/XTimer.h \
     util/variant/XVariant.h \
@@ -143,7 +141,9 @@ HEADERS +=\
     util/oml/XmlDocument.h \
     util/file/XFile.h \
     platform/jni/XJniPageMgr.h \
-    util/oml/XOmlDb.h
+    util/oml/XOmlDb.h \
+    util/thread/XAutoMutex.h \
+    util/thread/XMutex.h
 
 unix:!symbian {
     maemo5 {

@@ -2,7 +2,7 @@
 #define XBROADCASTER_H
 
 #include "XThread.h"
-#include "XSyncObj.h"
+#include "XMutex.h"
 class XWatcherItem;
 class XEvent;
 class XWatcher;
@@ -43,7 +43,7 @@ public:
     bool UnRegistWatcher(XFuncWatcher func, int iEvtType);
 
 protected:
-    virtual	int Run();
+    virtual	void Run();
     XEvent *GetNext();
     void DealEvent(XEvent *pEvt);
     XWatcherItem *FindWatcher(int iType, bool add);
@@ -52,7 +52,7 @@ private:
     XBroadcaster();
     static XBroadcaster *s_ins;
     vector<XEvent*> m_events;
-    XSyncObj m_sync;
+    XMutex m_sync;
     vector<void*> m_watchers;
 };
 

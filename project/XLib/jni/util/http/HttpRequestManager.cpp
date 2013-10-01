@@ -1,6 +1,6 @@
 #include "HttpRequestManager.h"
 #include "HttpRequest.h"
-#include "xAutoSync.h"
+#include "XAutoMutex.h"
 
 HttpRequestManager *HttpRequestManager::s_ins = NULL;
 
@@ -24,7 +24,7 @@ void HttpRequestManager::PostRequest(HttpRequest *pReq)
     }
 
     {
-        XAutoSync cAutoSync(m_cSyncReqList);
+        XAutoMutex cAutoSync(m_cSyncReqList);
         m_reqList.push_back(pReq);
     }
 }
@@ -37,7 +37,7 @@ HttpRequestManager::Cancel(HttpRequest *pReq)
     }
 
     {
-        XAutoSync cAutoSync(m_cSyncReqList);
+        XAutoMutex cAutoSync(m_cSyncReqList);
 
         vector<HttpRequest*>::iterator iter = m_reqList.begin();
         for (; iter != m_reqList.end(); )
@@ -55,7 +55,7 @@ HttpRequestManager::Cancel(HttpRequest *pReq)
     }
 }
 
-int HttpRequestManager::Run()
+void HttpRequestManager::Run()
 {
 
 }

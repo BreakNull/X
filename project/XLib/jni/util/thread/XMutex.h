@@ -3,39 +3,33 @@
 
 #include <pthread.h>
 
-class XSyncObj
+class XMutex
 {
 public:
 	/**
 	* Construction.
 	*/
-	XSyncObj();
+    XMutex();
 
 	/**
 	* Destruction.
 	*/
-	virtual ~XSyncObj();
+    virtual ~XMutex();
+
+    void Lock();
 
 	/**
-	* Synchronize start.
-	*/
-	void SyncStart();
-
-	/**
-	* Try synchronize start
+    * Try synchronize
 	*
 	* @return bool : true means synchronize succeed, and false failed.
 	*/
-	bool TrySyncStart();
+    bool TryLock();
 
-	/**
-	* Synchronize end.
-	*/
-	void SyncEnd();
+    void Unlock();
   
 private:
-        XSyncObj(const XSyncObj& src){}
-        XSyncObj& operator = (const XSyncObj& src){return *this;}
+        XMutex(const XMutex& src);
+        XMutex& operator = (const XMutex& src);
 
 protected:
 	pthread_mutex_t mutex;

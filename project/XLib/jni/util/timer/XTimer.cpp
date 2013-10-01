@@ -1,86 +1,55 @@
 #include "XTimer.h"
 #include "XTimerManager.h"
-XTimerManager&
-XTimer::GetTimerManager()
+
+XTimerManager& GetTimerManager()
 {
 	static XTimerManager _tm;
+    static bool b = false;
+    if (!b) {
+        _tm.StartThread();
+    }
 	return _tm;
 }
 
-XTimer::XTimer(long tm, bool it)
+XTimer::XTimer(int msec, bool it)
 {
-	msec			= tm;
-	m_bIterate		= it;
-	m_dTimerid		= 0;
-	used_timer_id	= 0;
-	signal			= 0;
-	m_pRequest		= new XTimerRequest();
-	m_pRequest->timer	= this;
+    m_iMsec	= msec;
+    m_bIterate = it;
+    m_id = 0;
 }
 
 XTimer::~XTimer()
 {
-	Stop();
-	if (NULL != m_pRequest)
-	{
-		delete m_pRequest;
-	}
+    Stop();
 }
 
-bool XTimer::Start()
+void XTimer::Start()
 {
-	if (m_dTimerid) return true;
-	signal = 0;
-	bool ret = GetTimerManager().RegisterTimer(this);
-	used_timer_id = m_dTimerid;
-	return ret;
+    if (m_id) {
+        return;
+    }
+    GetTimerManager().RegisterTimer(this);
 }
 
 void XTimer::Stop()
 {
-	if (!m_dTimerid) return;
-	signal = 0;
+    if (!m_id) {
+        return;
+    }
 	GetTimerManager().RemoveTimer(this);
+    m_id = 0;
 }
 
-bool XTimer::Restart()
+void XTimer::Restart()
 {
-	return Restart(msec);
+    Restart(m_iMsec);
 }
 
-bool XTimer::Restart(long time)
+void XTimer::Restart(int ms)
 {
-	msec = time;
-	if (m_dTimerid)
-	{
-		signal = 0;
-		GetTimerManager().RemoveTimer(this);
-		bool ret = GetTimerManager().RegisterTimer(this);
-		used_timer_id = m_dTimerid;
-		return ret;
-	}
-	else
-	{
-		return(Start());
-	}
-	return false;
-}
-
-void XTimer::DoAction()
-{
-	signal = 0;
-	if (!m_bIterate)
-	{
-		GetTimerManager().SetInvalid(m_dTimerid);
-		m_dTimerid = 0;
-	}
-	
-	OnTimer();
-}
-
-bool XTimer::IsValid(int id)
-{
-	return GetTimerManager().IsValid(id);
+    m_iMsec = ms;
+    Stop();
+    Start();
 }
 
 void XTimer::OnTimer()

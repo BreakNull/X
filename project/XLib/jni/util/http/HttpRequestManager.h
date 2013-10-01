@@ -2,7 +2,7 @@
 #define HTTPREQUESTMANAGER_H
 
 #include "XThread.h"
-#include "XSyncObj.h"
+#include "XMutex.h"
 
 #include <vector>
 using namespace std;
@@ -19,7 +19,7 @@ public:
     void Cancel(HttpRequest *pReq);
 
 protected:
-    virtual int Run();
+    virtual void Run();
 
 private:
     HttpRequestManager();
@@ -27,7 +27,7 @@ private:
 private:
     static HttpRequestManager *s_ins;
 
-    XSyncObj m_cSyncReqList;
+    XMutex m_cSyncReqList;
     vector<HttpRequest*> m_reqList;
 };
 
